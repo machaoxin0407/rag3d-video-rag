@@ -16,3 +16,16 @@
 ```text
 Project owner authorization confirmation in Codex task on 2026-07-16
 ```
+
+## 下载结果
+
+- 完成时间：2026-07-16；
+- 下载成功：11/11；
+- 原始文件：4条；
+- Wikimedia 官方视频转码：7条；
+- 总字节数：131,783,571；
+- 每条均生成 SHA-256；
+- 11条视频均通过 FFmpeg 首帧解码；
+- 原始文件保存在服务器 `~/rag3d-video/data_video/raw/authorized_sources/`；
+- 下载凭证保存在 `data_video/manifests/download_receipts.csv`；
+- `drill-001` 继续因产品范围不匹配而未下载。
