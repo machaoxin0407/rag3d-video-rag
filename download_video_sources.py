@@ -7,6 +7,7 @@ import argparse
 import csv
 import hashlib
 import os
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote, unquote, urlparse
@@ -47,6 +48,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--authorization-reference", required=True)
     parser.add_argument("--max-bytes", type=int, default=1_000_000_000)
+    parser.add_argument("--delay-seconds", type=float, default=30.0)
+    parser.add_argument("--retry-attempts", type=int, default=5)
+    parser.add_argument("--retry-base-seconds", type=float, default=30.0)
     return parser.parse_args()
 
 
@@ -96,6 +100,8 @@ def download_record(
     output_dir: Path,
     max_bytes: int,
     authorization_reference: str,
+    retry_attempts: int,
+    retry_base_seconds: float,
 ) -> dict[str, str]:
     """Stream one bounded video download and return its receipt fields."""
     filename = wikimedia_filename(record["source_page_url"])
@@ -110,7 +116,28 @@ def download_record(
     partial = destination.with_suffix(destination.suffix + ".part")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    with session.get(direct_url, stream=True, timeout=(20, 180)) as response:
+    response: requests.Response | None = None
+    for attempt in range(retry_attempts):
+        candidate = session.get(direct_url, stream=True, timeout=(20, 180))
+        if candidate.status_code != 429:
+            response = candidate
+            break
+        retry_after = candidate.headers.get("retry-after", "")
+        candidate.close()
+        try:
+            wait_seconds = float(retry_after)
+        except ValueError:
+            wait_seconds = retry_base_seconds * (2**attempt)
+        wait_seconds = max(retry_base_seconds, min(wait_seconds, 300.0))
+        print(
+            f"rate_limited={record['record_id']} attempt={attempt + 1}/"
+            f"{retry_attempts} wait_seconds={wait_seconds:.0f}"
+        )
+        time.sleep(wait_seconds)
+    if response is None:
+        raise RuntimeError(f"Rate limit persisted after {retry_attempts} attempts")
+
+    with response:
         response.raise_for_status()
         content_length = int(response.headers.get("content-length", "0") or 0)
         if content_length > max_bytes:
@@ -174,26 +201,42 @@ def main() -> None:
         raise SystemExit("No inventory records matched the allowed statuses")
 
     failures: list[str] = []
-    for record in selected:
+    completed = 0
+    for position, record in enumerate(selected):
         try:
+            prior = receipts.get(record["record_id"])
+            if prior:
+                prior_path = ROOT / prior["local_path"]
+                if prior_path.exists() and sha256_file(prior_path) == prior["sha256"]:
+                    completed += 1
+                    print(
+                        f"skipped_existing={record['record_id']} bytes={prior['bytes']} "
+                        f"sha256={prior['sha256']}"
+                    )
+                    continue
             receipt = download_record(
                 session,
                 record,
                 args.output_dir,
                 args.max_bytes,
                 args.authorization_reference,
+                args.retry_attempts,
+                args.retry_base_seconds,
             )
             receipts[record["record_id"]] = receipt
             write_receipts(args.receipts, receipts)
+            completed += 1
             print(
                 f"downloaded={record['record_id']} bytes={receipt['bytes']} "
                 f"sha256={receipt['sha256']}"
             )
+            if position < len(selected) - 1 and args.delay_seconds > 0:
+                time.sleep(args.delay_seconds)
         except Exception as exc:  # Continue so one remote failure does not lose prior receipts.
             failures.append(f"{record['record_id']}: {exc}")
             print(f"failed={record['record_id']} error={exc}")
 
-    print(f"selected={len(selected)} completed={len(selected) - len(failures)} failures={len(failures)}")
+    print(f"selected={len(selected)} completed={completed} failures={len(failures)}")
     if failures:
         raise SystemExit("; ".join(failures))
 
