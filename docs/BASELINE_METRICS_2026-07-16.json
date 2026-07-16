@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-07-16",
+  "commit": "72abc784c3c979c7653f74c8bef14e2588c90443",
+  "delivery_validation": {
+    "status": "ok",
+    "warnings": 0,
+    "comment_coverage": 0.479
+  },
+  "retrieval_index": {
+    "products": 39,
+    "parent_sections": 1943,
+    "retrieval_chunks": 6570,
+    "faiss_vectors": 6570
+  },
+  "server": {
+    "gpu_count": 2,
+    "gpu_model": "NVIDIA GeForce RTX 4090",
+    "gpu_memory_mib_each": 24564,
+    "memory_total_gib": 251,
+    "root_disk_available_gib": 327,
+    "root_disk_use_ratio": 0.91,
+    "python": "3.10.12",
+    "ffmpeg_available": false,
+    "system_nvcc_available": false
+  },
+  "notes": [
+    "Existing 400-question results are development evidence, not an independent paper test set.",
+    "No online LLM/API quality run was performed after credential sanitization.",
+    "No video retrieval or video diagnosis baseline exists yet."
+  ]
+}

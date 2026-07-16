@@ -14,6 +14,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+IGNORED_WALK_DIRS = {".git", ".venv", "venv", "__pycache__"}
 
 REQUIRED_FILES = [
     "README.md",
@@ -123,6 +124,8 @@ def check_executable(errors: list[str]) -> None:
 
 def check_no_generated_artifacts(errors: list[str]) -> None:
     for path in ROOT.rglob("*"):
+        if any(part in {".git", ".venv", "venv"} for part in path.parts):
+            continue
         if "__pycache__" in path.parts:
             fail(errors, f"包含 Python 缓存目录/文件: {rel(path)}")
             continue
@@ -180,6 +183,8 @@ def check_comment_coverage(errors: list[str], warnings: list[str]) -> None:
 
 
 def is_scanned_text_file(path: Path) -> bool:
+    if any(part in IGNORED_WALK_DIRS for part in path.parts):
+        return False
     if any(part in {"data", "手册", "手册_v4", "submissions"} for part in path.parts):
         return False
     if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".faiss", ".pkl", ".pdf"}:
