@@ -19,11 +19,13 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_INVENTORY = ROOT / "data_video" / "manifests" / "video_source_inventory.csv"
 DEFAULT_OUTPUT = ROOT / "data_video" / "raw" / "authorized_sources"
 DEFAULT_RECEIPTS = ROOT / "data_video" / "manifests" / "download_receipts.csv"
+DEFAULT_OVERRIDES = ROOT / "data_video" / "manifests" / "download_overrides.csv"
 RECEIPT_FIELDS = [
     "record_id",
     "inventory_status",
     "source_page_url",
     "direct_url",
+    "source_variant",
     "local_path",
     "downloaded_at",
     "bytes",
@@ -41,6 +43,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--inventory", type=Path, default=DEFAULT_INVENTORY)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--receipts", type=Path, default=DEFAULT_RECEIPTS)
+    parser.add_argument("--overrides", type=Path, default=DEFAULT_OVERRIDES)
     parser.add_argument(
         "--statuses",
         default="provisional_accept,scope_review,hold_privacy",
@@ -83,6 +86,14 @@ def load_receipts(path: Path) -> dict[str, dict[str, str]]:
         return {row["record_id"]: row for row in csv.DictReader(stream)}
 
 
+def load_overrides(path: Path) -> dict[str, str]:
+    """Load optional record-specific transcode URLs used during CDN throttling."""
+    if not path.exists():
+        return {}
+    with path.open("r", encoding="utf-8", newline="") as stream:
+        return {row["record_id"]: row["download_url"] for row in csv.DictReader(stream)}
+
+
 def write_receipts(path: Path, receipts: dict[str, dict[str, str]]) -> None:
     """Atomically replace the receipt CSV with records sorted by ID."""
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -102,16 +113,23 @@ def download_record(
     authorization_reference: str,
     retry_attempts: int,
     retry_base_seconds: float,
+    direct_url_override: str | None,
 ) -> dict[str, str]:
     """Stream one bounded video download and return its receipt fields."""
     filename = wikimedia_filename(record["source_page_url"])
-    suffix = Path(filename).suffix.lower()
+    source_suffix = Path(filename).suffix.lower()
+    suffix = source_suffix
+    if direct_url_override:
+        direct_url = direct_url_override
+        suffix = Path(unquote(urlparse(direct_url).path)).suffix.lower()
+        source_variant = "wikimedia_transcode"
+    else:
+        direct_url = "https://commons.wikimedia.org/wiki/Special:Redirect/file/" + quote(
+            filename, safe=""
+        )
+        source_variant = "original"
     if suffix not in {".webm", ".ogv", ".ogg", ".mpg", ".mpeg"}:
         raise ValueError(f"Unsupported video suffix for {record['record_id']}: {suffix}")
-
-    direct_url = "https://commons.wikimedia.org/wiki/Special:Redirect/file/" + quote(
-        filename, safe=""
-    )
     destination = output_dir / f"{record['record_id']}{suffix}"
     partial = destination.with_suffix(destination.suffix + ".part")
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -174,6 +192,7 @@ def download_record(
         "inventory_status": record["status"],
         "source_page_url": record["source_page_url"],
         "direct_url": response.url,
+        "source_variant": source_variant,
         "local_path": str(destination.relative_to(ROOT)),
         "downloaded_at": datetime.now(timezone.utc).isoformat(),
         "bytes": str(destination.stat().st_size),
@@ -190,6 +209,7 @@ def main() -> None:
     args = parse_args()
     allowed_statuses = {value.strip() for value in args.statuses.split(",") if value.strip()}
     receipts = load_receipts(args.receipts)
+    overrides = load_overrides(args.overrides)
     session = requests.Session()
     session.headers["User-Agent"] = "RAG3D-VideoResearch/1.0"
 
@@ -222,6 +242,7 @@ def main() -> None:
                 args.authorization_reference,
                 args.retry_attempts,
                 args.retry_base_seconds,
+                overrides.get(record["record_id"]),
             )
             receipts[record["record_id"]] = receipt
             write_receipts(args.receipts, receipts)
