@@ -1,6 +1,6 @@
 {
   "recorded_at": "2026-07-16",
-  "commit": "72abc784c3c979c7653f74c8bef14e2588c90443",
+  "source_baseline_commit": "72abc784c3c979c7653f74c8bef14e2588c90443",
   "delivery_validation": {
     "status": "ok",
     "warnings": 0,
@@ -20,12 +20,21 @@
     "root_disk_available_gib": 327,
     "root_disk_use_ratio": 0.91,
     "python": "3.10.12",
-    "ffmpeg_available": false,
-    "system_nvcc_available": false
+    "system_ffmpeg_available": false,
+    "user_ffmpeg": "7.0.2-static",
+    "system_nvcc_available": false,
+    "virtual_environment": "virtualenv",
+    "torch": "2.7.0+cu128",
+    "torch_cuda_runtime": "12.8",
+    "cuda_smoke_devices_passed": 2,
+    "project_gpu_processes_after_smoke": 0,
+    "preexisting_external_gpu_pid_observed": 826404
   },
   "notes": [
     "Existing 400-question results are development evidence, not an independent paper test set.",
     "No online LLM/API quality run was performed after credential sanitization.",
-    "No video retrieval or video diagnosis baseline exists yet."
+    "No video retrieval or video diagnosis quality baseline exists yet.",
+    "A synthetic FFmpeg and dual-GPU compute smoke test passed on the server.",
+    "Both GPUs were already heavily occupied by a non-project process before the smoke test."
   ]
 }
