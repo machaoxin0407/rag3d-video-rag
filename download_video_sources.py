@@ -35,6 +35,7 @@ RECEIPT_FIELDS = [
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse download paths, authorization reference, and safety limits."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--inventory", type=Path, default=DEFAULT_INVENTORY)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
@@ -62,6 +63,7 @@ def wikimedia_filename(source_page_url: str) -> str:
 
 
 def sha256_file(path: Path) -> str:
+    """Return the SHA-256 digest of a downloaded file."""
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
@@ -70,6 +72,7 @@ def sha256_file(path: Path) -> str:
 
 
 def load_receipts(path: Path) -> dict[str, dict[str, str]]:
+    """Load prior receipts by record ID so reruns preserve audit history."""
     if not path.exists():
         return {}
     with path.open("r", encoding="utf-8", newline="") as stream:
@@ -77,6 +80,7 @@ def load_receipts(path: Path) -> dict[str, dict[str, str]]:
 
 
 def write_receipts(path: Path, receipts: dict[str, dict[str, str]]) -> None:
+    """Atomically replace the receipt CSV with records sorted by ID."""
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     with temporary.open("w", encoding="utf-8", newline="") as stream:
@@ -93,6 +97,7 @@ def download_record(
     max_bytes: int,
     authorization_reference: str,
 ) -> dict[str, str]:
+    """Stream one bounded video download and return its receipt fields."""
     filename = wikimedia_filename(record["source_page_url"])
     suffix = Path(filename).suffix.lower()
     if suffix not in {".webm", ".ogv", ".ogg", ".mpg", ".mpeg"}:
@@ -154,6 +159,7 @@ def download_record(
 
 
 def main() -> None:
+    """Download eligible inventory records while retaining partial successes."""
     args = parse_args()
     allowed_statuses = {value.strip() for value in args.statuses.split(",") if value.strip()}
     receipts = load_receipts(args.receipts)
