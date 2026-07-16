@@ -19,6 +19,8 @@
 - `data_video/keyframes/<record_id>/frame_*.jpg`：每 5 秒均匀抽取的基础关键帧；
 - `data_video/manifests/preprocessing_manifest.csv`：源文件哈希、编解码信息、时长、分辨率、音频状态、关键帧数量和错误信息。
 
+对于部分 OGV/Theora 容器，`imageio-ffmpeg` 可能不返回帧率；流水线会从 FFmpeg 的视频流描述中回退读取 `fps` 或 `tbr`，防止清单记录为零帧率。
+
 原始视频、音频和关键帧由 `.gitignore` 排除；只有不含媒体内容的处理清单进入 Git。
 
 ## 服务器运行

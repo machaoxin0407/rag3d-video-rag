@@ -81,8 +81,8 @@ def resolve_project_path(relative_path: str) -> Path:
     return candidate
 
 
-def video_metadata(source: Path) -> dict[str, Any]:
-    """Read container metadata through the bundled imageio-ffmpeg executable."""
+def video_metadata(source: Path, ffmpeg: Path) -> dict[str, Any]:
+    """Read video metadata and recover frame rate from FFmpeg when needed."""
     import imageio_ffmpeg
 
     reader = imageio_ffmpeg.read_frames(str(source), pix_fmt="rgb24")
@@ -90,6 +90,20 @@ def video_metadata(source: Path) -> dict[str, Any]:
         metadata = next(reader)
     finally:
         reader.close()
+    if float(metadata.get("fps") or 0) <= 0:
+        result = subprocess.run(
+            [str(ffmpeg), "-hide_banner", "-i", str(source)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+        video_line = next(
+            (line for line in result.stderr.splitlines() if "Video:" in line), ""
+        )
+        rate = re.search(r"(\d+(?:\.\d+)?)\s+(?:fps|tbr)\b", video_line)
+        if rate:
+            metadata["fps"] = float(rate.group(1))
     return metadata
 
 
@@ -180,7 +194,7 @@ def preprocess_one(
     if source_digest != receipt["sha256"]:
         raise ValueError(f"SHA-256 mismatch for {record_id}")
 
-    metadata = video_metadata(source)
+    metadata = video_metadata(source, ffmpeg)
     size = metadata.get("size") or metadata.get("source_size") or (0, 0)
     audio_path = DEFAULT_PROCESSED / record_id / "audio_16k_mono.wav"
     frame_dir = DEFAULT_KEYFRAMES / record_id
@@ -197,7 +211,7 @@ def preprocess_one(
         "fps": str(metadata.get("fps", "")),
         "width": str(size[0]),
         "height": str(size[1]),
-        "video_codec": str(metadata.get("codec", "")),
+        "video_codec": str(metadata.get("codec", "")).rstrip(","),
         "pixel_format": str(metadata.get("pix_fmt", "")),
         "audio_status": audio_status,
         "audio_path": str(audio_path.relative_to(ROOT)) if audio_status == "extracted" else "",
