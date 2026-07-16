@@ -7,6 +7,7 @@ import argparse
 import csv
 import hashlib
 import os
+import subprocess
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,6 +27,7 @@ RECEIPT_FIELDS = [
     "source_page_url",
     "direct_url",
     "source_variant",
+    "transport",
     "local_path",
     "downloaded_at",
     "bytes",
@@ -50,6 +52,7 @@ def parse_args() -> argparse.Namespace:
         help="Comma-separated inventory statuses allowed for download.",
     )
     parser.add_argument("--authorization-reference", required=True)
+    parser.add_argument("--transport", choices=("requests", "curl"), default="requests")
     parser.add_argument("--max-bytes", type=int, default=1_000_000_000)
     parser.add_argument("--delay-seconds", type=float, default=30.0)
     parser.add_argument("--retry-attempts", type=int, default=5)
@@ -114,6 +117,7 @@ def download_record(
     retry_attempts: int,
     retry_base_seconds: float,
     direct_url_override: str | None,
+    transport: str,
 ) -> dict[str, str]:
     """Stream one bounded video download and return its receipt fields."""
     filename = wikimedia_filename(record["source_page_url"])
@@ -133,6 +137,53 @@ def download_record(
     destination = output_dir / f"{record['record_id']}{suffix}"
     partial = destination.with_suffix(destination.suffix + ".part")
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    if transport == "curl":
+        partial.unlink(missing_ok=True)
+        try:
+            subprocess.run(
+                [
+                    "curl",
+                    "--fail",
+                    "--location",
+                    "--silent",
+                    "--show-error",
+                    "--retry",
+                    str(retry_attempts),
+                    "--retry-all-errors",
+                    "--retry-delay",
+                    str(int(retry_base_seconds)),
+                    "--max-filesize",
+                    str(max_bytes),
+                    "--output",
+                    str(partial),
+                    direct_url,
+                ],
+                check=True,
+            )
+            if partial.stat().st_size > max_bytes:
+                raise ValueError(
+                    f"Refusing {record['record_id']}: file exceeds {max_bytes} bytes"
+                )
+            os.replace(partial, destination)
+        finally:
+            partial.unlink(missing_ok=True)
+        return {
+            "record_id": record["record_id"],
+            "inventory_status": record["status"],
+            "source_page_url": record["source_page_url"],
+            "direct_url": direct_url,
+            "source_variant": source_variant,
+            "transport": "curl",
+            "local_path": str(destination.relative_to(ROOT)),
+            "downloaded_at": datetime.now(timezone.utc).isoformat(),
+            "bytes": str(destination.stat().st_size),
+            "sha256": sha256_file(destination),
+            "content_type": "",
+            "etag": "",
+            "last_modified": "",
+            "authorization_reference": authorization_reference,
+        }
 
     response: requests.Response | None = None
     for attempt in range(retry_attempts):
@@ -193,6 +244,7 @@ def download_record(
         "source_page_url": record["source_page_url"],
         "direct_url": response.url,
         "source_variant": source_variant,
+        "transport": "requests",
         "local_path": str(destination.relative_to(ROOT)),
         "downloaded_at": datetime.now(timezone.utc).isoformat(),
         "bytes": str(destination.stat().st_size),
@@ -243,6 +295,7 @@ def main() -> None:
                 args.retry_attempts,
                 args.retry_base_seconds,
                 overrides.get(record["record_id"]),
+                args.transport,
             )
             receipts[record["record_id"]] = receipt
             write_receipts(args.receipts, receipts)
