@@ -12,6 +12,8 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .venv/
+.venv-asr/
+.venv-ocr/
 venv/
 
 # OS / editors
@@ -30,6 +32,7 @@ traces/
 data_video/raw/
 data_video/processed/
 data_video/keyframes/
+data_video/transcripts/
 data_video/indexes/
 models/
 checkpoints/
