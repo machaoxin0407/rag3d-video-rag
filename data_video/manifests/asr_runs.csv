@@ -1,0 +1,12 @@
+record_id,status,language,language_probability,audio_duration_seconds,segment_count,word_count,model,device,device_index,compute_type,processed_at,error
+camera-001,success,en,0.997070,266.061,55,759,large-v3,cuda,0,float16,2026-07-19T11:44:24.472243+00:00,
+espresso-001,success,en,0.999512,54.336,7,111,large-v3,cuda,0,float16,2026-07-19T11:44:25.846478+00:00,
+espresso-002,success,nn,0.613281,44.680,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:26.024269+00:00,
+espresso-003,success,nn,0.613281,140.945,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:26.361051+00:00,
+pressure-001,success,nn,0.613281,120.647,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:26.631393+00:00,
+printer-001,success,nn,0.613281,33.807,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:26.761485+00:00,
+vacuum-001,success,nn,0.613281,26.506,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:26.888606+00:00,
+vacuum-002,success,nn,0.613281,30.936,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:27.024521+00:00,
+washing-001,success,nn,0.613281,15.777,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:27.134581+00:00,
+washing-002,success,jw,0.298828,23.595,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:27.834460+00:00,
+washing-003,success,nn,0.613281,26.865,0,0,large-v3,cuda,0,float16,2026-07-19T11:44:27.969539+00:00,

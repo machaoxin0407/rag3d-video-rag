@@ -1,0 +1,362 @@
+observation_id,record_id,frame_id,timestamp_seconds,frame_path,text,confidence,polygon_json,language_profile,ocr_version
+camera-001-ocr-00001,camera-001,frame_000000,0.000,data_video/keyframes/camera-001/frame_000000.jpg,4.0,0.997582,"[[370.0,376.0],[398.0,376.0],[398.0,396.0],[370.0,396.0]]",de,PP-OCRv5
+camera-001-ocr-00002,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,CCD,0.999606,"[[401.0,62.0],[572.0,62.0],[572.0,123.0],[401.0,123.0]]",de,PP-OCRv5
+camera-001-ocr-00003,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,The heart of a,0.999879,"[[570.0,67.0],[772.0,67.0],[772.0,94.0],[570.0,94.0]]",de,PP-OCRv5
+camera-001-ocr-00004,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,digital camera,0.999251,"[[569.0,92.0],[780.0,92.0],[780.0,123.0],[569.0,123.0]]",de,PP-OCRv5
+camera-001-ocr-00005,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,how a charge coupled,0.983017,"[[424.0,129.0],[756.0,130.0],[756.0,160.0],[424.0,159.0]]",de,PP-OCRv5
+camera-001-ocr-00006,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,device works,0.998343,"[[498.0,164.0],[693.0,166.0],[693.0,191.0],[498.0,189.0]]",de,PP-OCRv5
+camera-001-ocr-00007,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,engineerguy | series #4,0.959768,"[[453.0,219.0],[723.0,216.0],[724.0,239.0],[453.0,242.0]]",de,PP-OCRv5
+camera-001-ocr-00008,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,OOMLE,0.987425,"[[281.0,269.0],[318.0,278.0],[315.0,292.0],[278.0,283.0]]",de,PP-OCRv5
+camera-001-ocr-00009,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,Supported in part by,0.999005,"[[599.0,329.0],[772.0,330.0],[772.0,350.0],[599.0,349.0]]",de,PP-OCRv5
+camera-001-ocr-00010,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,THE CAMILLE,0.806349,"[[598.0,351.0],[750.0,353.0],[750.0,374.0],[598.0,372.0]]",de,PP-OCRv5
+camera-001-ocr-00011,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,4.0,0.999196,"[[372.0,378.0],[396.0,378.0],[396.0,395.0],[372.0,395.0]]",de,PP-OCRv5
+camera-001-ocr-00012,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,& Henry Dreyfus,0.841897,"[[599.0,380.0],[813.0,382.0],[812.0,403.0],[599.0,401.0]]",de,PP-OCRv5
+camera-001-ocr-00013,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,MEGA PIXELS,0.994325,"[[352.0,391.0],[396.0,393.0],[395.0,404.0],[352.0,402.0]]",de,PP-OCRv5
+camera-001-ocr-00014,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,"FOUNDaTION, INc.",0.777648,"[[599.0,410.0],[809.0,411.0],[808.0,432.0],[599.0,431.0]]",de,PP-OCRv5
+camera-001-ocr-00015,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,Special Grant Program,0.988267,"[[611.0,435.0],[793.0,436.0],[793.0,450.0],[611.0,449.0]]",de,PP-OCRv5
+camera-001-ocr-00016,camera-001,frame_000001,5.000,data_video/keyframes/camera-001/frame_000001.jpg,in the Chemical Sciences,0.983895,"[[606.0,449.0],[804.0,449.0],[804.0,463.0],[606.0,463.0]]",de,PP-OCRv5
+camera-001-ocr-00017,camera-001,frame_000002,10.000,data_video/keyframes/camera-001/frame_000002.jpg,Bill Hammack,0.999822,"[[545.0,95.0],[757.0,95.0],[757.0,119.0],[545.0,119.0]]",de,PP-OCRv5
+camera-001-ocr-00018,camera-001,frame_000002,10.000,data_video/keyframes/camera-001/frame_000002.jpg,1,0.751300,"[[484.0,105.0],[533.0,105.0],[533.0,176.0],[484.0,176.0]]",de,PP-OCRv5
+camera-001-ocr-00019,camera-001,frame_000002,10.000,data_video/keyframes/camera-001/frame_000002.jpg,Department of Chemical,0.998428,"[[545.0,119.0],[736.0,118.0],[736.0,136.0],[545.0,137.0]]",de,PP-OCRv5
+camera-001-ocr-00020,camera-001,frame_000002,10.000,data_video/keyframes/camera-001/frame_000002.jpg,& Biomolecular Engineering,0.996963,"[[554.0,135.0],[773.0,136.0],[773.0,154.0],[553.0,153.0]]",de,PP-OCRv5
+camera-001-ocr-00021,camera-001,frame_000002,10.000,data_video/keyframes/camera-001/frame_000002.jpg,University of Illinois,0.997769,"[[550.0,153.0],[700.0,153.0],[700.0,167.0],[550.0,167.0]]",de,PP-OCRv5
+camera-001-ocr-00022,camera-001,frame_000002,10.000,data_video/keyframes/camera-001/frame_000002.jpg,at Urbana-Champaign,0.998654,"[[582.0,167.0],[748.0,168.0],[748.0,185.0],[582.0,184.0]]",de,PP-OCRv5
+camera-001-ocr-00023,camera-001,frame_000003,15.000,data_video/keyframes/camera-001/frame_000003.jpg,PENTAX,0.998864,"[[529.0,198.0],[610.0,201.0],[609.0,215.0],[529.0,212.0]]",de,PP-OCRv5
+camera-001-ocr-00024,camera-001,frame_000003,15.000,data_video/keyframes/camera-001/frame_000003.jpg,HONEYWELL,0.999481,"[[535.0,189.0],[603.0,191.0],[603.0,201.0],[535.0,199.0]]",de,PP-OCRv5
+camera-001-ocr-00025,camera-001,frame_000003,15.000,data_video/keyframes/camera-001/frame_000003.jpg,cLOn,0.640022,"[[171.0,216.0],[205.0,216.0],[205.0,226.0],[171.0,226.0]]",de,PP-OCRv5
+camera-001-ocr-00026,camera-001,frame_000003,15.000,data_video/keyframes/camera-001/frame_000003.jpg,PENTAX,0.993804,"[[509.0,301.0],[605.0,304.0],[605.0,317.0],[509.0,314.0]]",de,PP-OCRv5
+camera-001-ocr-00027,camera-001,frame_000003,15.000,data_video/keyframes/camera-001/frame_000003.jpg,HONEYWELL,0.999484,"[[513.0,293.0],[598.0,295.0],[598.0,305.0],[513.0,303.0]]",de,PP-OCRv5
+camera-001-ocr-00028,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,Engincering Stories,0.974826,"[[55.0,354.0],[134.0,354.0],[134.0,361.0],[55.0,361.0]]",de,PP-OCRv5
+camera-001-ocr-00029,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,Eight Amazing,0.998584,"[[65.0,346.0],[125.0,346.0],[125.0,353.0],[65.0,353.0]]",de,PP-OCRv5
+camera-001-ocr-00030,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,This video is based on a chapter in,0.992314,"[[164.0,395.0],[469.0,396.0],[468.0,414.0],[164.0,413.0]]",de,PP-OCRv5
+camera-001-ocr-00031,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,Eight Amazing,0.977732,"[[164.0,418.0],[423.0,418.0],[423.0,448.0],[164.0,448.0]]",de,PP-OCRv5
+camera-001-ocr-00032,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,Engineering,0.999965,"[[408.0,420.0],[618.0,420.0],[618.0,447.0],[408.0,447.0]]",de,PP-OCRv5
+camera-001-ocr-00033,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,Stories,0.999892,"[[619.0,420.0],[738.0,420.0],[738.0,445.0],[619.0,445.0]]",de,PP-OCRv5
+camera-001-ocr-00034,camera-001,frame_000007,35.000,data_video/keyframes/camera-001/frame_000007.jpg,visit www.engineerguy.com/elements,0.999772,"[[399.0,450.0],[736.0,451.0],[736.0,472.0],[399.0,471.0]]",de,PP-OCRv5
+camera-001-ocr-00035,camera-001,frame_000008,40.000,data_video/keyframes/camera-001/frame_000008.jpg,Eight Amazing,0.956282,"[[63.0,343.0],[126.0,345.0],[125.0,355.0],[63.0,353.0]]",de,PP-OCRv5
+camera-001-ocr-00036,camera-001,frame_000008,40.000,data_video/keyframes/camera-001/frame_000008.jpg,Engincering Stories,0.968420,"[[56.0,354.0],[134.0,354.0],[134.0,361.0],[56.0,361.0]]",de,PP-OCRv5
+camera-001-ocr-00037,camera-001,frame_000008,40.000,data_video/keyframes/camera-001/frame_000008.jpg,This video is based on a chapter in,0.988968,"[[164.0,395.0],[469.0,397.0],[468.0,414.0],[164.0,412.0]]",de,PP-OCRv5
+camera-001-ocr-00038,camera-001,frame_000008,40.000,data_video/keyframes/camera-001/frame_000008.jpg,Eight Amazing,0.999385,"[[165.0,418.0],[410.0,421.0],[410.0,449.0],[165.0,446.0]]",de,PP-OCRv5
+camera-001-ocr-00039,camera-001,frame_000008,40.000,data_video/keyframes/camera-001/frame_000008.jpg,Engineering Stories,0.999098,"[[412.0,420.0],[740.0,419.0],[740.0,446.0],[412.0,447.0]]",de,PP-OCRv5
+camera-001-ocr-00040,camera-001,frame_000008,40.000,data_video/keyframes/camera-001/frame_000008.jpg,visit www.engineerguy.com/elements,0.992497,"[[399.0,451.0],[736.0,452.0],[736.0,472.0],[399.0,471.0]]",de,PP-OCRv5
+camera-001-ocr-00041,camera-001,frame_000012,60.000,data_video/keyframes/camera-001/frame_000012.jpg,8.84,0.999999,"[[84.0,177.0],[158.0,177.0],[158.0,206.0],[84.0,206.0]]",de,PP-OCRv5
+camera-001-ocr-00042,camera-001,frame_000012,60.000,data_video/keyframes/camera-001/frame_000012.jpg,microns,0.999959,"[[29.0,216.0],[156.0,216.0],[156.0,240.0],[29.0,240.0]]",de,PP-OCRv5
+camera-001-ocr-00043,camera-001,frame_000012,60.000,data_video/keyframes/camera-001/frame_000012.jpg,11.79 microns,0.975683,"[[321.0,443.0],[552.0,443.0],[552.0,470.0],[321.0,470.0]]",de,PP-OCRv5
+camera-001-ocr-00044,camera-001,frame_000013,65.000,data_video/keyframes/camera-001/frame_000013.jpg,Would you like to translate the captions/subtitles for this video?,0.989628,"[[25.0,427.0],[644.0,427.0],[644.0,447.0],[25.0,447.0]]",de,PP-OCRv5
+camera-001-ocr-00045,camera-001,frame_000013,65.000,data_video/keyframes/camera-001/frame_000013.jpg,"If so, please go to http://www.engineerguy.com/translate",0.995373,"[[26.0,451.0],[574.0,451.0],[574.0,471.0],[26.0,471.0]]",de,PP-OCRv5
+camera-001-ocr-00046,camera-001,frame_000014,70.000,data_video/keyframes/camera-001/frame_000014.jpg,Would you like to translate the captions/subtitles for this video?,0.989388,"[[25.0,427.0],[644.0,427.0],[644.0,447.0],[25.0,447.0]]",de,PP-OCRv5
+camera-001-ocr-00047,camera-001,frame_000014,70.000,data_video/keyframes/camera-001/frame_000014.jpg,"If so, please go to http://www.engineerguy.com/translate",0.988450,"[[26.0,451.0],[574.0,451.0],[574.0,471.0],[26.0,471.0]]",de,PP-OCRv5
+camera-001-ocr-00048,camera-001,frame_000020,100.000,data_video/keyframes/camera-001/frame_000020.jpg,Distortion from capacitive coupling,0.993693,"[[146.0,423.0],[571.0,427.0],[571.0,458.0],[145.0,454.0]]",de,PP-OCRv5
+camera-001-ocr-00049,camera-001,frame_000023,115.000,data_video/keyframes/camera-001/frame_000023.jpg,Silicon,0.999614,"[[431.0,172.0],[540.0,175.0],[539.0,211.0],[430.0,208.0]]",de,PP-OCRv5
+camera-001-ocr-00050,camera-001,frame_000023,115.000,data_video/keyframes/camera-001/frame_000023.jpg,silicon,0.998961,"[[56.0,314.0],[133.0,314.0],[133.0,343.0],[56.0,343.0]]",de,PP-OCRv5
+camera-001-ocr-00051,camera-001,frame_000023,115.000,data_video/keyframes/camera-001/frame_000023.jpg,S,0.892164,"[[45.0,336.0],[135.0,336.0],[135.0,432.0],[45.0,432.0]]",de,PP-OCRv5
+camera-001-ocr-00052,camera-001,frame_000023,115.000,data_video/keyframes/camera-001/frame_000023.jpg,atomic no 14,0.980455,"[[55.0,424.0],[135.0,422.0],[136.0,439.0],[56.0,441.0]]",de,PP-OCRv5
+camera-001-ocr-00053,camera-001,frame_000023,115.000,data_video/keyframes/camera-001/frame_000023.jpg,atomicwt 28.0855,0.936089,"[[38.0,438.0],[152.0,436.0],[152.0,453.0],[39.0,455.0]]",de,PP-OCRv5
+camera-001-ocr-00054,camera-001,frame_000024,120.000,data_video/keyframes/camera-001/frame_000024.jpg,Silicon,0.999658,"[[431.0,172.0],[540.0,175.0],[539.0,211.0],[430.0,208.0]]",de,PP-OCRv5
+camera-001-ocr-00055,camera-001,frame_000024,120.000,data_video/keyframes/camera-001/frame_000024.jpg,silicon,0.999465,"[[56.0,314.0],[132.0,314.0],[132.0,343.0],[56.0,343.0]]",de,PP-OCRv5
+camera-001-ocr-00056,camera-001,frame_000024,120.000,data_video/keyframes/camera-001/frame_000024.jpg,Si,0.731608,"[[45.0,336.0],[135.0,336.0],[135.0,432.0],[45.0,432.0]]",de,PP-OCRv5
+camera-001-ocr-00057,camera-001,frame_000024,120.000,data_video/keyframes/camera-001/frame_000024.jpg,atomic no 14,0.989478,"[[56.0,424.0],[135.0,422.0],[136.0,439.0],[57.0,441.0]]",de,PP-OCRv5
+camera-001-ocr-00058,camera-001,frame_000024,120.000,data_video/keyframes/camera-001/frame_000024.jpg,atomic wt 28.0855,0.989558,"[[42.0,439.0],[151.0,439.0],[151.0,453.0],[42.0,453.0]]",de,PP-OCRv5
+camera-001-ocr-00059,camera-001,frame_000028,140.000,data_video/keyframes/camera-001/frame_000028.jpg,single pixel,0.998250,"[[36.0,205.0],[177.0,203.0],[177.0,231.0],[37.0,233.0]]",de,PP-OCRv5
+camera-001-ocr-00060,camera-001,frame_000028,140.000,data_video/keyframes/camera-001/frame_000028.jpg,www.engineerguy.com IMbillengineerguy,0.994725,"[[8.0,442.0],[597.0,441.0],[597.0,469.0],[8.0,470.0]]",de,PP-OCRv5
+camera-001-ocr-00061,camera-001,frame_000028,140.000,data_video/keyframes/camera-001/frame_000028.jpg,3,0.649341,"[[650.0,444.0],[673.0,444.0],[673.0,468.0],[650.0,468.0]]",de,PP-OCRv5
+camera-001-ocr-00062,camera-001,frame_000029,145.000,data_video/keyframes/camera-001/frame_000029.jpg,VOUOO,0.519144,"[[297.0,154.0],[356.0,180.0],[349.0,197.0],[289.0,171.0]]",de,PP-OCRv5
+camera-001-ocr-00063,camera-001,frame_000029,145.000,data_video/keyframes/camera-001/frame_000029.jpg,00n0o,0.524028,"[[259.0,180.0],[317.0,211.0],[306.0,231.0],[248.0,200.0]]",de,PP-OCRv5
+camera-001-ocr-00064,camera-001,frame_000029,145.000,data_video/keyframes/camera-001/frame_000029.jpg,voUOU,0.526507,"[[239.0,199.0],[302.0,232.0],[291.0,252.0],[229.0,219.0]]",de,PP-OCRv5
+camera-001-ocr-00065,camera-001,frame_000029,145.000,data_video/keyframes/camera-001/frame_000029.jpg,l0o0,0.552247,"[[582.0,255.0],[649.0,290.0],[641.0,307.0],[574.0,272.0]]",de,PP-OCRv5
+camera-001-ocr-00066,camera-001,frame_000029,145.000,data_video/keyframes/camera-001/frame_000029.jpg,www.engineerguy.com IMbillengineerguy,0.994216,"[[7.0,441.0],[598.0,439.0],[598.0,470.0],[7.0,472.0]]",de,PP-OCRv5
+camera-001-ocr-00067,camera-001,frame_000030,150.000,data_video/keyframes/camera-001/frame_000030.jpg,www.engineerguy.com IMbillengineerguy,0.996208,"[[6.0,439.0],[599.0,436.0],[599.0,470.0],[6.0,473.0]]",de,PP-OCRv5
+camera-001-ocr-00068,camera-001,frame_000031,155.000,data_video/keyframes/camera-001/frame_000031.jpg,DBF,0.534576,"[[646.0,336.0],[674.0,336.0],[674.0,351.0],[646.0,351.0]]",de,PP-OCRv5
+camera-001-ocr-00069,camera-001,frame_000035,175.000,data_video/keyframes/camera-001/frame_000035.jpg,OF,0.537447,"[[645.0,336.0],[675.0,336.0],[675.0,351.0],[645.0,351.0]]",de,PP-OCRv5
+camera-001-ocr-00070,camera-001,frame_000038,190.000,data_video/keyframes/camera-001/frame_000038.jpg,Lens,0.999992,"[[144.0,53.0],[213.0,55.0],[212.0,84.0],[143.0,82.0]]",de,PP-OCRv5
+camera-001-ocr-00071,camera-001,frame_000038,190.000,data_video/keyframes/camera-001/frame_000038.jpg,Mirrors,0.999940,"[[314.0,52.0],[409.0,55.0],[407.0,86.0],[313.0,83.0]]",de,PP-OCRv5
+camera-001-ocr-00072,camera-001,frame_000038,190.000,data_video/keyframes/camera-001/frame_000038.jpg,-,0.635257,"[[348.0,205.0],[401.0,259.0],[394.0,266.0],[341.0,212.0]]",de,PP-OCRv5
+camera-001-ocr-00073,camera-001,frame_000039,195.000,data_video/keyframes/camera-001/frame_000039.jpg,Lens,0.999995,"[[145.0,56.0],[211.0,56.0],[211.0,82.0],[145.0,82.0]]",de,PP-OCRv5
+camera-001-ocr-00074,camera-001,frame_000039,195.000,data_video/keyframes/camera-001/frame_000039.jpg,Mirrors,0.999958,"[[315.0,53.0],[409.0,57.0],[407.0,86.0],[314.0,82.0]]",de,PP-OCRv5
+camera-001-ocr-00075,camera-001,frame_000039,195.000,data_video/keyframes/camera-001/frame_000039.jpg,CCD,0.999220,"[[630.0,113.0],[687.0,113.0],[687.0,143.0],[630.0,143.0]]",de,PP-OCRv5
+camera-001-ocr-00076,camera-001,frame_000039,195.000,data_video/keyframes/camera-001/frame_000039.jpg,CCD,0.999764,"[[631.0,219.0],[686.0,219.0],[686.0,246.0],[631.0,246.0]]",de,PP-OCRv5
+camera-001-ocr-00077,camera-001,frame_000039,195.000,data_video/keyframes/camera-001/frame_000039.jpg,-,0.549846,"[[348.0,311.0],[402.0,366.0],[395.0,373.0],[341.0,318.0]]",de,PP-OCRv5
+camera-001-ocr-00078,camera-001,frame_000039,195.000,data_video/keyframes/camera-001/frame_000039.jpg,CCD,0.999511,"[[630.0,320.0],[687.0,320.0],[687.0,350.0],[630.0,350.0]]",de,PP-OCRv5
+camera-001-ocr-00079,camera-001,frame_000041,205.000,data_video/keyframes/camera-001/frame_000041.jpg,CCD,0.999658,"[[630.0,320.0],[687.0,320.0],[687.0,350.0],[630.0,350.0]]",de,PP-OCRv5
+camera-001-ocr-00080,camera-001,frame_000042,210.000,data_video/keyframes/camera-001/frame_000042.jpg,CCD,0.992276,"[[640.0,352.0],[708.0,352.0],[708.0,395.0],[640.0,395.0]]",de,PP-OCRv5
+camera-001-ocr-00081,camera-001,frame_000042,210.000,data_video/keyframes/camera-001/frame_000042.jpg,Color Filter,0.999880,"[[363.0,409.0],[486.0,411.0],[486.0,439.0],[363.0,437.0]]",de,PP-OCRv5
+camera-001-ocr-00082,camera-001,frame_000042,210.000,data_video/keyframes/camera-001/frame_000042.jpg,Array,0.999348,"[[394.0,432.0],[457.0,434.0],[456.0,460.0],[393.0,458.0]]",de,PP-OCRv5
+camera-001-ocr-00083,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Photoelectric effect,0.999965,"[[75.0,59.0],[321.0,59.0],[321.0,86.0],[75.0,86.0]]",de,PP-OCRv5
+camera-001-ocr-00084,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Capacitive coupling,0.986736,"[[74.0,99.0],[322.0,101.0],[322.0,129.0],[74.0,127.0]]",de,PP-OCRv5
+camera-001-ocr-00085,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Eight Amazing,0.967800,"[[528.0,107.0],[641.0,98.0],[643.0,117.0],[530.0,126.0]]",de,PP-OCRv5
+camera-001-ocr-00086,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Engineering Stories,0.999704,"[[514.0,126.0],[663.0,116.0],[665.0,134.0],[515.0,144.0]]",de,PP-OCRv5
+camera-001-ocr-00087,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,MOS electron traps,0.998202,"[[73.0,140.0],[315.0,143.0],[315.0,170.0],[73.0,167.0]]",de,PP-OCRv5
+camera-001-ocr-00088,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Using the Elements to Create,0.994403,"[[525.0,143.0],[648.0,136.0],[649.0,150.0],[525.0,157.0]]",de,PP-OCRv5
+camera-001-ocr-00089,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Extraordinary Technologies,0.998127,"[[528.0,152.0],[646.0,148.0],[647.0,161.0],[528.0,165.0]]",de,PP-OCRv5
+camera-001-ocr-00090,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,MOS=Metal Oxide Semiconductors,0.994157,"[[90.0,168.0],[433.0,170.0],[433.0,193.0],[90.0,191.0]]",de,PP-OCRv5
+camera-001-ocr-00091,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,"Bill Hammack, Patrick Ryan",0.979086,"[[534.0,171.0],[636.0,171.0],[636.0,181.0],[534.0,181.0]]",de,PP-OCRv5
+camera-001-ocr-00092,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,&Nick Ziech,0.985605,"[[557.0,182.0],[609.0,182.0],[609.0,193.0],[557.0,193.0]]",de,PP-OCRv5
+camera-001-ocr-00093,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Clock cycle of CCD,0.999167,"[[75.0,207.0],[314.0,207.0],[314.0,234.0],[75.0,234.0]]",de,PP-OCRv5
+camera-001-ocr-00094,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Color Filter Array,0.992611,"[[73.0,246.0],[290.0,249.0],[289.0,277.0],[73.0,274.0]]",de,PP-OCRv5
+camera-001-ocr-00095,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,"Twatoring Digital Cameras, Lasers,",0.877429,"[[570.0,239.0],[665.0,249.0],[664.0,259.0],[569.0,249.0]]",de,PP-OCRv5
+camera-001-ocr-00096,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,"Asowic Cocs. Nuclear Bombi,",0.777210,"[[575.0,248.0],[658.0,258.0],[656.0,268.0],[574.0,258.0]]",de,PP-OCRv5
+camera-001-ocr-00097,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Microwivs Ovees A m,0.779927,"[[582.0,259.0],[643.0,267.0],[642.0,274.0],[581.0,266.0]]",de,PP-OCRv5
+camera-001-ocr-00098,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Active pixel sensors (APS),0.996994,"[[75.0,289.0],[403.0,289.0],[403.0,316.0],[75.0,316.0]]",de,PP-OCRv5
+camera-001-ocr-00099,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,CCD and the Nobel Prize,0.993332,"[[76.0,332.0],[381.0,332.0],[381.0,356.0],[76.0,356.0]]",de,PP-OCRv5
+camera-001-ocr-00100,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,Learn more about the book at,0.994923,"[[24.0,407.0],[385.0,405.0],[386.0,432.0],[24.0,434.0]]",de,PP-OCRv5
+camera-001-ocr-00101,camera-001,frame_000049,245.000,data_video/keyframes/camera-001/frame_000049.jpg,www.engineerguy.com/elements,0.997971,"[[21.0,433.0],[754.0,427.0],[754.0,467.0],[21.0,473.0]]",de,PP-OCRv5
+camera-001-ocr-00102,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Photoelectric effect,0.999966,"[[75.0,59.0],[321.0,59.0],[321.0,86.0],[75.0,86.0]]",de,PP-OCRv5
+camera-001-ocr-00103,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Capacitive coupling,0.982082,"[[74.0,99.0],[322.0,101.0],[322.0,129.0],[74.0,127.0]]",de,PP-OCRv5
+camera-001-ocr-00104,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Eight Amazing,0.999643,"[[528.0,107.0],[641.0,98.0],[643.0,117.0],[530.0,126.0]]",de,PP-OCRv5
+camera-001-ocr-00105,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Engineering Stories,0.999048,"[[515.0,126.0],[663.0,116.0],[665.0,134.0],[516.0,144.0]]",de,PP-OCRv5
+camera-001-ocr-00106,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,MOS electron traps,0.997472,"[[73.0,140.0],[315.0,143.0],[315.0,170.0],[73.0,167.0]]",de,PP-OCRv5
+camera-001-ocr-00107,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Using the Elements to Create,0.982558,"[[525.0,143.0],[648.0,137.0],[649.0,150.0],[525.0,156.0]]",de,PP-OCRv5
+camera-001-ocr-00108,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Extraordinary Technologies,0.980476,"[[529.0,152.0],[645.0,148.0],[646.0,161.0],[529.0,165.0]]",de,PP-OCRv5
+camera-001-ocr-00109,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,MOS=Metal Oxide Semiconductors,0.996222,"[[90.0,168.0],[433.0,170.0],[433.0,193.0],[90.0,191.0]]",de,PP-OCRv5
+camera-001-ocr-00110,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,"Bill Hammack, Patrick Ryan",0.982624,"[[534.0,171.0],[637.0,171.0],[637.0,181.0],[534.0,181.0]]",de,PP-OCRv5
+camera-001-ocr-00111,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,&Nick Ziech,0.989215,"[[557.0,182.0],[608.0,182.0],[608.0,193.0],[557.0,193.0]]",de,PP-OCRv5
+camera-001-ocr-00112,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Clock cycle of CCD,0.999740,"[[74.0,208.0],[314.0,206.0],[314.0,233.0],[74.0,235.0]]",de,PP-OCRv5
+camera-001-ocr-00113,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Color Filter Array,0.993409,"[[73.0,246.0],[290.0,249.0],[289.0,277.0],[73.0,274.0]]",de,PP-OCRv5
+camera-001-ocr-00114,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,"Twathring Digital Cameras, Lasers,",0.847213,"[[570.0,239.0],[665.0,249.0],[664.0,259.0],[569.0,249.0]]",de,PP-OCRv5
+camera-001-ocr-00115,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,"Alonic Cecs, Nuclear Bombi",0.762313,"[[575.0,248.0],[658.0,258.0],[656.0,268.0],[574.0,258.0]]",de,PP-OCRv5
+camera-001-ocr-00116,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Macrowivs Ovees & m,0.822017,"[[582.0,259.0],[642.0,267.0],[641.0,274.0],[581.0,266.0]]",de,PP-OCRv5
+camera-001-ocr-00117,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Active pixel sensors (APS),0.997302,"[[75.0,289.0],[404.0,289.0],[404.0,316.0],[75.0,316.0]]",de,PP-OCRv5
+camera-001-ocr-00118,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,CCD and the Nobel Prize,0.988167,"[[76.0,332.0],[381.0,332.0],[381.0,356.0],[76.0,356.0]]",de,PP-OCRv5
+camera-001-ocr-00119,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,Learn more about the book at,0.993935,"[[24.0,407.0],[385.0,405.0],[386.0,432.0],[24.0,434.0]]",de,PP-OCRv5
+camera-001-ocr-00120,camera-001,frame_000050,250.000,data_video/keyframes/camera-001/frame_000050.jpg,www.engineerguy.com/elements,0.999974,"[[21.0,433.0],[755.0,427.0],[755.0,467.0],[21.0,473.0]]",de,PP-OCRv5
+camera-001-ocr-00121,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,I,0.535160,"[[469.0,27.0],[506.0,24.0],[509.0,82.0],[472.0,84.0]]",de,PP-OCRv5
+camera-001-ocr-00122,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,Department of Chemical,0.998849,"[[525.0,20.0],[779.0,20.0],[779.0,40.0],[525.0,40.0]]",de,PP-OCRv5
+camera-001-ocr-00123,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,& Biomolecular Engineering,0.997271,"[[537.0,42.0],[834.0,45.0],[834.0,66.0],[537.0,63.0]]",de,PP-OCRv5
+camera-001-ocr-00124,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,School of Chemical Sciences,0.984972,"[[525.0,68.0],[815.0,69.0],[815.0,87.0],[525.0,86.0]]",de,PP-OCRv5
+camera-001-ocr-00125,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,University of Illinois - Urbana,0.998609,"[[524.0,92.0],[837.0,94.0],[837.0,114.0],[524.0,112.0]]",de,PP-OCRv5
+camera-001-ocr-00126,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,Production Team,0.994469,"[[553.0,134.0],[708.0,134.0],[708.0,151.0],[553.0,151.0]]",de,PP-OCRv5
+camera-001-ocr-00127,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,Bill Hammack,0.999656,"[[523.0,158.0],[735.0,158.0],[735.0,182.0],[523.0,182.0]]",de,PP-OCRv5
+camera-001-ocr-00128,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,Nick Ziech & Patrick Ryan,0.990095,"[[432.0,184.0],[825.0,186.0],[825.0,213.0],[432.0,211.0]]",de,PP-OCRv5
+camera-001-ocr-00129,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,BY,0.999929,"[[661.0,273.0],[677.0,273.0],[677.0,281.0],[661.0,281.0]]",de,PP-OCRv5
+camera-001-ocr-00130,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,SA,0.999579,"[[683.0,272.0],[700.0,272.0],[700.0,283.0],[683.0,283.0]]",de,PP-OCRv5
+camera-001-ocr-00131,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,Creative Commons,0.997645,"[[601.0,291.0],[733.0,291.0],[733.0,304.0],[601.0,304.0]]",de,PP-OCRv5
+camera-001-ocr-00132,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,ShareAlike 3.0,0.999364,"[[618.0,303.0],[717.0,303.0],[717.0,316.0],[618.0,316.0]]",de,PP-OCRv5
+camera-001-ocr-00133,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,ArticulateNoise,0.999047,"[[269.0,380.0],[651.0,384.0],[650.0,421.0],[269.0,417.0]]",de,PP-OCRv5
+camera-001-ocr-00134,camera-001,frame_000051,255.000,data_video/keyframes/camera-001/frame_000051.jpg,Productions,0.999888,"[[414.0,417.0],[645.0,419.0],[644.0,446.0],[414.0,444.0]]",de,PP-OCRv5
+camera-001-ocr-00135,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,Supported,0.999961,"[[114.0,32.0],[305.0,30.0],[306.0,76.0],[115.0,78.0]]",de,PP-OCRv5
+camera-001-ocr-00136,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,by,0.999375,"[[315.0,29.0],[364.0,29.0],[364.0,78.0],[315.0,78.0]]",de,PP-OCRv5
+camera-001-ocr-00137,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,the,0.999486,"[[372.0,27.0],[435.0,27.0],[435.0,76.0],[372.0,76.0]]",de,PP-OCRv5
+camera-001-ocr-00138,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,Special,0.999599,"[[435.0,28.0],[576.0,30.0],[575.0,80.0],[434.0,78.0]]",de,PP-OCRv5
+camera-001-ocr-00139,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,Grant,0.999222,"[[585.0,33.0],[704.0,33.0],[704.0,72.0],[585.0,72.0]]",de,PP-OCRv5
+camera-001-ocr-00140,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,Program,0.996174,"[[101.0,73.0],[267.0,78.0],[266.0,125.0],[99.0,120.0]]",de,PP-OCRv5
+camera-001-ocr-00141,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,in,0.999933,"[[276.0,78.0],[317.0,78.0],[317.0,113.0],[276.0,113.0]]",de,PP-OCRv5
+camera-001-ocr-00142,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,the,0.991337,"[[325.0,72.0],[387.0,72.0],[387.0,114.0],[325.0,114.0]]",de,PP-OCRv5
+camera-001-ocr-00143,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,Chemical,0.956594,"[[396.0,72.0],[574.0,72.0],[574.0,114.0],[396.0,114.0]]",de,PP-OCRv5
+camera-001-ocr-00144,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,Sciences,0.999723,"[[580.0,73.0],[730.0,75.0],[729.0,114.0],[579.0,112.0]]",de,PP-OCRv5
+camera-001-ocr-00145,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,@,0.644451,"[[30.0,134.0],[143.0,134.0],[143.0,229.0],[30.0,229.0]]",de,PP-OCRv5
+camera-001-ocr-00146,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,THE,0.699702,"[[185.0,128.0],[333.0,128.0],[333.0,194.0],[185.0,194.0]]",de,PP-OCRv5
+camera-001-ocr-00147,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,CAMILLE,0.995079,"[[346.0,129.0],[645.0,131.0],[644.0,194.0],[346.0,192.0]]",de,PP-OCRv5
+camera-001-ocr-00148,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,&,0.999917,"[[187.0,216.0],[259.0,216.0],[259.0,284.0],[187.0,284.0]]",de,PP-OCRv5
+camera-001-ocr-00149,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,HENRY,0.929200,"[[270.0,216.0],[517.0,218.0],[517.0,281.0],[270.0,279.0]]",de,PP-OCRv5
+camera-001-ocr-00150,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,DrEYFUS,0.826901,"[[525.0,216.0],[837.0,219.0],[837.0,284.0],[525.0,281.0]]",de,PP-OCRv5
+camera-001-ocr-00151,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,"FOUNDATION,",0.980109,"[[182.0,303.0],[665.0,308.0],[665.0,380.0],[182.0,375.0]]",de,PP-OCRv5
+camera-001-ocr-00152,camera-001,frame_000052,260.000,data_video/keyframes/camera-001/frame_000052.jpg,INC.,0.809278,"[[655.0,307.0],[824.0,307.0],[824.0,372.0],[655.0,372.0]]",de,PP-OCRv5
+espresso-001-ocr-00001,espresso-001,frame_000009,45.000,data_video/keyframes/espresso-001/frame_000009.jpg,sts,0.665171,"[[494.0,207.0],[517.0,207.0],[517.0,242.0],[494.0,242.0]]",de,PP-OCRv5
+espresso-001-ocr-00002,espresso-001,frame_000009,45.000,data_video/keyframes/espresso-001/frame_000009.jpg,7,0.991427,"[[696.0,298.0],[727.0,298.0],[727.0,335.0],[696.0,335.0]]",de,PP-OCRv5
+espresso-001-ocr-00003,espresso-001,frame_000009,45.000,data_video/keyframes/espresso-001/frame_000009.jpg,WIKIPEDIA,0.924109,"[[456.0,378.0],[823.0,381.0],[823.0,444.0],[456.0,442.0]]",de,PP-OCRv5
+espresso-001-ocr-00004,espresso-001,frame_000009,45.000,data_video/keyframes/espresso-001/frame_000009.jpg,The Free Encyclopedia,0.993445,"[[463.0,444.0],[817.0,444.0],[817.0,483.0],[463.0,483.0]]",de,PP-OCRv5
+espresso-001-ocr-00005,espresso-001,frame_000010,50.000,data_video/keyframes/espresso-001/frame_000010.jpg,t,0.828243,"[[493.0,207.0],[517.0,207.0],[517.0,241.0],[493.0,241.0]]",de,PP-OCRv5
+espresso-001-ocr-00006,espresso-001,frame_000010,50.000,data_video/keyframes/espresso-001/frame_000010.jpg,WIKIPEDIA,0.996216,"[[457.0,378.0],[822.0,382.0],[822.0,442.0],[457.0,439.0]]",de,PP-OCRv5
+espresso-001-ocr-00007,espresso-001,frame_000010,50.000,data_video/keyframes/espresso-001/frame_000010.jpg,The Free Encyclopedia,0.995842,"[[463.0,444.0],[817.0,444.0],[817.0,483.0],[463.0,483.0]]",de,PP-OCRv5
+espresso-001-ocr-00008,espresso-001,frame_000010,50.000,data_video/keyframes/espresso-001/frame_000010.jpg,"Espresso, De Cafe Baristas, California",0.979799,"[[335.0,550.0],[956.0,549.0],[956.0,587.0],[335.0,588.0]]",de,PP-OCRv5
+espresso-001-ocr-00009,espresso-001,frame_000010,50.000,data_video/keyframes/espresso-001/frame_000010.jpg,"April 10, 2013",0.994002,"[[522.0,588.0],[768.0,585.0],[768.0,627.0],[522.0,630.0]]",de,PP-OCRv5
+espresso-003-ocr-00001,espresso-003,frame_000000,0.000,data_video/keyframes/espresso-003/frame_000000.jpg,UTEONYD,0.604095,"[[704.0,455.0],[740.0,455.0],[740.0,465.0],[704.0,465.0]]",de,PP-OCRv5
+espresso-003-ocr-00002,espresso-003,frame_000000,0.000,data_video/keyframes/espresso-003/frame_000000.jpg,IRORENI,0.663555,"[[698.0,693.0],[751.0,693.0],[751.0,704.0],[698.0,704.0]]",de,PP-OCRv5
+espresso-003-ocr-00003,espresso-003,frame_000000,0.000,data_video/keyframes/espresso-003/frame_000000.jpg,VORM,0.929802,"[[701.0,701.0],[746.0,701.0],[746.0,712.0],[701.0,712.0]]",de,PP-OCRv5
+espresso-003-ocr-00004,espresso-003,frame_000000,0.000,data_video/keyframes/espresso-003/frame_000000.jpg,KALK,0.975391,"[[923.0,850.0],[953.0,850.0],[953.0,864.0],[923.0,864.0]]",de,PP-OCRv5
+espresso-003-ocr-00005,espresso-003,frame_000000,0.000,data_video/keyframes/espresso-003/frame_000000.jpg,MOCCAMASTER,0.997591,"[[1003.0,848.0],[1194.0,852.0],[1194.0,869.0],[1003.0,864.0]]",de,PP-OCRv5
+espresso-003-ocr-00006,espresso-003,frame_000001,5.000,data_video/keyframes/espresso-003/frame_000001.jpg,UPROVID,0.881303,"[[716.0,490.0],[757.0,490.0],[757.0,504.0],[716.0,504.0]]",de,PP-OCRv5
+espresso-003-ocr-00007,espresso-003,frame_000001,5.000,data_video/keyframes/espresso-003/frame_000001.jpg,TECIENT,0.702337,"[[704.0,749.0],[761.0,749.0],[761.0,760.0],[704.0,760.0]]",de,PP-OCRv5
+espresso-003-ocr-00008,espresso-003,frame_000001,5.000,data_video/keyframes/espresso-003/frame_000001.jpg,VORM,0.912915,"[[706.0,754.0],[754.0,757.0],[754.0,771.0],[706.0,768.0]]",de,PP-OCRv5
+espresso-003-ocr-00009,espresso-003,frame_000001,5.000,data_video/keyframes/espresso-003/frame_000001.jpg,KALK,0.856252,"[[945.0,926.0],[973.0,926.0],[973.0,937.0],[945.0,937.0]]",de,PP-OCRv5
+espresso-003-ocr-00010,espresso-003,frame_000001,5.000,data_video/keyframes/espresso-003/frame_000001.jpg,MOCCAMASTER,0.999494,"[[1030.0,923.0],[1239.0,932.0],[1238.0,952.0],[1029.0,943.0]]",de,PP-OCRv5
+espresso-003-ocr-00011,espresso-003,frame_000002,10.000,data_video/keyframes/espresso-003/frame_000002.jpg,MOCCAMASTEE,0.937390,"[[1036.0,886.0],[1245.0,899.0],[1244.0,919.0],[1035.0,906.0]]",de,PP-OCRv5
+espresso-003-ocr-00012,espresso-003,frame_000003,15.000,data_video/keyframes/espresso-003/frame_000003.jpg,UPROVED,0.863164,"[[597.0,455.0],[638.0,455.0],[638.0,466.0],[597.0,466.0]]",de,PP-OCRv5
+espresso-003-ocr-00013,espresso-003,frame_000003,15.000,data_video/keyframes/espresso-003/frame_000003.jpg,TECHENT,0.773489,"[[582.0,723.0],[645.0,726.0],[645.0,740.0],[582.0,737.0]]",de,PP-OCRv5
+espresso-003-ocr-00014,espresso-003,frame_000003,15.000,data_video/keyframes/espresso-003/frame_000003.jpg,VORM,0.990656,"[[587.0,735.0],[637.0,735.0],[637.0,748.0],[587.0,748.0]]",de,PP-OCRv5
+espresso-003-ocr-00015,espresso-003,frame_000003,15.000,data_video/keyframes/espresso-003/frame_000003.jpg,KALK,0.998627,"[[836.0,910.0],[870.0,910.0],[870.0,925.0],[836.0,925.0]]",de,PP-OCRv5
+espresso-003-ocr-00016,espresso-003,frame_000003,15.000,data_video/keyframes/espresso-003/frame_000003.jpg,MOCCAMASTER,0.993777,"[[928.0,908.0],[1146.0,916.0],[1145.0,936.0],[927.0,928.0]]",de,PP-OCRv5
+espresso-003-ocr-00017,espresso-003,frame_000004,20.000,data_video/keyframes/espresso-003/frame_000004.jpg,APROVED,0.980420,"[[568.0,468.0],[609.0,468.0],[609.0,478.0],[568.0,478.0]]",de,PP-OCRv5
+espresso-003-ocr-00018,espresso-003,frame_000004,20.000,data_video/keyframes/espresso-003/frame_000004.jpg,TEGINT,0.789890,"[[554.0,741.0],[618.0,741.0],[618.0,754.0],[554.0,754.0]]",de,PP-OCRv5
+espresso-003-ocr-00019,espresso-003,frame_000004,20.000,data_video/keyframes/espresso-003/frame_000004.jpg,VORM,0.948028,"[[561.0,750.0],[609.0,750.0],[609.0,761.0],[561.0,761.0]]",de,PP-OCRv5
+espresso-003-ocr-00020,espresso-003,frame_000004,20.000,data_video/keyframes/espresso-003/frame_000004.jpg,KALK,0.998976,"[[810.0,923.0],[844.0,923.0],[844.0,938.0],[810.0,938.0]]",de,PP-OCRv5
+espresso-003-ocr-00021,espresso-003,frame_000004,20.000,data_video/keyframes/espresso-003/frame_000004.jpg,MOCCAMASTER,0.999654,"[[901.0,920.0],[1120.0,926.0],[1120.0,947.0],[901.0,941.0]]",de,PP-OCRv5
+espresso-003-ocr-00022,espresso-003,frame_000005,25.000,data_video/keyframes/espresso-003/frame_000005.jpg,UPROVED,0.916206,"[[574.0,489.0],[617.0,492.0],[616.0,506.0],[573.0,503.0]]",de,PP-OCRv5
+espresso-003-ocr-00023,espresso-003,frame_000005,25.000,data_video/keyframes/espresso-003/frame_000005.jpg,TEOENX,0.860788,"[[558.0,762.0],[619.0,766.0],[618.0,779.0],[557.0,776.0]]",de,PP-OCRv5
+espresso-003-ocr-00024,espresso-003,frame_000005,25.000,data_video/keyframes/espresso-003/frame_000005.jpg,VORM,0.982067,"[[561.0,771.0],[612.0,773.0],[612.0,787.0],[561.0,785.0]]",de,PP-OCRv5
+espresso-003-ocr-00025,espresso-003,frame_000005,25.000,data_video/keyframes/espresso-003/frame_000005.jpg,KALK,0.999198,"[[810.0,951.0],[843.0,951.0],[843.0,966.0],[810.0,966.0]]",de,PP-OCRv5
+espresso-003-ocr-00026,espresso-003,frame_000005,25.000,data_video/keyframes/espresso-003/frame_000005.jpg,MOCCAMASTER,0.999604,"[[902.0,950.0],[1119.0,958.0],[1118.0,978.0],[901.0,970.0]]",de,PP-OCRv5
+espresso-003-ocr-00027,espresso-003,frame_000006,30.000,data_video/keyframes/espresso-003/frame_000006.jpg,ATROIED,0.889656,"[[545.0,510.0],[588.0,510.0],[588.0,524.0],[545.0,524.0]]",de,PP-OCRv5
+espresso-003-ocr-00028,espresso-003,frame_000006,30.000,data_video/keyframes/espresso-003/frame_000006.jpg,KALK,0.882358,"[[785.0,972.0],[818.0,969.0],[819.0,984.0],[786.0,987.0]]",de,PP-OCRv5
+espresso-003-ocr-00029,espresso-003,frame_000006,30.000,data_video/keyframes/espresso-003/frame_000006.jpg,MOCCAMASTER,0.999473,"[[877.0,970.0],[1096.0,976.0],[1096.0,996.0],[877.0,989.0]]",de,PP-OCRv5
+espresso-003-ocr-00030,espresso-003,frame_000007,35.000,data_video/keyframes/espresso-003/frame_000007.jpg,TECYENI,0.807869,"[[552.0,777.0],[611.0,777.0],[611.0,791.0],[552.0,791.0]]",de,PP-OCRv5
+espresso-003-ocr-00031,espresso-003,frame_000007,35.000,data_video/keyframes/espresso-003/frame_000007.jpg,VORM,0.907558,"[[555.0,783.0],[604.0,786.0],[603.0,800.0],[554.0,797.0]]",de,PP-OCRv5
+espresso-003-ocr-00032,espresso-003,frame_000007,35.000,data_video/keyframes/espresso-003/frame_000007.jpg,KALK,0.774772,"[[801.0,970.0],[832.0,970.0],[832.0,984.0],[801.0,984.0]]",de,PP-OCRv5
+espresso-003-ocr-00033,espresso-003,frame_000007,35.000,data_video/keyframes/espresso-003/frame_000007.jpg,MOCCAMASTER,0.999434,"[[893.0,969.0],[1109.0,982.0],[1108.0,1002.0],[892.0,989.0]]",de,PP-OCRv5
+espresso-003-ocr-00034,espresso-003,frame_000008,40.000,data_video/keyframes/espresso-003/frame_000008.jpg,APPROVED,0.936779,"[[820.0,476.0],[862.0,476.0],[862.0,490.0],[820.0,490.0]]",de,PP-OCRv5
+espresso-003-ocr-00035,espresso-003,frame_000008,40.000,data_video/keyframes/espresso-003/frame_000008.jpg,TECENI,0.932422,"[[806.0,746.0],[865.0,749.0],[865.0,760.0],[806.0,757.0]]",de,PP-OCRv5
+espresso-003-ocr-00036,espresso-003,frame_000008,40.000,data_video/keyframes/espresso-003/frame_000008.jpg,VORM,0.992487,"[[810.0,753.0],[858.0,756.0],[858.0,770.0],[810.0,767.0]]",de,PP-OCRv5
+espresso-003-ocr-00037,espresso-003,frame_000008,40.000,data_video/keyframes/espresso-003/frame_000008.jpg,KALK,0.993514,"[[1057.0,940.0],[1090.0,940.0],[1090.0,955.0],[1057.0,955.0]]",de,PP-OCRv5
+espresso-003-ocr-00038,espresso-003,frame_000008,40.000,data_video/keyframes/espresso-003/frame_000008.jpg,MOCCAMASTER,0.999470,"[[1150.0,941.0],[1375.0,957.0],[1374.0,977.0],[1149.0,960.0]]",de,PP-OCRv5
+espresso-003-ocr-00039,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,SMERES,0.512239,"[[23.0,63.0],[67.0,67.0],[66.0,80.0],[22.0,76.0]]",de,PP-OCRv5
+espresso-003-ocr-00040,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,UPROVED,0.929323,"[[809.0,490.0],[852.0,490.0],[852.0,504.0],[809.0,504.0]]",de,PP-OCRv5
+espresso-003-ocr-00041,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,ONI,0.819169,"[[1186.0,732.0],[1211.0,735.0],[1210.0,746.0],[1185.0,743.0]]",de,PP-OCRv5
+espresso-003-ocr-00042,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,TECENT,0.839980,"[[798.0,758.0],[858.0,762.0],[857.0,776.0],[797.0,772.0]]",de,PP-OCRv5
+espresso-003-ocr-00043,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,VORM,0.915319,"[[802.0,767.0],[849.0,772.0],[848.0,787.0],[801.0,782.0]]",de,PP-OCRv5
+espresso-003-ocr-00044,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,KALK,0.993328,"[[1050.0,949.0],[1086.0,951.0],[1085.0,969.0],[1049.0,966.0]]",de,PP-OCRv5
+espresso-003-ocr-00045,espresso-003,frame_000009,45.000,data_video/keyframes/espresso-003/frame_000009.jpg,MOCCAMASTER,0.999318,"[[1144.0,953.0],[1369.0,966.0],[1368.0,987.0],[1143.0,973.0]]",de,PP-OCRv5
+espresso-003-ocr-00046,espresso-003,frame_000010,50.000,data_video/keyframes/espresso-003/frame_000010.jpg,APROVED,0.878545,"[[797.0,479.0],[837.0,479.0],[837.0,490.0],[797.0,490.0]]",de,PP-OCRv5
+espresso-003-ocr-00047,espresso-003,frame_000010,50.000,data_video/keyframes/espresso-003/frame_000010.jpg,INI,0.985579,"[[1173.0,716.0],[1203.0,716.0],[1203.0,731.0],[1173.0,731.0]]",de,PP-OCRv5
+espresso-003-ocr-00048,espresso-003,frame_000010,50.000,data_video/keyframes/espresso-003/frame_000010.jpg,TVOEM,0.620965,"[[783.0,746.0],[851.0,746.0],[851.0,776.0],[783.0,776.0]]",de,PP-OCRv5
+espresso-003-ocr-00049,espresso-003,frame_000010,50.000,data_video/keyframes/espresso-003/frame_000010.jpg,KALK,0.998946,"[[1044.0,936.0],[1077.0,938.0],[1076.0,954.0],[1043.0,952.0]]",de,PP-OCRv5
+espresso-003-ocr-00050,espresso-003,frame_000010,50.000,data_video/keyframes/espresso-003/frame_000010.jpg,MOCCAMASTER,0.999627,"[[1137.0,938.0],[1362.0,948.0],[1361.0,968.0],[1136.0,958.0]]",de,PP-OCRv5
+espresso-003-ocr-00051,espresso-003,frame_000011,55.000,data_video/keyframes/espresso-003/frame_000011.jpg,UTROVED,0.958899,"[[784.0,482.0],[824.0,482.0],[824.0,493.0],[784.0,493.0]]",de,PP-OCRv5
+espresso-003-ocr-00052,espresso-003,frame_000011,55.000,data_video/keyframes/espresso-003/frame_000011.jpg,q0e Je he a,0.503886,"[[3.0,501.0],[48.0,501.0],[48.0,512.0],[3.0,512.0]]",de,PP-OCRv5
+espresso-003-ocr-00053,espresso-003,frame_000011,55.000,data_video/keyframes/espresso-003/frame_000011.jpg,VORM,0.910342,"[[782.0,761.0],[834.0,761.0],[834.0,775.0],[782.0,775.0]]",de,PP-OCRv5
+espresso-003-ocr-00054,espresso-003,frame_000011,55.000,data_video/keyframes/espresso-003/frame_000011.jpg,ECIENT,0.730185,"[[785.0,754.0],[837.0,754.0],[837.0,765.0],[785.0,765.0]]",de,PP-OCRv5
+espresso-003-ocr-00055,espresso-003,frame_000011,55.000,data_video/keyframes/espresso-003/frame_000011.jpg,KALK,0.996694,"[[1037.0,938.0],[1070.0,938.0],[1070.0,953.0],[1037.0,953.0]]",de,PP-OCRv5
+espresso-003-ocr-00056,espresso-003,frame_000011,55.000,data_video/keyframes/espresso-003/frame_000011.jpg,MOCCAMASTER,0.999313,"[[1129.0,936.0],[1355.0,943.0],[1355.0,963.0],[1129.0,956.0]]",de,PP-OCRv5
+espresso-003-ocr-00057,espresso-003,frame_000012,60.000,data_video/keyframes/espresso-003/frame_000012.jpg,AITRONED,0.885270,"[[778.0,462.0],[820.0,462.0],[820.0,472.0],[778.0,472.0]]",de,PP-OCRv5
+espresso-003-ocr-00058,espresso-003,frame_000012,60.000,data_video/keyframes/espresso-003/frame_000012.jpg,N,0.885525,"[[1163.0,699.0],[1182.0,699.0],[1182.0,707.0],[1163.0,707.0]]",de,PP-OCRv5
+espresso-003-ocr-00059,espresso-003,frame_000012,60.000,data_video/keyframes/espresso-003/frame_000012.jpg,TECIINI,0.811711,"[[772.0,734.0],[830.0,734.0],[830.0,744.0],[772.0,744.0]]",de,PP-OCRv5
+espresso-003-ocr-00060,espresso-003,frame_000012,60.000,data_video/keyframes/espresso-003/frame_000012.jpg,VORM,0.913216,"[[779.0,742.0],[824.0,742.0],[824.0,753.0],[779.0,753.0]]",de,PP-OCRv5
+espresso-003-ocr-00061,espresso-003,frame_000012,60.000,data_video/keyframes/espresso-003/frame_000012.jpg,KALK,0.996778,"[[1030.0,918.0],[1064.0,918.0],[1064.0,933.0],[1030.0,933.0]]",de,PP-OCRv5
+espresso-003-ocr-00062,espresso-003,frame_000012,60.000,data_video/keyframes/espresso-003/frame_000012.jpg,MOCCAMASTER,0.999390,"[[1122.0,917.0],[1349.0,925.0],[1349.0,945.0],[1122.0,937.0]]",de,PP-OCRv5
+espresso-003-ocr-00063,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,UTROVED,0.858638,"[[762.0,470.0],[806.0,470.0],[806.0,483.0],[762.0,483.0]]",de,PP-OCRv5
+espresso-003-ocr-00064,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,INI,0.986988,"[[1146.0,705.0],[1176.0,705.0],[1176.0,719.0],[1146.0,719.0]]",de,PP-OCRv5
+espresso-003-ocr-00065,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,IM,0.752095,"[[1145.0,719.0],[1163.0,719.0],[1163.0,727.0],[1145.0,727.0]]",de,PP-OCRv5
+espresso-003-ocr-00066,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,TEOINI,0.818248,"[[758.0,744.0],[818.0,744.0],[818.0,755.0],[758.0,755.0]]",de,PP-OCRv5
+espresso-003-ocr-00067,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,VORM,0.927800,"[[763.0,753.0],[810.0,753.0],[810.0,764.0],[763.0,764.0]]",de,PP-OCRv5
+espresso-003-ocr-00068,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,KALK,0.999063,"[[1018.0,929.0],[1051.0,929.0],[1051.0,944.0],[1018.0,944.0]]",de,PP-OCRv5
+espresso-003-ocr-00069,espresso-003,frame_000013,65.000,data_video/keyframes/espresso-003/frame_000013.jpg,MOCCAMASTER,0.999230,"[[1110.0,927.0],[1337.0,935.0],[1337.0,955.0],[1110.0,947.0]]",de,PP-OCRv5
+espresso-003-ocr-00070,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,APROVED,0.862531,"[[762.0,477.0],[804.0,477.0],[804.0,488.0],[762.0,488.0]]",de,PP-OCRv5
+espresso-003-ocr-00071,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,INI,0.988170,"[[1144.0,713.0],[1175.0,713.0],[1175.0,728.0],[1144.0,728.0]]",de,PP-OCRv5
+espresso-003-ocr-00072,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,OAM,0.759381,"[[1126.0,727.0],[1163.0,727.0],[1163.0,737.0],[1126.0,737.0]]",de,PP-OCRv5
+espresso-003-ocr-00073,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,TECENT,0.842641,"[[754.0,752.0],[814.0,752.0],[814.0,763.0],[754.0,763.0]]",de,PP-OCRv5
+espresso-003-ocr-00074,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,VORM,0.997449,"[[760.0,761.0],[807.0,761.0],[807.0,772.0],[760.0,772.0]]",de,PP-OCRv5
+espresso-003-ocr-00075,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,KALK,0.995147,"[[1015.0,937.0],[1049.0,939.0],[1048.0,954.0],[1014.0,952.0]]",de,PP-OCRv5
+espresso-003-ocr-00076,espresso-003,frame_000014,70.000,data_video/keyframes/espresso-003/frame_000014.jpg,MOCCAMASTER,0.999405,"[[1108.0,937.0],[1336.0,945.0],[1336.0,965.0],[1108.0,957.0]]",de,PP-OCRv5
+espresso-003-ocr-00077,espresso-003,frame_000015,75.000,data_video/keyframes/espresso-003/frame_000015.jpg,APROVED,0.925907,"[[853.0,458.0],[894.0,458.0],[894.0,469.0],[853.0,469.0]]",de,PP-OCRv5
+espresso-003-ocr-00078,espresso-003,frame_000015,75.000,data_video/keyframes/espresso-003/frame_000015.jpg,INI,0.871941,"[[1240.0,701.0],[1272.0,701.0],[1272.0,715.0],[1240.0,715.0]]",de,PP-OCRv5
+espresso-003-ocr-00079,espresso-003,frame_000015,75.000,data_video/keyframes/espresso-003/frame_000015.jpg,TECIENI,0.799770,"[[843.0,737.0],[904.0,737.0],[904.0,750.0],[843.0,750.0]]",de,PP-OCRv5
+espresso-003-ocr-00080,espresso-003,frame_000015,75.000,data_video/keyframes/espresso-003/frame_000015.jpg,VORM,0.982406,"[[847.0,743.0],[897.0,747.0],[896.0,761.0],[846.0,757.0]]",de,PP-OCRv5
+espresso-003-ocr-00081,espresso-003,frame_000015,75.000,data_video/keyframes/espresso-003/frame_000015.jpg,KALK,0.999159,"[[1111.0,927.0],[1145.0,929.0],[1144.0,947.0],[1110.0,945.0]]",de,PP-OCRv5
+espresso-003-ocr-00082,espresso-003,frame_000015,75.000,data_video/keyframes/espresso-003/frame_000015.jpg,MOCCAMASTER,0.999170,"[[1207.0,930.0],[1443.0,941.0],[1442.0,962.0],[1206.0,951.0]]",de,PP-OCRv5
+espresso-003-ocr-00083,espresso-003,frame_000016,80.000,data_video/keyframes/espresso-003/frame_000016.jpg,ALLA INKEER,0.845758,"[[3.0,24.0],[74.0,28.0],[73.0,42.0],[2.0,37.0]]",de,PP-OCRv5
+espresso-003-ocr-00084,espresso-003,frame_000016,80.000,data_video/keyframes/espresso-003/frame_000016.jpg,UPPROVED,0.838417,"[[847.0,455.0],[889.0,455.0],[889.0,466.0],[847.0,466.0]]",de,PP-OCRv5
+espresso-003-ocr-00085,espresso-003,frame_000016,80.000,data_video/keyframes/espresso-003/frame_000016.jpg,TECENT,0.879944,"[[838.0,730.0],[901.0,733.0],[901.0,748.0],[838.0,745.0]]",de,PP-OCRv5
+espresso-003-ocr-00086,espresso-003,frame_000016,80.000,data_video/keyframes/espresso-003/frame_000016.jpg,VORM,0.988197,"[[843.0,740.0],[894.0,743.0],[894.0,757.0],[843.0,754.0]]",de,PP-OCRv5
+espresso-003-ocr-00087,espresso-003,frame_000016,80.000,data_video/keyframes/espresso-003/frame_000016.jpg,KALK,0.998547,"[[1107.0,925.0],[1143.0,925.0],[1143.0,940.0],[1107.0,940.0]]",de,PP-OCRv5
+espresso-003-ocr-00088,espresso-003,frame_000016,80.000,data_video/keyframes/espresso-003/frame_000016.jpg,MOCCAMASTER,0.999155,"[[1205.0,923.0],[1441.0,932.0],[1440.0,953.0],[1204.0,944.0]]",de,PP-OCRv5
+espresso-003-ocr-00089,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,LETR,0.733432,"[[24.0,7.0],[47.0,7.0],[47.0,15.0],[24.0,15.0]]",de,PP-OCRv5
+espresso-003-ocr-00090,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,M,0.541368,"[[1506.0,330.0],[1815.0,218.0],[1920.0,507.0],[1613.0,619.0]]",de,PP-OCRv5
+espresso-003-ocr-00091,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,UPROSED,0.839745,"[[823.0,445.0],[867.0,445.0],[867.0,459.0],[823.0,459.0]]",de,PP-OCRv5
+espresso-003-ocr-00092,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,INI,0.979129,"[[1216.0,694.0],[1242.0,694.0],[1242.0,705.0],[1216.0,705.0]]",de,PP-OCRv5
+espresso-003-ocr-00093,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,TECENT,0.809518,"[[811.0,721.0],[874.0,725.0],[873.0,740.0],[810.0,736.0]]",de,PP-OCRv5
+espresso-003-ocr-00094,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,VORM,0.924381,"[[815.0,732.0],[867.0,735.0],[867.0,749.0],[815.0,746.0]]",de,PP-OCRv5
+espresso-003-ocr-00095,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,KALK,0.998078,"[[1076.0,917.0],[1113.0,920.0],[1112.0,937.0],[1075.0,935.0]]",de,PP-OCRv5
+espresso-003-ocr-00096,espresso-003,frame_000017,85.000,data_video/keyframes/espresso-003/frame_000017.jpg,MOCCAMASTER,0.999579,"[[1174.0,920.0],[1408.0,932.0],[1407.0,952.0],[1173.0,940.0]]",de,PP-OCRv5
+espresso-003-ocr-00097,espresso-003,frame_000018,90.000,data_video/keyframes/espresso-003/frame_000018.jpg,APPROVED,0.883286,"[[837.0,431.0],[880.0,433.0],[879.0,447.0],[836.0,444.0]]",de,PP-OCRv5
+espresso-003-ocr-00098,espresso-003,frame_000018,90.000,data_video/keyframes/espresso-003/frame_000018.jpg,INI,0.836293,"[[1232.0,681.0],[1257.0,681.0],[1257.0,692.0],[1232.0,692.0]]",de,PP-OCRv5
+espresso-003-ocr-00099,espresso-003,frame_000018,90.000,data_video/keyframes/espresso-003/frame_000018.jpg,TECENI,0.912408,"[[825.0,712.0],[888.0,714.0],[888.0,728.0],[825.0,725.0]]",de,PP-OCRv5
+espresso-003-ocr-00100,espresso-003,frame_000018,90.000,data_video/keyframes/espresso-003/frame_000018.jpg,VORM,0.995360,"[[830.0,721.0],[881.0,724.0],[881.0,738.0],[830.0,735.0]]",de,PP-OCRv5
+espresso-003-ocr-00101,espresso-003,frame_000018,90.000,data_video/keyframes/espresso-003/frame_000018.jpg,KALK,0.998145,"[[1094.0,909.0],[1129.0,909.0],[1129.0,924.0],[1094.0,924.0]]",de,PP-OCRv5
+espresso-003-ocr-00102,espresso-003,frame_000018,90.000,data_video/keyframes/espresso-003/frame_000018.jpg,MOCCAMASTER,0.999293,"[[1192.0,909.0],[1427.0,920.0],[1426.0,940.0],[1191.0,929.0]]",de,PP-OCRv5
+espresso-003-ocr-00103,espresso-003,frame_000019,95.000,data_video/keyframes/espresso-003/frame_000019.jpg,SEAXTS,0.634782,"[[1.0,0.0],[42.0,1.0],[41.0,15.0],[0.0,12.0]]",de,PP-OCRv5
+espresso-003-ocr-00104,espresso-003,frame_000019,95.000,data_video/keyframes/espresso-003/frame_000019.jpg,ATROVED,0.947580,"[[822.0,441.0],[866.0,441.0],[866.0,455.0],[822.0,455.0]]",de,PP-OCRv5
+espresso-003-ocr-00105,espresso-003,frame_000019,95.000,data_video/keyframes/espresso-003/frame_000019.jpg,TEOHNI,0.850180,"[[812.0,722.0],[874.0,722.0],[874.0,736.0],[812.0,736.0]]",de,PP-OCRv5
+espresso-003-ocr-00106,espresso-003,frame_000019,95.000,data_video/keyframes/espresso-003/frame_000019.jpg,VORM,0.996226,"[[818.0,731.0],[867.0,731.0],[867.0,744.0],[818.0,744.0]]",de,PP-OCRv5
+espresso-003-ocr-00107,espresso-003,frame_000019,95.000,data_video/keyframes/espresso-003/frame_000019.jpg,KALK,0.995577,"[[1080.0,916.0],[1115.0,916.0],[1115.0,931.0],[1080.0,931.0]]",de,PP-OCRv5
+espresso-003-ocr-00108,espresso-003,frame_000019,95.000,data_video/keyframes/espresso-003/frame_000019.jpg,MOCCAMASTER,0.999642,"[[1176.0,915.0],[1411.0,926.0],[1410.0,947.0],[1175.0,936.0]]",de,PP-OCRv5
+espresso-003-ocr-00109,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,APROVED,0.947312,"[[809.0,426.0],[853.0,428.0],[852.0,442.0],[808.0,440.0]]",de,PP-OCRv5
+espresso-003-ocr-00110,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,INI,0.996859,"[[1202.0,673.0],[1235.0,673.0],[1235.0,688.0],[1202.0,688.0]]",de,PP-OCRv5
+espresso-003-ocr-00111,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,M,0.998991,"[[1202.0,686.0],[1225.0,686.0],[1225.0,698.0],[1202.0,698.0]]",de,PP-OCRv5
+espresso-003-ocr-00112,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,TECENI,0.855081,"[[800.0,710.0],[862.0,710.0],[862.0,724.0],[800.0,724.0]]",de,PP-OCRv5
+espresso-003-ocr-00113,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,VORM,0.989203,"[[802.0,716.0],[855.0,719.0],[855.0,733.0],[802.0,730.0]]",de,PP-OCRv5
+espresso-003-ocr-00114,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,KALK,0.999230,"[[1067.0,902.0],[1104.0,902.0],[1104.0,920.0],[1067.0,920.0]]",de,PP-OCRv5
+espresso-003-ocr-00115,espresso-003,frame_000020,100.000,data_video/keyframes/espresso-003/frame_000020.jpg,MOCCAMASTER,0.999480,"[[1166.0,902.0],[1401.0,913.0],[1400.0,933.0],[1165.0,923.0]]",de,PP-OCRv5
+espresso-003-ocr-00116,espresso-003,frame_000021,105.000,data_video/keyframes/espresso-003/frame_000021.jpg,ATROVED,0.907794,"[[783.0,447.0],[826.0,447.0],[826.0,458.0],[783.0,458.0]]",de,PP-OCRv5
+espresso-003-ocr-00117,espresso-003,frame_000021,105.000,data_video/keyframes/espresso-003/frame_000021.jpg,TECENI,0.851275,"[[770.0,725.0],[835.0,728.0],[835.0,742.0],[770.0,739.0]]",de,PP-OCRv5
+espresso-003-ocr-00118,espresso-003,frame_000021,105.000,data_video/keyframes/espresso-003/frame_000021.jpg,VORM,0.993741,"[[775.0,735.0],[826.0,738.0],[826.0,752.0],[775.0,749.0]]",de,PP-OCRv5
+espresso-003-ocr-00119,espresso-003,frame_000021,105.000,data_video/keyframes/espresso-003/frame_000021.jpg,KALK,0.999255,"[[1040.0,921.0],[1074.0,923.0],[1073.0,938.0],[1039.0,936.0]]",de,PP-OCRv5
+espresso-003-ocr-00120,espresso-003,frame_000021,105.000,data_video/keyframes/espresso-003/frame_000021.jpg,MOCCAMASTER,0.999372,"[[1136.0,923.0],[1370.0,933.0],[1369.0,953.0],[1135.0,943.0]]",de,PP-OCRv5
+espresso-003-ocr-00121,espresso-003,frame_000022,110.000,data_video/keyframes/espresso-003/frame_000022.jpg,APPROVED,0.922167,"[[769.0,486.0],[813.0,483.0],[814.0,498.0],[770.0,501.0]]",de,PP-OCRv5
+espresso-003-ocr-00122,espresso-003,frame_000022,110.000,data_video/keyframes/espresso-003/frame_000022.jpg,TECEENI,0.593177,"[[772.0,768.0],[831.0,764.0],[832.0,778.0],[773.0,781.0]]",de,PP-OCRv5
+espresso-003-ocr-00123,espresso-003,frame_000022,110.000,data_video/keyframes/espresso-003/frame_000022.jpg,VORM,0.963791,"[[774.0,775.0],[826.0,775.0],[826.0,789.0],[774.0,789.0]]",de,PP-OCRv5
+espresso-003-ocr-00124,espresso-003,frame_000022,110.000,data_video/keyframes/espresso-003/frame_000022.jpg,KALK,0.985602,"[[1043.0,951.0],[1076.0,951.0],[1076.0,966.0],[1043.0,966.0]]",de,PP-OCRv5
+espresso-003-ocr-00125,espresso-003,frame_000022,110.000,data_video/keyframes/espresso-003/frame_000022.jpg,MOCCAMASTER,0.999490,"[[1140.0,950.0],[1371.0,950.0],[1371.0,967.0],[1140.0,967.0]]",de,PP-OCRv5
+espresso-003-ocr-00126,espresso-003,frame_000023,115.000,data_video/keyframes/espresso-003/frame_000023.jpg,APTROVED,0.947516,"[[666.0,435.0],[711.0,435.0],[711.0,449.0],[666.0,449.0]]",de,PP-OCRv5
+espresso-003-ocr-00127,espresso-003,frame_000023,115.000,data_video/keyframes/espresso-003/frame_000023.jpg,TEOENT,0.786414,"[[659.0,721.0],[722.0,721.0],[722.0,732.0],[659.0,732.0]]",de,PP-OCRv5
+espresso-003-ocr-00128,espresso-003,frame_000023,115.000,data_video/keyframes/espresso-003/frame_000023.jpg,VORM,0.980561,"[[664.0,729.0],[714.0,729.0],[714.0,742.0],[664.0,742.0]]",de,PP-OCRv5
+espresso-003-ocr-00129,espresso-003,frame_000023,115.000,data_video/keyframes/espresso-003/frame_000023.jpg,KALK,0.995870,"[[929.0,907.0],[963.0,910.0],[962.0,924.0],[928.0,922.0]]",de,PP-OCRv5
+espresso-003-ocr-00130,espresso-003,frame_000023,115.000,data_video/keyframes/espresso-003/frame_000023.jpg,MOCCAMASTER,0.974019,"[[1024.0,905.0],[1255.0,910.0],[1255.0,931.0],[1024.0,926.0]]",de,PP-OCRv5
+espresso-003-ocr-00131,espresso-003,frame_000024,120.000,data_video/keyframes/espresso-003/frame_000024.jpg,APPROVED,0.920793,"[[594.0,459.0],[640.0,459.0],[640.0,472.0],[594.0,472.0]]",de,PP-OCRv5
+espresso-003-ocr-00132,espresso-003,frame_000024,120.000,data_video/keyframes/espresso-003/frame_000024.jpg,TEOENT,0.847483,"[[579.0,747.0],[644.0,747.0],[644.0,761.0],[579.0,761.0]]",de,PP-OCRv5
+espresso-003-ocr-00133,espresso-003,frame_000024,120.000,data_video/keyframes/espresso-003/frame_000024.jpg,VORM,0.994877,"[[583.0,755.0],[636.0,758.0],[636.0,771.0],[583.0,769.0]]",de,PP-OCRv5
+espresso-003-ocr-00134,espresso-003,frame_000024,120.000,data_video/keyframes/espresso-003/frame_000024.jpg,KALK,0.999615,"[[848.0,944.0],[882.0,944.0],[882.0,959.0],[848.0,959.0]]",de,PP-OCRv5
+espresso-003-ocr-00135,espresso-003,frame_000024,120.000,data_video/keyframes/espresso-003/frame_000024.jpg,MOCCAMASTER,0.999509,"[[945.0,943.0],[1176.0,952.0],[1175.0,973.0],[944.0,964.0]]",de,PP-OCRv5
+espresso-003-ocr-00136,espresso-003,frame_000025,125.000,data_video/keyframes/espresso-003/frame_000025.jpg,APROVED,0.960574,"[[551.0,442.0],[598.0,442.0],[598.0,456.0],[551.0,456.0]]",de,PP-OCRv5
+espresso-003-ocr-00137,espresso-003,frame_000025,125.000,data_video/keyframes/espresso-003/frame_000025.jpg,TECHNI,0.942992,"[[539.0,733.0],[606.0,733.0],[606.0,746.0],[539.0,746.0]]",de,PP-OCRv5
+espresso-003-ocr-00138,espresso-003,frame_000025,125.000,data_video/keyframes/espresso-003/frame_000025.jpg,VORM,0.993036,"[[546.0,740.0],[597.0,743.0],[597.0,757.0],[546.0,754.0]]",de,PP-OCRv5
+espresso-003-ocr-00139,espresso-003,frame_000025,125.000,data_video/keyframes/espresso-003/frame_000025.jpg,KALK,0.999344,"[[813.0,926.0],[848.0,926.0],[848.0,941.0],[813.0,941.0]]",de,PP-OCRv5
+espresso-003-ocr-00140,espresso-003,frame_000025,125.000,data_video/keyframes/espresso-003/frame_000025.jpg,MOCCAMASTER,0.999624,"[[909.0,923.0],[1140.0,929.0],[1140.0,950.0],[909.0,944.0]]",de,PP-OCRv5
+espresso-003-ocr-00141,espresso-003,frame_000026,130.000,data_video/keyframes/espresso-003/frame_000026.jpg,APPROVED,0.884513,"[[596.0,418.0],[641.0,418.0],[641.0,432.0],[596.0,432.0]]",de,PP-OCRv5
+espresso-003-ocr-00142,espresso-003,frame_000026,130.000,data_video/keyframes/espresso-003/frame_000026.jpg,TECHNI,0.785739,"[[586.0,709.0],[650.0,709.0],[650.0,720.0],[586.0,720.0]]",de,PP-OCRv5
+espresso-003-ocr-00143,espresso-003,frame_000026,130.000,data_video/keyframes/espresso-003/frame_000026.jpg,VORM,0.991272,"[[590.0,717.0],[642.0,717.0],[642.0,731.0],[590.0,731.0]]",de,PP-OCRv5
+espresso-003-ocr-00144,espresso-003,frame_000026,130.000,data_video/keyframes/espresso-003/frame_000026.jpg,KALK,0.998857,"[[859.0,899.0],[894.0,899.0],[894.0,914.0],[859.0,914.0]]",de,PP-OCRv5
+espresso-003-ocr-00145,espresso-003,frame_000026,130.000,data_video/keyframes/espresso-003/frame_000026.jpg,MOCCAMASTER,0.999604,"[[956.0,896.0],[1187.0,900.0],[1187.0,921.0],[956.0,917.0]]",de,PP-OCRv5
+espresso-003-ocr-00146,espresso-003,frame_000027,135.000,data_video/keyframes/espresso-003/frame_000027.jpg,UTROVED,0.924567,"[[552.0,474.0],[596.0,474.0],[596.0,485.0],[552.0,485.0]]",de,PP-OCRv5
+espresso-003-ocr-00147,espresso-003,frame_000027,135.000,data_video/keyframes/espresso-003/frame_000027.jpg,TECENT,0.888595,"[[542.0,762.0],[609.0,760.0],[609.0,774.0],[542.0,776.0]]",de,PP-OCRv5
+espresso-003-ocr-00148,espresso-003,frame_000027,135.000,data_video/keyframes/espresso-003/frame_000027.jpg,VORM,0.991179,"[[549.0,772.0],[601.0,772.0],[601.0,786.0],[549.0,786.0]]",de,PP-OCRv5
+espresso-003-ocr-00149,espresso-003,frame_000027,135.000,data_video/keyframes/espresso-003/frame_000027.jpg,KALK,0.918951,"[[818.0,950.0],[855.0,950.0],[855.0,968.0],[818.0,968.0]]",de,PP-OCRv5
+espresso-003-ocr-00150,espresso-003,frame_000027,135.000,data_video/keyframes/espresso-003/frame_000027.jpg,MOCCAMASTER,0.999637,"[[917.0,949.0],[1145.0,949.0],[1145.0,969.0],[917.0,969.0]]",de,PP-OCRv5
+vacuum-002-ocr-00001,vacuum-002,frame_000003,15.000,data_video/keyframes/vacuum-002/frame_000003.jpg,BOE,0.603368,"[[105.0,308.0],[115.0,306.0],[121.0,332.0],[110.0,334.0]]",de,PP-OCRv5
+washing-001-ocr-00001,washing-001,frame_000000,0.000,data_video/keyframes/washing-001/frame_000000.jpg,DR,0.872286,"[[0.0,118.0],[14.0,118.0],[14.0,132.0],[0.0,132.0]]",de,PP-OCRv5
+washing-001-ocr-00002,washing-001,frame_000000,0.000,data_video/keyframes/washing-001/frame_000000.jpg,NOR,0.833837,"[[636.0,264.0],[664.0,264.0],[664.0,284.0],[636.0,284.0]]",de,PP-OCRv5
+washing-001-ocr-00003,washing-001,frame_000000,0.000,data_video/keyframes/washing-001/frame_000000.jpg,PUSH,0.998167,"[[758.0,274.0],[779.0,274.0],[779.0,281.0],[758.0,281.0]]",de,PP-OCRv5
+washing-001-ocr-00004,washing-001,frame_000000,0.000,data_video/keyframes/washing-001/frame_000000.jpg,SUOS LEVEL,0.970916,"[[615.0,300.0],[656.0,298.0],[657.0,308.0],[615.0,310.0]]",de,PP-OCRv5
+washing-001-ocr-00005,washing-001,frame_000000,0.000,data_video/keyframes/washing-001/frame_000000.jpg,SUDS LEVEL,0.995279,"[[207.0,310.0],[253.0,308.0],[253.0,318.0],[208.0,320.0]]",de,PP-OCRv5
+washing-001-ocr-00006,washing-001,frame_000000,0.000,data_video/keyframes/washing-001/frame_000000.jpg,PEN DOOR UN TE RACHNE,0.503486,"[[210.0,324.0],[276.0,321.0],[277.0,335.0],[211.0,338.0]]",de,PP-OCRv5
+washing-001-ocr-00007,washing-001,frame_000001,5.000,data_video/keyframes/washing-001/frame_000001.jpg,FOTIS,0.686841,"[[454.0,112.0],[511.0,112.0],[511.0,130.0],[454.0,130.0]]",de,PP-OCRv5
+washing-001-ocr-00008,washing-001,frame_000001,5.000,data_video/keyframes/washing-001/frame_000001.jpg,PUSH,0.989552,"[[757.0,272.0],[779.0,272.0],[779.0,280.0],[757.0,280.0]]",de,PP-OCRv5
+washing-001-ocr-00009,washing-001,frame_000001,5.000,data_video/keyframes/washing-001/frame_000001.jpg,SUOS LEVEL,0.927916,"[[616.0,297.0],[656.0,295.0],[657.0,306.0],[616.0,308.0]]",de,PP-OCRv5
+washing-001-ocr-00010,washing-001,frame_000001,5.000,data_video/keyframes/washing-001/frame_000001.jpg,DIO ND EN,0.580039,"[[181.0,323.0],[227.0,320.0],[228.0,335.0],[182.0,338.0]]",de,PP-OCRv5
+washing-001-ocr-00011,washing-001,frame_000002,10.000,data_video/keyframes/washing-001/frame_000002.jpg,DR,0.857506,"[[0.0,118.0],[14.0,118.0],[14.0,130.0],[0.0,130.0]]",de,PP-OCRv5
+washing-001-ocr-00012,washing-001,frame_000002,10.000,data_video/keyframes/washing-001/frame_000002.jpg,PUSH,0.995488,"[[757.0,274.0],[777.0,272.0],[778.0,280.0],[758.0,282.0]]",de,PP-OCRv5
+washing-001-ocr-00013,washing-001,frame_000002,10.000,data_video/keyframes/washing-001/frame_000002.jpg,SUDS LEVE,0.962419,"[[617.0,299.0],[655.0,299.0],[655.0,309.0],[617.0,309.0]]",de,PP-OCRv5
+washing-001-ocr-00014,washing-001,frame_000002,10.000,data_video/keyframes/washing-001/frame_000002.jpg,SUDS LEVEL,0.982873,"[[206.0,310.0],[252.0,308.0],[252.0,318.0],[207.0,320.0]]",de,PP-OCRv5
+washing-002-ocr-00001,washing-002,frame_000001,5.000,data_video/keyframes/washing-002/frame_000001.jpg,OR,0.504307,"[[782.0,266.0],[1153.0,232.0],[1167.0,386.0],[796.0,420.0]]",de,PP-OCRv5
+washing-002-ocr-00002,washing-002,frame_000001,5.000,data_video/keyframes/washing-002/frame_000001.jpg,beko,0.908426,"[[534.0,294.0],[597.0,290.0],[600.0,323.0],[537.0,327.0]]",de,PP-OCRv5
+washing-003-ocr-00001,washing-003,frame_000000,0.000,data_video/keyframes/washing-003/frame_000000.jpg,AEG,0.999799,"[[221.0,45.0],[243.0,45.0],[243.0,57.0],[221.0,57.0]]",de,PP-OCRv5
+washing-003-ocr-00002,washing-003,frame_000000,0.000,data_video/keyframes/washing-003/frame_000000.jpg,Wäschen,0.999567,"[[690.0,295.0],[711.0,297.0],[705.0,363.0],[684.0,361.0]]",de,PP-OCRv5
+washing-003-ocr-00003,washing-003,frame_000000,0.000,data_video/keyframes/washing-003/frame_000000.jpg,kurze Zelt!,0.884565,"[[684.0,359.0],[698.0,360.0],[696.0,397.0],[682.0,396.0]]",de,PP-OCRv5
+washing-003-ocr-00004,washing-003,frame_000000,0.000,data_video/keyframes/washing-003/frame_000000.jpg,Nur für,0.987670,"[[697.0,363.0],[708.0,363.0],[708.0,386.0],[697.0,386.0]]",de,PP-OCRv5
+washing-003-ocr-00005,washing-003,frame_000000,0.000,data_video/keyframes/washing-003/frame_000000.jpg,100,0.994370,"[[620.0,386.0],[652.0,394.0],[647.0,413.0],[615.0,405.0]]",de,PP-OCRv5
+washing-003-ocr-00006,washing-003,frame_000000,0.000,data_video/keyframes/washing-003/frame_000000.jpg,Wäschen,0.998934,"[[655.0,399.0],[708.0,410.0],[705.0,424.0],[652.0,413.0]]",de,PP-OCRv5
+washing-003-ocr-00007,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,AEG,0.979347,"[[218.0,0.0],[238.0,0.0],[238.0,8.0],[218.0,8.0]]",de,PP-OCRv5
+washing-003-ocr-00008,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,NOO,0.782139,"[[530.0,25.0],[550.0,25.0],[550.0,36.0],[530.0,36.0]]",de,PP-OCRv5
+washing-003-ocr-00009,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,Wäschen,0.999056,"[[690.0,275.0],[712.0,278.0],[706.0,339.0],[684.0,337.0]]",de,PP-OCRv5
+washing-003-ocr-00010,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,kurze Zelt,0.931873,"[[685.0,330.0],[698.0,331.0],[695.0,369.0],[682.0,368.0]]",de,PP-OCRv5
+washing-003-ocr-00011,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,00,0.970698,"[[622.0,360.0],[652.0,366.0],[647.0,387.0],[618.0,381.0]]",de,PP-OCRv5
+washing-003-ocr-00012,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,Wäschen,0.996945,"[[655.0,373.0],[707.0,384.0],[704.0,398.0],[652.0,387.0]]",de,PP-OCRv5
+washing-003-ocr-00013,washing-003,frame_000001,5.000,data_video/keyframes/washing-003/frame_000001.jpg,kurze Zeit!,0.921613,"[[645.0,396.0],[700.0,408.0],[697.0,419.0],[643.0,407.0]]",de,PP-OCRv5
+washing-003-ocr-00014,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,AEG,0.999803,"[[213.0,40.0],[236.0,40.0],[236.0,55.0],[213.0,55.0]]",de,PP-OCRv5
+washing-003-ocr-00015,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,MOO,0.673776,"[[522.0,63.0],[541.0,63.0],[541.0,74.0],[522.0,74.0]]",de,PP-OCRv5
+washing-003-ocr-00016,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,Wäschen,0.999584,"[[691.0,306.0],[712.0,307.0],[708.0,368.0],[688.0,367.0]]",de,PP-OCRv5
+washing-003-ocr-00017,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,kurze Zeltl,0.871231,"[[688.0,365.0],[702.0,366.0],[700.0,403.0],[686.0,402.0]]",de,PP-OCRv5
+washing-003-ocr-00018,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,Nur für,0.991273,"[[701.0,369.0],[712.0,369.0],[712.0,393.0],[701.0,393.0]]",de,PP-OCRv5
+washing-003-ocr-00019,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,100,0.937253,"[[616.0,391.0],[656.0,399.0],[651.0,422.0],[612.0,414.0]]",de,PP-OCRv5
+washing-003-ocr-00020,washing-003,frame_000002,10.000,data_video/keyframes/washing-003/frame_000002.jpg,Wäschen,0.995809,"[[657.0,407.0],[714.0,419.0],[711.0,433.0],[654.0,421.0]]",de,PP-OCRv5
+washing-003-ocr-00021,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,AEG,0.995892,"[[205.0,36.0],[229.0,36.0],[229.0,51.0],[205.0,51.0]]",de,PP-OCRv5
+washing-003-ocr-00022,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,100 Wäschen,0.975173,"[[688.0,276.0],[713.0,277.0],[708.0,358.0],[684.0,357.0]]",de,PP-OCRv5
+washing-003-ocr-00023,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,kurze Zeit,0.976183,"[[687.0,357.0],[698.0,357.0],[698.0,391.0],[687.0,391.0]]",de,PP-OCRv5
+washing-003-ocr-00024,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,Wur f,0.613122,"[[701.0,361.0],[709.0,361.0],[709.0,381.0],[701.0,381.0]]",de,PP-OCRv5
+washing-003-ocr-00025,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,100,0.946575,"[[617.0,382.0],[653.0,391.0],[648.0,410.0],[613.0,401.0]]",de,PP-OCRv5
+washing-003-ocr-00026,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,Wäschen,0.998559,"[[658.0,397.0],[711.0,407.0],[709.0,421.0],[656.0,411.0]]",de,PP-OCRv5
+washing-003-ocr-00027,washing-003,frame_000003,15.000,data_video/keyframes/washing-003/frame_000003.jpg,kurze Zeit!,0.929489,"[[650.0,421.0],[706.0,433.0],[704.0,443.0],[648.0,431.0]]",de,PP-OCRv5
+washing-003-ocr-00028,washing-003,frame_000004,20.000,data_video/keyframes/washing-003/frame_000004.jpg,AEG,0.999806,"[[208.0,32.0],[232.0,32.0],[232.0,47.0],[208.0,47.0]]",de,PP-OCRv5
+washing-003-ocr-00029,washing-003,frame_000004,20.000,data_video/keyframes/washing-003/frame_000004.jpg,Wäscher,0.983768,"[[690.0,302.0],[709.0,302.0],[709.0,350.0],[690.0,350.0]]",de,PP-OCRv5
+washing-003-ocr-00030,washing-003,frame_000004,20.000,data_video/keyframes/washing-003/frame_000004.jpg,kurze Zeiti,0.930311,"[[688.0,358.0],[699.0,358.0],[699.0,391.0],[688.0,391.0]]",de,PP-OCRv5
+washing-003-ocr-00031,washing-003,frame_000004,20.000,data_video/keyframes/washing-003/frame_000004.jpg,100,0.876340,"[[616.0,379.0],[655.0,390.0],[650.0,411.0],[611.0,401.0]]",de,PP-OCRv5
+washing-003-ocr-00032,washing-003,frame_000004,20.000,data_video/keyframes/washing-003/frame_000004.jpg,Wäschen,0.998874,"[[657.0,396.0],[712.0,406.0],[710.0,420.0],[655.0,410.0]]",de,PP-OCRv5
+washing-003-ocr-00033,washing-003,frame_000004,20.000,data_video/keyframes/washing-003/frame_000004.jpg,kurze Zeit!,0.965447,"[[650.0,419.0],[707.0,432.0],[704.0,443.0],[648.0,430.0]]",de,PP-OCRv5

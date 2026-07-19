@@ -1,0 +1,12 @@
+record_id,status,frame_count,frames_with_text,observation_count,language_profile,ocr_version,device,minimum_score,processed_at,error
+camera-001,success,53,25,152,de,PP-OCRv5,cpu,0.5,2026-07-19T11:45:52.669057+00:00,
+espresso-001,success,11,2,9,de,PP-OCRv5,cpu,0.5,2026-07-19T11:46:00.900088+00:00,
+espresso-002,success,9,0,0,de,PP-OCRv5,cpu,0.5,2026-07-19T11:46:17.273170+00:00,
+espresso-003,success,28,28,150,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:11.958048+00:00,
+pressure-001,success,24,0,0,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:19.616138+00:00,
+printer-001,success,7,0,0,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:20.343356+00:00,
+vacuum-001,success,5,0,0,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:21.048233+00:00,
+vacuum-002,success,6,1,1,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:21.780820+00:00,
+washing-001,success,3,3,14,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:22.941828+00:00,
+washing-002,success,5,1,2,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:32.098881+00:00,
+washing-003,success,5,5,33,de,PP-OCRv5,cpu,0.5,2026-07-19T11:47:34.033072+00:00,
