@@ -54,7 +54,7 @@ FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP
 ./run_video_analysis_stage.sh asr
 ```
 
-服务器当前无法直接访问 `huggingface.co`，包装脚本默认把 `HF_ENDPOINT` 设为 `https://hf-mirror.com`，仅用于下载公开模型文件。直接连接恢复后可以在命令前显式设置其他 `HF_ENDPOINT` 覆盖该值。
+服务器当前无法直接访问 `huggingface.co`，包装脚本默认把 `HF_ENDPOINT` 设为 `https://hf-mirror.com`，仅用于下载公开模型文件；同时设置 `HF_HUB_DISABLE_XET=1`，防止客户端绕过镜像访问 Xet/CAS。直接连接恢复后可以在命令前显式覆盖这些变量。
 
 每条记录启用 VAD、段级时间戳和词级时间戳。进程退出后 GPU 显存会释放；不启动 ASR 常驻服务。
 

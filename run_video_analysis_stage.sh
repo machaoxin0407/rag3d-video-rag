@@ -14,6 +14,7 @@ case "$stage" in
     # The server cannot currently reach huggingface.co directly. Operators can
     # override this endpoint when direct access is restored.
     export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
+    export HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
     asr_libs="$(
       .venv-asr/bin/python -c \
         'import nvidia.cublas.lib; import nvidia.cudnn.lib; print(nvidia.cublas.lib.__path__[0] + ":" + nvidia.cudnn.lib.__path__[0])'
