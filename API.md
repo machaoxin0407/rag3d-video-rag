@@ -93,7 +93,20 @@ curl -sS -X POST http://127.0.0.1:8000/chat \
   "data": {
     "answer": "...",
     "session_id": "demo",
-    "timestamp": 1780000000
+    "timestamp": 1780000000,
+    "videos": [
+      {
+        "scene_id": "camera-001-scene-0001",
+        "record_id": "camera-001",
+        "product_class": "Camera",
+        "start_seconds": 0.0,
+        "end_seconds": 25.4,
+        "clip_url": "/video-media/processed/camera-001/clips/camera-001-scene-0001.mp4",
+        "thumbnail_url": "/video-media/keyframes/camera-001/frame_000000.jpg",
+        "score": 6.2,
+        "evidence_text": "ASR: ..."
+      }
+    ]
   }
 }
 ```
@@ -102,6 +115,21 @@ curl -sS -X POST http://127.0.0.1:8000/chat \
 
 - 客服题：纯文本客服回答。
 - 技术题：正文 + `<PIC>` 锚点 + 末尾图片数组字符串。
+- `videos`：技术题命中的 0–3 个视频场景；客服题或无匹配时为空数组。
+
+`clip_url` 与 `thumbnail_url` 需要携带相同的 Bearer Token 请求。媒体端点只允许读取项目生成的 MP4 片段和 JPG 关键帧：
+
+```bash
+curl -H "Authorization: Bearer $KAFU_API_TOKEN" \
+  http://127.0.0.1:8000/video-media/processed/camera-001/clips/camera-001-scene-0001.mp4 \
+  -o scene.mp4
+```
+
+离线验证视频排名、响应序列化和媒体目录边界：
+
+```bash
+python validate_video_retrieval.py
+```
 
 ## 错误响应
 

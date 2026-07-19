@@ -28,6 +28,7 @@ from typing import Any, Optional
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi.responses import FileResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field, field_validator
 
@@ -75,6 +76,8 @@ _API_OUTPUT_LOCK = threading.Lock()
 
 _engine = None
 _engine_lock = asyncio.Lock()
+_video_retriever = None
+_video_retriever_lock = threading.Lock()
 
 
 async def get_engine():
@@ -188,11 +191,26 @@ class ChatRequest(BaseModel):
         return images
 
 
+class VideoEvidenceItem(BaseModel):
+    """One authenticated video scene returned beside the text/manual answer."""
+
+    scene_id: str
+    record_id: str
+    product_class: str
+    start_seconds: float
+    end_seconds: float
+    clip_url: str
+    thumbnail_url: str
+    score: float
+    evidence_text: str
+
+
 class ChatResponseData(BaseModel):
     """成功响应 data 字段，与官方接口定义保持一致。"""
     answer: str
     session_id: str
     timestamp: int
+    videos: list[VideoEvidenceItem] = Field(default_factory=list)
 
 
 class ChatResponse(BaseModel):
@@ -518,7 +536,49 @@ def _write_api_error_trace(
     _append_jsonl(API_TRACE_PATH, {**record, "kind": "chat_api_error"})
 
 
-def _run_agent_sync(question: str, session_id: str, images: list[str]) -> tuple[str, list[str], str, dict[str, Any]]:
+def _get_video_retriever():
+    """Lazily construct the small local scene index without blocking startup."""
+    global _video_retriever
+    if _video_retriever is not None:
+        return _video_retriever
+    with _video_retriever_lock:
+        if _video_retriever is None:
+            from video_rag.retrieval import VideoEvidenceRetriever
+
+            _video_retriever = VideoEvidenceRetriever()
+    return _video_retriever
+
+
+def _video_response_items(question: str, route: str) -> list[VideoEvidenceItem]:
+    """Retrieve video only for technical questions and degrade safely on errors."""
+    if route != "tech":
+        return []
+    try:
+        from urllib.parse import quote
+
+        results = _get_video_retriever().search(question, top_k=3)
+        return [
+            VideoEvidenceItem(
+                scene_id=row.scene_id,
+                record_id=row.record_id,
+                product_class=row.product_class,
+                start_seconds=row.start_seconds,
+                end_seconds=row.end_seconds,
+                clip_url=f"/video-media/{quote(row.clip_path.removeprefix('data_video/'), safe='/')}",
+                thumbnail_url=f"/video-media/{quote(row.thumbnail_path.removeprefix('data_video/'), safe='/')}",
+                score=row.score,
+                evidence_text=row.text,
+            )
+            for row in results
+        ]
+    except Exception:  # noqa: BLE001
+        log.exception("视频证据检索失败，本轮降级为手册答案")
+        return []
+
+
+def _run_agent_sync(
+    question: str, session_id: str, images: list[str]
+) -> tuple[str, list[str], str, dict[str, Any], list[VideoEvidenceItem]]:
     """在 worker 线程里跑 ReAct Agent，同时返回仅供服务端落盘的内部 trace。"""
     from agent import run_agent
     from retrieval_engine import RetrievalEngine
@@ -544,7 +604,9 @@ def _run_agent_sync(question: str, session_id: str, images: list[str]) -> tuple[
     agent_trace["classifier"] = classifier_trace
     agent_trace["session_history_turns"] = len(history) // 2
     agent_trace["input_images_count"] = len(images)
-    return result.answer or "", list(result.pics or []), route, agent_trace
+    videos = _video_response_items(routed_question, route)
+    agent_trace["video_evidence_ids"] = [item.scene_id for item in videos]
+    return result.answer or "", list(result.pics or []), route, agent_trace, videos
 
 
 def _format_answer(answer: str, pics: list[str], route: str) -> str:
@@ -574,7 +636,7 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
 
     t0 = time.time()
     try:
-        answer, pics, route, agent_trace = await asyncio.wait_for(
+        answer, pics, route, agent_trace, videos = await asyncio.wait_for(
             asyncio.to_thread(_run_agent_sync, req.question, session_id, req.images),
             timeout=MULTIMODAL_REQUEST_TIMEOUT_S if req.images else REQUEST_TIMEOUT_S,
         )
@@ -630,8 +692,8 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
         agent_trace=agent_trace,
     )
     log.info(
-        "RES id=%s sess=%s route=%s elapsed=%.1fs pics=%d ans_len=%d tool_calls=%d agent_turns=%d",
-        request_id, session_id, route, elapsed, len(pics), len(formatted), tool_calls, agent_turns,
+        "RES id=%s sess=%s route=%s elapsed=%.1fs pics=%d videos=%d ans_len=%d tool_calls=%d agent_turns=%d",
+        request_id, session_id, route, elapsed, len(pics), len(videos), len(formatted), tool_calls, agent_turns,
     )
 
     return ChatResponse(
@@ -641,8 +703,30 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
             answer=formatted,
             session_id=session_id,
             timestamp=int(time.time()),
+            videos=videos,
         ),
     )
+
+
+@app.get("/video-media/{media_path:path}", dependencies=[Depends(auth)])
+async def video_media(media_path: str) -> FileResponse:
+    """Serve only generated clips/keyframes from authenticated project storage."""
+    return FileResponse(_resolve_video_media(media_path))
+
+
+def _resolve_video_media(media_path: str) -> Path:
+    """Resolve only generated MP4/JPG media and reject traversal or raw video."""
+    video_root = (Path(__file__).resolve().parent / "data_video").resolve()
+    candidate = (video_root / media_path).resolve()
+    allowed_roots = [
+        (video_root / "processed").resolve(),
+        (video_root / "keyframes").resolve(),
+    ]
+    if not any(candidate == root or root in candidate.parents for root in allowed_roots):
+        raise HTTPException(status_code=404, detail="media not found")
+    if not candidate.is_file() or candidate.suffix.lower() not in {".mp4", ".jpg", ".jpeg"}:
+        raise HTTPException(status_code=404, detail="media not found")
+    return candidate
 
 
 @app.get("/health")
