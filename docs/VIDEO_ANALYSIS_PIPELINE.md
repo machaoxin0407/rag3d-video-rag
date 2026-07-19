@@ -83,6 +83,12 @@ FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP
 5. 统一证据 ID 全局唯一，所有媒体路径均为项目内相对路径；
 6. ASR 进程退出后无项目 GPU 进程残留。
 
+完整机器验收命令：
+
+```bash
+.venv/bin/python validate_video_analysis.py
+```
+
 ## 当前边界
 
 当前 `video_scene` 的文本仅融合 ASR 与 OCR。没有语音、也没有可识别屏幕文字的纯视觉片段可能暂时为空文本；下一阶段需要增加 VLM 场景 caption，随后才能完成视觉语义召回和跨模态重排。
