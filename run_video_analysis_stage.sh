@@ -11,6 +11,9 @@ case "$stage" in
       --minimum-scene-seconds 2
     ;;
   asr)
+    # The server cannot currently reach huggingface.co directly. Operators can
+    # override this endpoint when direct access is restored.
+    export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
     asr_libs="$(
       .venv-asr/bin/python -c \
         'import nvidia.cublas.lib; import nvidia.cudnn.lib; print(nvidia.cublas.lib.__path__[0] + ":" + nvidia.cudnn.lib.__path__[0])'
