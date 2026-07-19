@@ -91,6 +91,19 @@ def compact_json(payload: dict[str, object]) -> str:
     return json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+def unique_text(rows: list[dict[str, str]]) -> str:
+    """Join text in time order while removing case-insensitive duplicates."""
+    seen: set[str] = set()
+    output: list[str] = []
+    for row in rows:
+        text = " ".join(row["text"].split())
+        normalized = text.casefold()
+        if text and normalized not in seen:
+            seen.add(normalized)
+            output.append(text)
+    return " ".join(output)
+
+
 def scene_evidence(
     scene: dict[str, str],
     preprocessing: dict[str, str],
@@ -102,8 +115,8 @@ def scene_evidence(
     end = float(scene["end_seconds"])
     speech = [row for row in asr_rows if interval_overlap(row, start, end)]
     frame_text = [row for row in ocr_rows if timestamp_inside(row, start, end)]
-    speech_text = " ".join(row["text"] for row in speech if row["text"])
-    ocr_text = " ".join(row["text"] for row in frame_text if row["text"])
+    speech_text = unique_text(speech)
+    ocr_text = unique_text(frame_text)
     pieces = []
     if speech_text:
         pieces.append(f"ASR: {speech_text}")
