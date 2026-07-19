@@ -20,6 +20,9 @@
 - `smoke_test.sh`：一键健康检查和 `/chat` 示例调用。
 - `validate_delivery.py`：交付包静态自检脚本。
 - `validate_performance.py`：验证报告数据表生成脚本。
+- `video_rag/`：授权视频预处理、ASR/OCR、证据融合和本地视频检索。
+- `run_video_analysis_stage.sh`：镜头、ASR、OCR、证据构建的服务器统一入口。
+- `validate_video_analysis.py` / `validate_video_retrieval.py`：视频产物完整性与 API 合约验收。
 - `validation_outputs/`：验证报告 CSV/JSON/Markdown 产物。
 - `delivery_docs/`：初赛 Markdown 交付材料，覆盖 API 接口、源码运行、技术方案和验证报告。
 
@@ -71,7 +74,8 @@ python validate_performance.py --api-base-url http://127.0.0.1:8000
   "data": {
     "answer": "...",
     "session_id": "demo",
-    "timestamp": 1780000000
+    "timestamp": 1780000000,
+    "videos": []
   }
 }
 ```
@@ -112,6 +116,8 @@ curl -sS -X POST http://127.0.0.1:8000/chat \
 | `images` | 否 | Base64 data URL 图片数组，最多 3 张；接口校验并随本轮消息传入模型。 |
 | `session_id` | 否 | 会话 ID，用于短历史拼接、日志追踪和连续追问演示。 |
 | `stream` | 否 | 兼容字段，当前同步返回完整结果。 |
+
+技术问题会在 `data.videos` 中附加最多 3 个相关视频场景，包含起止时间、鉴权 MP4 URL、关键帧 URL 和证据文本。客服问题或没有视频匹配时返回空数组。详细字段与媒体下载方式见 `API.md`。
 
 ## 初赛交付 Markdown 材料
 
