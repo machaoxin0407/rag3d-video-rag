@@ -2,6 +2,7 @@
 set -euo pipefail
 
 cd "$(dirname "$0")"
+export PYTHONDONTWRITEBYTECODE=1
 
 stage="${1:-}"
 case "$stage" in

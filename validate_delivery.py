@@ -14,7 +14,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-IGNORED_WALK_DIRS = {".git", ".venv", "venv", "__pycache__"}
+IGNORED_WALK_DIRS = {
+    ".git",
+    ".venv",
+    ".venv-asr",
+    ".venv-ocr",
+    "venv",
+    "__pycache__",
+}
 
 REQUIRED_FILES = [
     "README.md",
@@ -71,6 +78,7 @@ REQUIRED_DIRS = [
 EXECUTABLE_FILES = [
     "run_api.sh",
     "smoke_test.sh",
+    "run_video_analysis_stage.sh",
 ]
 
 FORBIDDEN_SUFFIXES = (
@@ -124,7 +132,7 @@ def check_executable(errors: list[str]) -> None:
 
 def check_no_generated_artifacts(errors: list[str]) -> None:
     for path in ROOT.rglob("*"):
-        if any(part in {".git", ".venv", "venv"} for part in path.parts):
+        if any(part in IGNORED_WALK_DIRS - {"__pycache__"} for part in path.parts):
             continue
         if "__pycache__" in path.parts:
             fail(errors, f"包含 Python 缓存目录/文件: {rel(path)}")
