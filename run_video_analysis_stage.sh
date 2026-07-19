@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")"
+
+stage="${1:-}"
+case "$stage" in
+  scenes)
+    exec .venv/bin/python segment_video_sources.py \
+      --threshold 0.32 \
+      --minimum-scene-seconds 2
+    ;;
+  asr)
+    asr_libs="$(
+      .venv-asr/bin/python -c \
+        'import os; import nvidia.cublas.lib; import nvidia.cudnn.lib; print(os.path.dirname(nvidia.cublas.lib.__file__) + ":" + os.path.dirname(nvidia.cudnn.lib.__file__))'
+    )"
+    export LD_LIBRARY_PATH="${asr_libs}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+    exec .venv-asr/bin/python transcribe_video_sources.py \
+      --model large-v3 \
+      --device cuda \
+      --device-index 0 \
+      --compute-type float16 \
+      --beam-size 5
+    ;;
+  ocr)
+    exec .venv-ocr/bin/python ocr_video_keyframes.py \
+      --language-profile de \
+      --ocr-version PP-OCRv5 \
+      --device cpu \
+      --minimum-score 0.50
+    ;;
+  evidence)
+    exec .venv/bin/python build_video_evidence.py
+    ;;
+  *)
+    echo "usage: $0 {scenes|asr|ocr|evidence}" >&2
+    exit 2
+    ;;
+esac

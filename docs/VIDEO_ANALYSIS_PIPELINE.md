@@ -41,9 +41,7 @@ python3 -m virtualenv .venv-ocr
 ## 1. 镜头检测与片段
 
 ```bash
-.venv/bin/python segment_video_sources.py \
-  --threshold 0.32 \
-  --minimum-scene-seconds 2
+./run_video_analysis_stage.sh scenes
 ```
 
 FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP4，并启用 `faststart`，可直接供浏览器或 API 以时间片段证据返回。
@@ -53,15 +51,7 @@ FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP
 `faster-whisper` 的 GPU 运行需要 CUDA 12 的 cuBLAS 与 cuDNN 9。依赖已安装在 `.venv-asr` 内，启动前只把该环境的动态库加入当前命令：
 
 ```bash
-ASR_LIBS=$(.venv-asr/bin/python -c 'import os; import nvidia.cublas.lib; import nvidia.cudnn.lib; print(os.path.dirname(nvidia.cublas.lib.__file__) + ":" + os.path.dirname(nvidia.cudnn.lib.__file__))')
-
-LD_LIBRARY_PATH="$ASR_LIBS${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
-  .venv-asr/bin/python transcribe_video_sources.py \
-  --model large-v3 \
-  --device cuda \
-  --device-index 0 \
-  --compute-type float16 \
-  --beam-size 5
+./run_video_analysis_stage.sh asr
 ```
 
 每条记录启用 VAD、段级时间戳和词级时间戳。进程退出后 GPU 显存会释放；不启动 ASR 常驻服务。
@@ -69,11 +59,7 @@ LD_LIBRARY_PATH="$ASR_LIBS${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
 ## 3. 关键帧 OCR
 
 ```bash
-.venv-ocr/bin/python ocr_video_keyframes.py \
-  --language-profile de \
-  --ocr-version PP-OCRv5 \
-  --device cpu \
-  --minimum-score 0.50
+./run_video_analysis_stage.sh ocr
 ```
 
 `de` 在 PP-OCRv5 中选择覆盖德语、葡萄牙语、英语等语言的 Latin 多语识别模型。当前只有 156 张关键帧，CPU 模式更易部署且不会引入第二套 CUDA 运行时。
@@ -81,7 +67,7 @@ LD_LIBRARY_PATH="$ASR_LIBS${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
 ## 4. 统一证据清单
 
 ```bash
-.venv/bin/python build_video_evidence.py
+./run_video_analysis_stage.sh evidence
 ```
 
 构建程序要求 11 条记录的场景、ASR 和 OCR source-level run 全部成功，否则拒绝输出最终证据清单。ASR 段和 OCR 观察项通过时间戳关联到具体场景片段。
