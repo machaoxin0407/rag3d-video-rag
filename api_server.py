@@ -567,7 +567,7 @@ def _video_response_items(question: str, route: str) -> list[VideoEvidenceItem]:
                 clip_url=f"/video-media/{quote(row.clip_path.removeprefix('data_video/'), safe='/')}",
                 thumbnail_url=f"/video-media/{quote(row.thumbnail_path.removeprefix('data_video/'), safe='/')}",
                 score=row.score,
-                evidence_text=row.text,
+                evidence_text=row.text[:1000],
             )
             for row in results
         ]

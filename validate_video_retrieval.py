@@ -6,7 +6,9 @@ from __future__ import annotations
 import json
 
 from fastapi import HTTPException
+from fastapi.testclient import TestClient
 
+import api_server
 from api_server import (
     ChatResponseData,
     _resolve_video_media,
@@ -39,7 +41,7 @@ def main() -> None:
 
     if retriever.search("订单什么时候发货？"):
         raise ValueError("Service query unexpectedly returned video evidence")
-    api_items = _video_response_items("How does a CCD digital camera work?", "tech")
+    api_items = _video_response_items("打印机如何打印页面？", "tech")
     if not api_items:
         raise ValueError("Technical API video response is empty")
     if _video_response_items("How does a CCD digital camera work?", "service"):
@@ -65,6 +67,41 @@ def main() -> None:
     payload = response.model_dump()
     if len(payload["videos"]) != len(api_items):
         raise ValueError("Video response serialization lost evidence rows")
+
+    original_token = api_server.EXPECTED_TOKEN
+    original_runner = api_server._run_agent_sync
+    try:
+        api_server.EXPECTED_TOKEN = "video-validation-token"
+        api_server._run_agent_sync = lambda question, session_id, images: (
+            "validated answer",
+            [],
+            "tech",
+            {},
+            api_items,
+        )
+        client = TestClient(api_server.app)
+        headers = {"Authorization": "Bearer video-validation-token"}
+        chat_response = client.post(
+            "/chat",
+            headers=headers,
+            json={"question": "打印机如何打印页面？", "session_id": "validation"},
+        )
+        if chat_response.status_code != 200:
+            raise ValueError(f"/chat contract failed: {chat_response.text}")
+        chat_payload = chat_response.json()
+        if len(chat_payload["data"]["videos"]) != len(api_items):
+            raise ValueError("/chat response omitted video evidence")
+        media_response = client.get(api_items[0].clip_url, headers=headers)
+        if media_response.status_code != 200:
+            raise ValueError("Authenticated video media request failed")
+        if not media_response.headers.get("content-type", "").startswith("video/"):
+            raise ValueError("Video media response has an unexpected content type")
+        denied_response = client.get("/video-media/../.env", headers=headers)
+        if denied_response.status_code == 200:
+            raise ValueError("HTTP media traversal was not rejected")
+    finally:
+        api_server.EXPECTED_TOKEN = original_token
+        api_server._run_agent_sync = original_runner
     print(
         json.dumps(
             {
@@ -72,6 +109,8 @@ def main() -> None:
                 "api_video_results": len(api_items),
                 "media_paths_checked": len(api_items) * 2,
                 "traversal_blocked": blocked,
+                "chat_contract_status": chat_response.status_code,
+                "media_contract_status": media_response.status_code,
                 "case_results": case_results,
             },
             ensure_ascii=False,
