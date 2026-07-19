@@ -13,7 +13,7 @@ case "$stage" in
   asr)
     asr_libs="$(
       .venv-asr/bin/python -c \
-        'import os; import nvidia.cublas.lib; import nvidia.cudnn.lib; print(os.path.dirname(nvidia.cublas.lib.__file__) + ":" + os.path.dirname(nvidia.cudnn.lib.__file__))'
+        'import nvidia.cublas.lib; import nvidia.cudnn.lib; print(nvidia.cublas.lib.__path__[0] + ":" + nvidia.cudnn.lib.__path__[0])'
     )"
     export LD_LIBRARY_PATH="${asr_libs}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
     exec .venv-asr/bin/python transcribe_video_sources.py \
