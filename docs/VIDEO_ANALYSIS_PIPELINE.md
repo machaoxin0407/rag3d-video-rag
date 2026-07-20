@@ -20,6 +20,11 @@ video_evidence_manifest.csv
 
 BM25 rank + dense rank
   └─ 加权 RRF ───────────────────> 文字答案 + 手册图片 + 视频片段
+
+scene MP4 ──> Qwen3-VL-Embedding-2B ──> 2048 维直接视频向量
+
+BM25 + text dense + direct video rank
+  └─ 三路 RRF ───────────────────> 可切换论文消融与候选产品模式
 ```
 
 最终证据清单包含三种对象：
@@ -32,7 +37,7 @@ BM25 rank + dense rank
 
 ## 隔离环境
 
-现有 `.venv` 继续负责手册 RAG、FFmpeg 和镜头切分。ASR、OCR、VLM 与视频稠密检索使用四个隔离环境，防止 PaddlePaddle、CTranslate2 和 PyTorch 的 CUDA 依赖互相覆盖。
+现有 `.venv` 继续负责手册 RAG、FFmpeg 和镜头切分。ASR、OCR、VLM、文本稠密检索与直接视频检索使用五个隔离环境，防止 PaddlePaddle、CTranslate2 和 PyTorch 的 CUDA 依赖互相覆盖。
 
 ```bash
 cd ~/rag3d-video
@@ -45,6 +50,7 @@ python3 -m virtualenv .venv-ocr
 
 ./setup_video_vlm_environment.sh
 ./setup_video_embedding_environment.sh
+./setup_video_visual_embedding_environment.sh
 ```
 
 模型缓存保存在已忽略的 `models/`，不进入 Git。
@@ -106,6 +112,8 @@ VLM 阶段使用 `Qwen/Qwen3-VL-8B-Instruct`，为每个场景在内部时间点
 7. ASR/VLM 进程退出后无项目 GPU 进程残留。
 8. dense 索引的场景顺序和清单 SHA-256 与当前证据一致；
 9. 查询服务不可用时 API 自动回退 BM25，视频检索不影响手册答案。
+10. 直接视频索引记录模型修订、采样参数和单帧图像回退；
+11. 三路模式能按 visual、text dense、BM25 顺序安全降级。
 
 完整机器验收命令：
 
@@ -115,4 +123,4 @@ VLM 阶段使用 `Qwen/Qwen3-VL-8B-Instruct`，为每个场景在内部时间点
 
 ## 当前边界
 
-当前 `video_scene` 已融合 ASR、OCR 与 VLM 描述，25 个场景均有非空检索文本。检索已支持 BM25、Qwen3 文本向量和二者的加权 RRF，但 dense 索引仍来自场景文本，不等同于原始视频的视觉向量召回。下一阶段需要增加直接视觉/视频 embedding 和可选 rerank，并用来源隔离的三人人工标注查询集评估。固定配置与当前工程结果见 `docs/VIDEO_DENSE_RETRIEVAL_BASELINE_2026-07-20.md`。
+当前 `video_scene` 已融合 ASR、OCR 与 VLM 描述，25 个场景均有非空检索文本。检索已支持 BM25、Qwen3 文本向量、Qwen3-VL 直接视频向量、两路 RRF 和三路 RRF。下一阶段需要在冻结的三人人工标注集上决定默认模式，并评估可选 multimodal reranker。文本 dense 配置见 `docs/VIDEO_DENSE_RETRIEVAL_BASELINE_2026-07-20.md`，直接视频配置见 `docs/VIDEO_VISUAL_RETRIEVAL_BASELINE_2026-07-20.md`。

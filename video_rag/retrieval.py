@@ -14,6 +14,7 @@ from rank_bm25 import BM25Okapi
 
 from .dense import (
     DEFAULT_DENSE_INDEX,
+    DEFAULT_VISUAL_DENSE_INDEX,
     DenseSceneIndex,
     request_query_embedding,
     sha256_file,
@@ -63,6 +64,7 @@ class VideoSearchResult:
     retrieval_mode: str = "bm25"
     bm25_score: float | None = None
     dense_score: float | None = None
+    visual_score: float | None = None
 
     def to_dict(self) -> dict[str, object]:
         """Return a JSON-compatible representation."""
@@ -92,16 +94,19 @@ def load_csv(path: Path) -> list[dict[str, str]]:
 class VideoEvidenceRetriever:
     """Scene retriever with BM25, dense, and reciprocal-rank fusion modes."""
 
-    VALID_MODES = {"bm25", "dense", "hybrid"}
+    VALID_MODES = {"bm25", "dense", "visual", "hybrid", "tri_hybrid"}
 
     def __init__(
         self,
         evidence_path: Path = DEFAULT_EVIDENCE,
         inventory_path: Path = DEFAULT_INVENTORY,
         dense_index_path: Path = DEFAULT_DENSE_INDEX,
+        visual_index_path: Path = DEFAULT_VISUAL_DENSE_INDEX,
         mode: str | None = None,
         dense_endpoint: str | None = None,
+        visual_endpoint: str | None = None,
         query_encoder: Callable[[str], np.ndarray] | None = None,
+        visual_query_encoder: Callable[[str], np.ndarray] | None = None,
     ) -> None:
         inventory = {row["record_id"]: row for row in load_csv(inventory_path)}
         scene_rows = [
@@ -127,24 +132,54 @@ class VideoEvidenceRetriever:
             raise ValueError(f"Unsupported VIDEO_RETRIEVAL_MODE={requested_mode!r}")
         self.mode = requested_mode
         self.dense_endpoint = dense_endpoint or os.getenv("VIDEO_DENSE_ENDPOINT", "")
+        self.visual_endpoint = visual_endpoint or os.getenv(
+            "VIDEO_VISUAL_DENSE_ENDPOINT", ""
+        )
         self.query_encoder = query_encoder
+        self.visual_query_encoder = visual_query_encoder
         self.tokenized_documents = [tokenize(text) for text in self.search_texts]
         self.bm25 = BM25Okapi(self.tokenized_documents)
         self.dense_index: DenseSceneIndex | None = None
         self.dense_index_error: str | None = None
-        if dense_index_path.exists():
-            try:
-                candidate = DenseSceneIndex.load(dense_index_path)
-                expected_ids = [row["evidence_id"] for row in self.documents]
-                if candidate.scene_ids != expected_ids:
-                    raise ValueError("scene order differs from the evidence manifest")
-                if candidate.metadata.get("evidence_sha256") != sha256_file(evidence_path):
-                    raise ValueError("evidence manifest digest differs")
-                if candidate.metadata.get("inventory_sha256") != sha256_file(inventory_path):
-                    raise ValueError("inventory manifest digest differs")
-                self.dense_index = candidate
-            except Exception as exc:  # noqa: BLE001 - stale indexes must not break the API
-                self.dense_index_error = str(exc)
+        self.visual_index: DenseSceneIndex | None = None
+        self.visual_index_error: str | None = None
+        expected_ids = [row["evidence_id"] for row in self.documents]
+        evidence_digest = sha256_file(evidence_path)
+        inventory_digest = sha256_file(inventory_path)
+        self.dense_index, self.dense_index_error = self._load_valid_index(
+            dense_index_path,
+            expected_ids,
+            evidence_digest,
+            inventory_digest,
+        )
+        self.visual_index, self.visual_index_error = self._load_valid_index(
+            visual_index_path,
+            expected_ids,
+            evidence_digest,
+            inventory_digest,
+        )
+
+    @staticmethod
+    def _load_valid_index(
+        path: Path,
+        expected_ids: list[str],
+        evidence_digest: str,
+        inventory_digest: str,
+    ) -> tuple[DenseSceneIndex | None, str | None]:
+        """Load an aligned index or return a reason for safe fallback."""
+        if not path.exists():
+            return None, None
+        try:
+            candidate = DenseSceneIndex.load(path)
+            if candidate.scene_ids != expected_ids:
+                raise ValueError("scene order differs from the evidence manifest")
+            if candidate.metadata.get("evidence_sha256") != evidence_digest:
+                raise ValueError("evidence manifest digest differs")
+            if candidate.metadata.get("inventory_sha256") != inventory_digest:
+                raise ValueError("inventory manifest digest differs")
+            return candidate, None
+        except Exception as exc:  # noqa: BLE001 - stale indexes must not break the API
+            return None, str(exc)
 
     def detect_product_classes(self, query: str) -> set[str]:
         """Infer explicit product classes from bilingual query aliases."""
@@ -168,6 +203,21 @@ class VideoEvidenceRetriever:
         else:
             return None
         return self.dense_index.similarities(vector)
+
+    def _visual_scores(self, query: str) -> np.ndarray | None:
+        if self.visual_index is None:
+            return None
+        if self.visual_query_encoder is not None:
+            vector = np.asarray(self.visual_query_encoder(query), dtype=np.float32)
+        elif self.visual_endpoint:
+            vector = request_query_embedding(
+                self.visual_endpoint,
+                query,
+                timeout_env="VIDEO_VISUAL_DENSE_TIMEOUT_S",
+            )
+        else:
+            return None
+        return self.visual_index.similarities(vector)
 
     @staticmethod
     def _rank_map(indices: list[int], scores: np.ndarray) -> dict[int, int]:
@@ -195,12 +245,35 @@ class VideoEvidenceRetriever:
                 bm25_scores[index] += 3.0
 
         dense_scores: np.ndarray | None = None
-        if requested_mode in {"dense", "hybrid"}:
+        if requested_mode in {"dense", "hybrid", "tri_hybrid"}:
             try:
                 dense_scores = self._dense_scores(query)
             except Exception:  # noqa: BLE001 - retrieval must keep its lexical fallback
                 dense_scores = None
-        effective_mode = requested_mode if dense_scores is not None else "bm25"
+        visual_scores: np.ndarray | None = None
+        if requested_mode in {"visual", "tri_hybrid"}:
+            try:
+                visual_scores = self._visual_scores(query)
+            except Exception:  # noqa: BLE001 - retrieval must keep its lexical fallback
+                visual_scores = None
+
+        if requested_mode == "dense":
+            effective_mode = "dense" if dense_scores is not None else "bm25"
+        elif requested_mode == "visual":
+            effective_mode = "visual" if visual_scores is not None else "bm25"
+        elif requested_mode == "hybrid":
+            effective_mode = "hybrid" if dense_scores is not None else "bm25"
+        elif requested_mode == "tri_hybrid":
+            if dense_scores is not None and visual_scores is not None:
+                effective_mode = "tri_hybrid"
+            elif dense_scores is not None:
+                effective_mode = "hybrid"
+            elif visual_scores is not None:
+                effective_mode = "visual_hybrid"
+            else:
+                effective_mode = "bm25"
+        else:
+            effective_mode = "bm25"
 
         eligible: list[int] = []
         for index, row in enumerate(self.documents):
@@ -222,12 +295,30 @@ class VideoEvidenceRetriever:
             if dense_scores is not None
             else {}
         )
+        visual_ranks = (
+            self._rank_map(eligible, visual_scores)
+            if visual_scores is not None
+            else {}
+        )
         candidates: list[tuple[int, float]] = []
         for index in eligible:
             if effective_mode == "bm25":
                 score = float(bm25_scores[index])
             elif effective_mode == "dense":
                 score = float(dense_scores[index])
+            elif effective_mode == "visual":
+                score = float(visual_scores[index])
+            elif effective_mode == "visual_hybrid":
+                score = (
+                    0.45 / (60 + bm25_ranks[index])
+                    + 0.55 / (60 + visual_ranks[index])
+                )
+            elif effective_mode == "tri_hybrid":
+                score = (
+                    0.30 / (60 + bm25_ranks[index])
+                    + 0.35 / (60 + dense_ranks[index])
+                    + 0.35 / (60 + visual_ranks[index])
+                )
             else:
                 # Weighted reciprocal-rank fusion is robust to incomparable raw scores.
                 score = (
@@ -261,6 +352,11 @@ class VideoEvidenceRetriever:
                     dense_score=(
                         round(float(dense_scores[index]), 6)
                         if dense_scores is not None
+                        else None
+                    ),
+                    visual_score=(
+                        round(float(visual_scores[index]), 6)
+                        if visual_scores is not None
                         else None
                     ),
                 )

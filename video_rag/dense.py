@@ -17,6 +17,9 @@ from .manifest_io import ROOT
 DEFAULT_DENSE_INDEX = (
     ROOT / "data_video" / "indexes" / "video_dense_qwen3_embedding_0_6b.npz"
 )
+DEFAULT_VISUAL_DENSE_INDEX = (
+    ROOT / "data_video" / "indexes" / "video_visual_qwen3_vl_embedding_2b.npz"
+)
 DEFAULT_MODEL_ID = "Qwen/Qwen3-Embedding-0.6B"
 DEFAULT_QUERY_TASK = (
     "Given a product-support question, retrieve the video scene that best shows "
@@ -93,10 +96,11 @@ def request_query_embedding(
     endpoint: str,
     query: str,
     timeout_seconds: float | None = None,
+    timeout_env: str = "VIDEO_DENSE_TIMEOUT_S",
 ) -> np.ndarray:
     """Request one normalized query vector from the isolated local service."""
     if timeout_seconds is None:
-        timeout_seconds = float(os.getenv("VIDEO_DENSE_TIMEOUT_S", "1.5"))
+        timeout_seconds = float(os.getenv(timeout_env, "1.5"))
     url = endpoint.rstrip("/") + "/v1/embeddings/query"
     response = requests.post(
         url,

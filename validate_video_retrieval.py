@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 
+import numpy as np
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
@@ -30,6 +31,23 @@ QUERY_CASES = [
 def main() -> None:
     """Run deterministic query checks without calling an LLM or remote service."""
     retriever = VideoEvidenceRetriever()
+    visual_index_checked = False
+    if retriever.visual_index is not None:
+        visual = retriever.visual_index
+        if visual.vectors.shape != (len(retriever.documents), 2048):
+            raise ValueError(f"Unexpected visual index shape: {visual.vectors.shape}")
+        if not visual.metadata.get("complete"):
+            raise ValueError("Visual index is not marked complete")
+        if visual.metadata.get("schema_version") != "video-visual-index-v1":
+            raise ValueError("Unexpected visual index schema")
+        norms = np.linalg.norm(visual.vectors, axis=1)
+        if not np.allclose(norms, 1.0, atol=1e-5):
+            raise ValueError("Visual index rows are not normalized")
+        if visual.metadata.get("fallback_scene_ids") != [
+            "espresso-001-scene-0001"
+        ]:
+            raise ValueError("Unexpected visual single-frame fallback set")
+        visual_index_checked = True
     case_results: dict[str, list[str]] = {}
     for query, expected_class in QUERY_CASES:
         results = retriever.search(query, top_k=3)
@@ -37,7 +55,18 @@ def main() -> None:
             raise ValueError(f"No video result for query: {query}")
         if any(result.product_class != expected_class for result in results):
             raise ValueError(f"Cross-product result for query: {query}")
-        if any(result.retrieval_mode not in {"bm25", "dense", "hybrid"} for result in results):
+        if any(
+            result.retrieval_mode
+            not in {
+                "bm25",
+                "dense",
+                "visual",
+                "hybrid",
+                "visual_hybrid",
+                "tri_hybrid",
+            }
+            for result in results
+        ):
             raise ValueError(f"Unknown retrieval mode for query: {query}")
         case_results[query] = [result.scene_id for result in results]
 
@@ -108,6 +137,7 @@ def main() -> None:
         json.dumps(
             {
                 "query_cases": len(QUERY_CASES),
+                "visual_index_checked": visual_index_checked,
                 "api_video_results": len(api_items),
                 "media_paths_checked": len(api_items) * 2,
                 "traversal_blocked": blocked,

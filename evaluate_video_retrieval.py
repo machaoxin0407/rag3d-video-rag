@@ -31,8 +31,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--modes",
         nargs="+",
-        default=["bm25", "dense", "hybrid"],
-        choices=["bm25", "dense", "hybrid"],
+        default=["bm25", "dense", "visual", "hybrid", "tri_hybrid"],
+        choices=["bm25", "dense", "visual", "hybrid", "tri_hybrid"],
     )
     parser.add_argument("--top-k", type=int, default=3)
     parser.add_argument("--output", type=Path)
@@ -40,6 +40,11 @@ def parse_args() -> argparse.Namespace:
         "--require-dense",
         action="store_true",
         help="Fail if dense or hybrid requests silently fall back to BM25.",
+    )
+    parser.add_argument(
+        "--require-visual",
+        action="store_true",
+        help="Fail if visual or tri_hybrid requests do not use visual scores.",
     )
     return parser.parse_args()
 
@@ -95,8 +100,21 @@ def main() -> None:
     if args.require_dense:
         for result in report["modes"]:
             requested = result["requested_mode"]
-            if requested in {"dense", "hybrid"} and requested not in result["effective_modes"]:
+            effective = result["effective_modes"]
+            if requested in {"dense", "hybrid"} and requested not in effective:
                 raise SystemExit(f"{requested} retrieval fell back instead of using dense scores")
+            if requested == "tri_hybrid" and "tri_hybrid" not in effective:
+                raise SystemExit("tri_hybrid retrieval did not use text dense scores")
+    if args.require_visual:
+        for result in report["modes"]:
+            requested = result["requested_mode"]
+            effective = result["effective_modes"]
+            if requested == "visual" and "visual" not in effective:
+                raise SystemExit("visual retrieval fell back instead of using visual scores")
+            if requested == "tri_hybrid" and "tri_hybrid" not in effective:
+                raise SystemExit(
+                    "tri_hybrid retrieval did not use both text and visual scores"
+                )
     rendered = json.dumps(report, ensure_ascii=False, indent=2)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

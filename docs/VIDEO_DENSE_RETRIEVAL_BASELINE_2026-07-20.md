@@ -8,7 +8,7 @@
 - `dense`：Qwen3 文本向量余弦相似度；
 - `hybrid`：BM25 与 dense 的加权 Reciprocal Rank Fusion（RRF）。
 
-当前 dense 索引编码的是每个视频场景已经融合的 ASR、OCR、Qwen3-VL 描述和产品别名。因此，这是“带视觉描述的场景文本稠密检索”，还不是直接对原始视频帧生成向量的跨模态检索。该取舍优先保证 2–3 个月内形成可部署产品；论文实验后续应加入 `Qwen3-VL-Embedding-2B` 等直接图文/视频检索基线。
+当前 dense 索引编码的是每个视频场景已经融合的 ASR、OCR、Qwen3-VL 描述和产品别名。因此，这是“带视觉描述的场景文本稠密检索”。项目随后已增加 `Qwen3-VL-Embedding-2B` 直接视频基线，配置与实测见 `docs/VIDEO_VISUAL_RETRIEVAL_BASELINE_2026-07-20.md`。
 
 ## 固定配置
 

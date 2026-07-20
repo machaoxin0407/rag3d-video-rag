@@ -14,7 +14,11 @@ from video_rag.retrieval import VideoEvidenceRetriever
 def main() -> None:
     """Run a warm single-query benchmark and print JSON metrics."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["bm25", "dense", "hybrid"], default="hybrid")
+    parser.add_argument(
+        "--mode",
+        choices=["bm25", "dense", "visual", "hybrid", "tri_hybrid"],
+        default="hybrid",
+    )
     parser.add_argument("--runs", type=int, default=12)
     parser.add_argument("--warmup", type=int, default=2)
     args = parser.parse_args()
