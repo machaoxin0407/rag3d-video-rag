@@ -21,6 +21,11 @@ IGNORED_WALK_DIRS = {
     ".venv-ocr",
     ".venv-vlm",
     "venv",
+    "models",
+    "checkpoints",
+    "outputs",
+    "logs",
+    "traces",
     "__pycache__",
 }
 
