@@ -37,6 +37,8 @@ def main() -> None:
             raise ValueError(f"No video result for query: {query}")
         if any(result.product_class != expected_class for result in results):
             raise ValueError(f"Cross-product result for query: {query}")
+        if any(result.retrieval_mode not in {"bm25", "dense", "hybrid"} for result in results):
+            raise ValueError(f"Unknown retrieval mode for query: {query}")
         case_results[query] = [result.scene_id for result in results]
 
     if retriever.search("订单什么时候发货？"):

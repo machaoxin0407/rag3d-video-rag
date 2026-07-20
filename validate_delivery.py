@@ -20,6 +20,7 @@ IGNORED_WALK_DIRS = {
     ".venv-asr",
     ".venv-ocr",
     ".venv-vlm",
+    ".venv-embedding",
     "venv",
     "models",
     "checkpoints",
@@ -88,6 +89,8 @@ EXECUTABLE_FILES = [
     "smoke_test.sh",
     "run_video_analysis_stage.sh",
     "setup_video_vlm_environment.sh",
+    "setup_video_embedding_environment.sh",
+    "video_embedding_service.sh",
 ]
 
 FORBIDDEN_SUFFIXES = (
