@@ -16,6 +16,8 @@ DEFAULT_ASR_RUNS = ROOT / "data_video" / "manifests" / "asr_runs.csv"
 DEFAULT_ASR_SEGMENTS = ROOT / "data_video" / "manifests" / "asr_segments.csv"
 DEFAULT_OCR_RUNS = ROOT / "data_video" / "manifests" / "ocr_runs.csv"
 DEFAULT_OCR = ROOT / "data_video" / "manifests" / "ocr_observations.csv"
+DEFAULT_VLM_RUNS = ROOT / "data_video" / "manifests" / "vlm_runs.csv"
+DEFAULT_VLM_CAPTIONS = ROOT / "data_video" / "manifests" / "vlm_scene_captions.csv"
 DEFAULT_OUTPUT = ROOT / "data_video" / "manifests" / "video_evidence_manifest.csv"
 EVIDENCE_FIELDS = [
     "evidence_id",
@@ -31,6 +33,7 @@ EVIDENCE_FIELDS = [
     "confidence",
     "asr_segment_ids",
     "ocr_observation_ids",
+    "vlm_caption_ids",
     "metadata_json",
 ]
 
@@ -109,8 +112,9 @@ def scene_evidence(
     preprocessing: dict[str, str],
     asr_rows: list[dict[str, str]],
     ocr_rows: list[dict[str, str]],
+    vlm_caption: dict[str, str],
 ) -> dict[str, str]:
-    """Create one deployable video-scene evidence object with fused text."""
+    """Create one deployable scene with fused speech, frame text, and vision."""
     start = float(scene["start_seconds"])
     end = float(scene["end_seconds"])
     speech = [row for row in asr_rows if interval_overlap(row, start, end)]
@@ -122,6 +126,8 @@ def scene_evidence(
         pieces.append(f"ASR: {speech_text}")
     if ocr_text:
         pieces.append(f"OCR: {ocr_text}")
+    if vlm_caption["caption_text"].strip():
+        pieces.append(f"VLM: {vlm_caption['caption_text'].strip()}")
     confidences = [
         min(1.0, math.exp(float(row["avg_log_probability"]))) for row in speech
     ] + [float(row["confidence"]) for row in frame_text]
@@ -139,12 +145,17 @@ def scene_evidence(
         "confidence": f"{sum(confidences) / len(confidences):.6f}" if confidences else "",
         "asr_segment_ids": "|".join(row["segment_id"] for row in speech),
         "ocr_observation_ids": "|".join(row["observation_id"] for row in frame_text),
+        "vlm_caption_ids": vlm_caption["caption_id"],
         "metadata_json": compact_json(
             {
                 "clip_bytes": int(scene["clip_bytes"]),
                 "clip_sha256": scene["clip_sha256"],
                 "detector": scene["detector"],
                 "threshold": float(scene["threshold"]),
+                "vlm_model": vlm_caption["model"],
+                "vlm_model_revision": vlm_caption["model_revision"],
+                "vlm_prompt_version": vlm_caption["prompt_version"],
+                "vlm_review_status": vlm_caption["review_status"],
             }
         ),
     }
@@ -168,6 +179,7 @@ def speech_evidence(
         "confidence": f"{min(1.0, math.exp(float(row['avg_log_probability']))):.6f}",
         "asr_segment_ids": row["segment_id"],
         "ocr_observation_ids": "",
+        "vlm_caption_ids": "",
         "metadata_json": compact_json(
             {
                 "compression_ratio": float(row["compression_ratio"]),
@@ -197,6 +209,7 @@ def ocr_evidence(
         "confidence": row["confidence"],
         "asr_segment_ids": "",
         "ocr_observation_ids": row["observation_id"],
+        "vlm_caption_ids": "",
         "metadata_json": compact_json(
             {
                 "frame_id": row["frame_id"],
@@ -214,6 +227,8 @@ def build_evidence_manifest(
     asr_segments_path: Path = DEFAULT_ASR_SEGMENTS,
     ocr_runs_path: Path = DEFAULT_OCR_RUNS,
     ocr_path: Path = DEFAULT_OCR,
+    vlm_runs_path: Path = DEFAULT_VLM_RUNS,
+    vlm_captions_path: Path = DEFAULT_VLM_CAPTIONS,
     output_path: Path = DEFAULT_OUTPUT,
 ) -> list[dict[str, str]]:
     """Validate all stage manifests and emit unified retrieval evidence rows."""
@@ -231,6 +246,22 @@ def build_evidence_manifest(
         raise ValueError("Scene manifest does not cover every preprocessed record")
     asr = group_by_record(read_csv(asr_segments_path))
     ocr = group_by_record(read_csv(ocr_path))
+    scene_ids = {
+        scene["scene_id"] for record_scenes in scenes.values() for scene in record_scenes
+    }
+    successful_vlm = {
+        row["scene_id"]
+        for row in read_csv(vlm_runs_path)
+        if row.get("status") == "success"
+    }
+    if successful_vlm != scene_ids:
+        missing = sorted(scene_ids - successful_vlm)
+        extra = sorted(successful_vlm - scene_ids)
+        raise ValueError(f"VLM run mismatch; missing={missing}, extra={extra}")
+    vlm_rows = read_csv(vlm_captions_path)
+    vlm = {row["scene_id"]: row for row in vlm_rows}
+    if len(vlm) != len(vlm_rows) or set(vlm) != scene_ids:
+        raise ValueError("VLM captions do not uniquely cover every scene")
 
     evidence: list[dict[str, str]] = []
     for record_id in sorted(expected):
@@ -240,7 +271,13 @@ def build_evidence_manifest(
         source_sha256 = preprocessing[record_id]["source_sha256"]
         for scene in record_scenes:
             evidence.append(
-                scene_evidence(scene, preprocessing[record_id], record_asr, record_ocr)
+                scene_evidence(
+                    scene,
+                    preprocessing[record_id],
+                    record_asr,
+                    record_ocr,
+                    vlm[scene["scene_id"]],
+                )
             )
         for row in record_asr:
             midpoint = (float(row["start_seconds"]) + float(row["end_seconds"])) / 2

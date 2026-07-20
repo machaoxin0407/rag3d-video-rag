@@ -50,7 +50,7 @@
 - `data/index/retrieval_index.pkl`
 - `手册_v4/`
 - `手册/插图/`
-- `data_video/manifests/`（授权、下载、预处理、ASR/OCR、场景与统一证据清单）
+- `data_video/manifests/`（授权、下载、预处理、ASR/OCR/VLM、场景与统一证据清单）
 
 ### 启动材料
 
@@ -62,8 +62,10 @@
 - `run_api.sh`
 - `smoke_test.sh`
 - `run_video_analysis_stage.sh`
+- `setup_video_vlm_environment.sh`
 - `requirements-asr.txt`
 - `requirements-ocr.txt`
+- `requirements-vlm.txt`
 - `delivery_docs/00_提交材料总览.md`
 - `delivery_docs/01_API接口说明.md`
 - `delivery_docs/02_源码运行说明.md`

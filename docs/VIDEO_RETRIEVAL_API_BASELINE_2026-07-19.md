@@ -1,5 +1,7 @@
 # 视频检索与 API 集成基线（2026-07-19）
 
+> 历史基线说明：本文保留 ASR/OCR 检索 MVP 的原始结果。2026-07-20 已把 VLM 描述加入同一 BM25 场景索引，最新结果见 [VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md](./VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md)。
+
 ## 产品结果
 
 现有 `/chat` 技术问答现在可以同时返回：

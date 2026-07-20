@@ -19,6 +19,7 @@ IGNORED_WALK_DIRS = {
     ".venv",
     ".venv-asr",
     ".venv-ocr",
+    ".venv-vlm",
     "venv",
     "__pycache__",
 }
@@ -32,6 +33,8 @@ REQUIRED_FILES = [
     "config_runtime.py",
     "run_api.sh",
     "smoke_test.sh",
+    "caption_video_scenes.py",
+    "requirements-vlm.txt",
     "api_server.py",
     "agent.py",
     "llm_router.py",
@@ -79,6 +82,7 @@ EXECUTABLE_FILES = [
     "run_api.sh",
     "smoke_test.sh",
     "run_video_analysis_stage.sh",
+    "setup_video_vlm_environment.sh",
 ]
 
 FORBIDDEN_SUFFIXES = (

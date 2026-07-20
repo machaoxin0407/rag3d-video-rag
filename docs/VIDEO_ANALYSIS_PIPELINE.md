@@ -8,9 +8,10 @@
 preprocessing_manifest.csv
   ├─ FFmpeg 场景检测与 MP4 片段 ─> scene_manifest.csv
   ├─ faster-whisper large-v3 ───> asr_runs.csv + asr_segments.csv
-  └─ PaddleOCR 关键帧识别 ──────> ocr_runs.csv + ocr_observations.csv
+  ├─ PaddleOCR 关键帧识别 ──────> ocr_runs.csv + ocr_observations.csv
+  └─ Qwen3-VL 场景多帧描述 ─────> vlm_runs.csv + vlm_scene_captions.csv
 
-scene + ASR + OCR
+scene + ASR + OCR + VLM
   └─ build_video_evidence.py ────> video_evidence_manifest.csv
 ```
 
@@ -24,7 +25,7 @@ scene + ASR + OCR
 
 ## 隔离环境
 
-现有 `.venv` 继续负责手册 RAG、FFmpeg 和镜头切分。ASR 与 OCR 使用两个短生命周期隔离环境，防止 PaddlePaddle、CTranslate2 和现有 PyTorch 的 CUDA 依赖互相覆盖。
+现有 `.venv` 继续负责手册 RAG、FFmpeg 和镜头切分。ASR、OCR 与 VLM 使用三个短生命周期隔离环境，防止 PaddlePaddle、CTranslate2 和 PyTorch 的 CUDA 依赖互相覆盖。
 
 ```bash
 cd ~/rag3d-video
@@ -34,6 +35,8 @@ python3 -m virtualenv .venv-asr
 
 python3 -m virtualenv .venv-ocr
 .venv-ocr/bin/pip install -r requirements-ocr.txt
+
+./setup_video_vlm_environment.sh
 ```
 
 模型缓存保存在已忽略的 `models/`，不进入 Git。
@@ -66,22 +69,33 @@ FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP
 
 `de` 在 PP-OCRv5 中选择覆盖德语、葡萄牙语、英语等语言的 Latin 多语识别模型。当前只有 156 张关键帧，CPU 模式更易部署且不会引入第二套 CUDA 运行时。
 
-## 4. 统一证据清单
+## 4. 离线 VLM 场景描述
+
+```bash
+./run_video_analysis_stage.sh vlm
+```
+
+VLM 阶段使用 `Qwen/Qwen3-VL-8B-Instruct`，为每个场景在内部时间点抽取 1–3 张审计帧，并生成中英文摘要、可见产品、部件、动作、状态、安全文字与不确定性。产品清单类别只用于通用设备类别消歧，不允许据此推断型号、规格或不可见动作。
+
+输出默认标记为 `review_status=pending`。模型描述可以进入实验检索索引，但不能当作人工金标准；三人标注团队仍需按 `docs/VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md` 中的队列优先级复核。
+
+## 5. 统一证据清单
 
 ```bash
 ./run_video_analysis_stage.sh evidence
 ```
 
-构建程序要求 11 条记录的场景、ASR 和 OCR source-level run 全部成功，否则拒绝输出最终证据清单。ASR 段和 OCR 观察项通过时间戳关联到具体场景片段。
+构建程序要求 11 条记录的场景、ASR、OCR 以及 25 个场景的 VLM run 全部成功，否则拒绝输出最终证据清单。ASR 段和 OCR 观察项通过时间戳关联到具体场景片段，VLM 描述按 `scene_id` 一对一融合。
 
 ## 验收原则
 
 1. 11 条视频均有连续、无越界的场景覆盖；
 2. 每个生成片段存在、可解码，且 SHA-256 与清单相符；
-3. ASR 与 OCR run 均为 11/11 成功；
+3. ASR 与 OCR run 均为 11/11 成功，VLM run 为 25/25 成功；
 4. 所有语音段和 OCR 时间戳都能映射到一个场景；
 5. 统一证据 ID 全局唯一，所有媒体路径均为项目内相对路径；
-6. ASR 进程退出后无项目 GPU 进程残留。
+6. VLM 帧路径、结构化 JSON、模型修订号和提示词版本均有效；
+7. ASR/VLM 进程退出后无项目 GPU 进程残留。
 
 完整机器验收命令：
 
@@ -91,4 +105,4 @@ FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP
 
 ## 当前边界
 
-当前 `video_scene` 的文本仅融合 ASR 与 OCR。没有语音、也没有可识别屏幕文字的纯视觉片段可能暂时为空文本；下一阶段需要增加 VLM 场景 caption，随后才能完成视觉语义召回和跨模态重排。
+当前 `video_scene` 已融合 ASR、OCR 与 VLM 描述，25 个场景均有非空检索文本。当前检索仍是带产品过滤的 BM25，不等同于视觉向量召回；下一阶段需要增加 dense embedding、跨模态候选融合和 rerank，并用独立人工标注查询集评估。

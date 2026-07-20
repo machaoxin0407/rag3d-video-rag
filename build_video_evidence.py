@@ -14,6 +14,8 @@ from video_rag.evidence import (
     DEFAULT_OUTPUT,
     DEFAULT_PREPROCESSING,
     DEFAULT_SCENES,
+    DEFAULT_VLM_CAPTIONS,
+    DEFAULT_VLM_RUNS,
     build_evidence_manifest,
 )
 
@@ -27,6 +29,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--asr-segments", type=Path, default=DEFAULT_ASR_SEGMENTS)
     parser.add_argument("--ocr-runs", type=Path, default=DEFAULT_OCR_RUNS)
     parser.add_argument("--ocr", type=Path, default=DEFAULT_OCR)
+    parser.add_argument("--vlm-runs", type=Path, default=DEFAULT_VLM_RUNS)
+    parser.add_argument("--vlm-captions", type=Path, default=DEFAULT_VLM_CAPTIONS)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     return parser.parse_args()
 
@@ -41,6 +45,8 @@ def main() -> None:
         asr_segments_path=args.asr_segments,
         ocr_runs_path=args.ocr_runs,
         ocr_path=args.ocr,
+        vlm_runs_path=args.vlm_runs,
+        vlm_captions_path=args.vlm_captions,
         output_path=args.output,
     )
     counts = {

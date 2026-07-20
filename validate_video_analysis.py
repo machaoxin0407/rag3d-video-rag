@@ -162,6 +162,53 @@ def validate_ocr(
     }
 
 
+def validate_vlm(
+    scenes: list[dict[str, str]],
+    runs: list[dict[str, str]],
+    captions: list[dict[str, str]],
+) -> dict[str, int]:
+    """Check scene coverage, structured JSON fields, frames, and review state."""
+    scene_ids = {row["scene_id"] for row in scenes}
+    successful = {row["scene_id"]: row for row in runs if row["status"] == "success"}
+    if set(successful) != scene_ids:
+        raise ValueError("VLM runs do not cover every scene")
+    by_scene = {row["scene_id"]: row for row in captions}
+    if len(by_scene) != len(captions) or set(by_scene) != scene_ids:
+        raise ValueError("VLM captions do not uniquely cover every scene")
+    pending = 0
+    for scene_id, row in by_scene.items():
+        run = successful[scene_id]
+        if row["record_id"] != run["record_id"]:
+            raise ValueError(f"VLM record mismatch: {scene_id}")
+        if not row["summary_en"].strip() or not row["summary_zh"].strip():
+            raise ValueError(f"Empty VLM bilingual summary: {scene_id}")
+        if not row["caption_text"].strip():
+            raise ValueError(f"Empty VLM retrieval text: {scene_id}")
+        if not row["catalog_product_class"].strip():
+            raise ValueError(f"Missing VLM catalog product class: {scene_id}")
+        for field in (
+            "visible_components_json",
+            "visible_actions_json",
+            "visible_states_json",
+            "safety_or_warning_text_json",
+        ):
+            payload = json.loads(row[field])
+            if not isinstance(payload, list) or any(
+                not isinstance(item, str) for item in payload
+            ):
+                raise ValueError(f"Invalid VLM list field {field}: {scene_id}")
+        frame_paths = json.loads(row["frame_paths_json"])
+        if len(frame_paths) != int(run["frame_count"]) or not frame_paths:
+            raise ValueError(f"VLM frame count mismatch: {scene_id}")
+        for relative in frame_paths:
+            if not project_path(relative).is_file():
+                raise ValueError(f"Missing VLM audit frame: {relative}")
+        if row["review_status"] not in {"pending", "approved", "corrected", "rejected"}:
+            raise ValueError(f"Invalid VLM review status: {scene_id}")
+        pending += row["review_status"] == "pending"
+    return {"vlm_captions": len(captions), "vlm_pending_review": pending}
+
+
 def validate_evidence(
     preprocessing: dict[str, dict[str, str]],
     scenes: list[dict[str, str]],
@@ -190,6 +237,8 @@ def validate_evidence(
         if row["thumbnail_path"] and not project_path(row["thumbnail_path"]).is_file():
             raise ValueError(f"Missing evidence thumbnail: {row['evidence_id']}")
         json.loads(row["metadata_json"])
+        if row["evidence_type"] == "video_scene" and not row["vlm_caption_ids"]:
+            raise ValueError(f"Scene evidence lacks VLM caption: {row['evidence_id']}")
         if row["evidence_type"] == "video_scene" and not row["text"].strip():
             empty_scene_text += 1
     return {
@@ -212,11 +261,14 @@ def main() -> None:
     asr_segments = read_csv("asr_segments.csv")
     ocr_runs = read_csv("ocr_runs.csv")
     observations = read_csv("ocr_observations.csv")
+    vlm_runs = read_csv("vlm_runs.csv")
+    vlm_captions = read_csv("vlm_scene_captions.csv")
     evidence = read_csv("video_evidence_manifest.csv")
     report = {"records": len(preprocessing)}
     report.update(validate_scenes(preprocessing, scenes))
     report.update(validate_asr(preprocessing, asr_runs, asr_segments))
     report.update(validate_ocr(preprocessing, ocr_runs, observations))
+    report.update(validate_vlm(scenes, vlm_runs, vlm_captions))
     report.update(
         validate_evidence(preprocessing, scenes, asr_segments, observations, evidence)
     )

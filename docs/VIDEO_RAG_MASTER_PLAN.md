@@ -1,9 +1,10 @@
 # 产品支持三模态 Video RAG：研发与论文总计划
 
-> 文档状态：Baseline v1.0  
+> 文档状态：Baseline v1.1（视频检索 API 与 VLM 场景描述已完成）
 > 固化日期：2026-07-16  
 > 计划周期：10 周（目标 2–3 个月完成可部署产品与 SCI 首投）  
 > 第一周执行清单：[WEEK_01_EXECUTION_PLAN.md](./WEEK_01_EXECUTION_PLAN.md)
+> 最新执行基线：[VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md](./VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md)
 
 ## 1. 项目目标
 

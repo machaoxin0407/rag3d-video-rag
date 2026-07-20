@@ -35,11 +35,19 @@ case "$stage" in
       --device cpu \
       --minimum-score 0.50
     ;;
+  vlm)
+    export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
+    export HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
+    exec .venv-vlm/bin/python caption_video_scenes.py \
+      --model Qwen/Qwen3-VL-8B-Instruct \
+      --device cuda:0 \
+      --dtype bfloat16
+    ;;
   evidence)
     exec .venv/bin/python build_video_evidence.py
     ;;
   *)
-    echo "usage: $0 {scenes|asr|ocr|evidence}" >&2
+    echo "usage: $0 {scenes|asr|ocr|vlm|evidence}" >&2
     exit 2
     ;;
 esac

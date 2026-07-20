@@ -1,5 +1,7 @@
 # 视频内容分析基线（2026-07-19）
 
+> 历史基线说明：本文保留 ASR/OCR 阶段的原始结果。2026-07-20 已完成 VLM 补全，最新指标与边界见 [VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md](./VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md)。
+
 ## 执行配置
 
 - 数据入口：11 条 A/B/C 终审通过视频；
