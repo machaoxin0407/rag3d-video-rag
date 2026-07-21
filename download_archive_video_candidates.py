@@ -318,7 +318,7 @@ def main() -> None:
                 "direct_url": direct_url,
                 "source_variant": plain(selected.get("format")) or "archive_file",
                 "transport": transport,
-                "local_path": str(destination.relative_to(ROOT)),
+                "local_path": str(destination.relative_to(ROOT)).replace("\\", "/"),
                 "downloaded_at": datetime.now(timezone.utc).isoformat(),
                 "bytes": str(destination.stat().st_size),
                 "sha256": digest,

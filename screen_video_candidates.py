@@ -89,7 +89,7 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
 
 
 def project_path(value: str) -> Path:
-    candidate = (ROOT / value).resolve()
+    candidate = (ROOT / value.replace("\\", "/")).resolve()
     try:
         candidate.relative_to(ROOT.resolve())
     except ValueError as exc:
