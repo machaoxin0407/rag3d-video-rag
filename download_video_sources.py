@@ -138,6 +138,28 @@ def download_record(
     partial = destination.with_suffix(destination.suffix + ".part")
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    if destination.exists() and destination.stat().st_size > 0:
+        if destination.stat().st_size > max_bytes:
+            raise ValueError(
+                f"Refusing {record['record_id']}: existing file exceeds {max_bytes} bytes"
+            )
+        return {
+            "record_id": record["record_id"],
+            "inventory_status": record["status"],
+            "source_page_url": record["source_page_url"],
+            "direct_url": direct_url,
+            "source_variant": source_variant,
+            "transport": "existing_recovery",
+            "local_path": str(destination.relative_to(ROOT)),
+            "downloaded_at": datetime.now(timezone.utc).isoformat(),
+            "bytes": str(destination.stat().st_size),
+            "sha256": sha256_file(destination),
+            "content_type": "",
+            "etag": "",
+            "last_modified": "",
+            "authorization_reference": authorization_reference,
+        }
+
     if transport == "curl":
         partial.unlink(missing_ok=True)
         try:
@@ -259,6 +281,10 @@ def download_record(
 def main() -> None:
     """Download eligible inventory records while retaining partial successes."""
     args = parse_args()
+    args.inventory = args.inventory if args.inventory.is_absolute() else ROOT / args.inventory
+    args.output_dir = args.output_dir if args.output_dir.is_absolute() else ROOT / args.output_dir
+    args.receipts = args.receipts if args.receipts.is_absolute() else ROOT / args.receipts
+    args.overrides = args.overrides if args.overrides.is_absolute() else ROOT / args.overrides
     allowed_statuses = {value.strip() for value in args.statuses.split(",") if value.strip()}
     receipts = load_receipts(args.receipts)
     overrides = load_overrides(args.overrides)
