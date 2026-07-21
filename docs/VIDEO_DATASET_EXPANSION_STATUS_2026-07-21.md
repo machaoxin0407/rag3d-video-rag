@@ -71,7 +71,7 @@ Archive CDN 当前吞吐较低且偶发 HTTP 500。任务使用可续传方式�
 审核清单为 `data_video/manifests/candidate_review_queue.csv`：
 
 1. R1 全量复核 26 条 `full_positive_review`，先处理 6 条 `high` 风险项，再处理 20 条普通项；
-2. R1 复核 9 条 `rejected_audit_sample`。该样本为 42 条 AI 拒绝项的 20% 向上取整，并保证每个产品类别至少一条；
+2. R1 复核 9 条 `rejected_audit_sample`。该样本为 42 条 AI 拒绝项的 20% 向上取整，并保证每个存在 AI 拒绝项的产品类别至少一条；
 3. R1 打开来源页并查看完整视频，填写许可证据状态、修正类别/过程/功能步骤、隐私与安全风险、修正原因、最终决定和复核时间；
 4. 只有 `review_status=completed`、`license_evidence_status=verified` 且 `final_decision=accept` 的视频才允许迁移到正式清单；
 5. 抽查发现 AI 误拒时，将该条改为 `accept` 并按完整接受项标准补齐字段；
