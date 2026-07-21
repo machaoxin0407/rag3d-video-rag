@@ -36,6 +36,7 @@ data_video/raw/
 data_video/processed/
 data_video/keyframes/
 data_video/vlm_frames/
+data_video/review/
 data_video/transcripts/
 data_video/indexes/
 models/
