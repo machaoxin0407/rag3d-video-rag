@@ -66,6 +66,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--record-id", action="append")
+    parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--limit", type=int)
     return parser.parse_args()
 
@@ -183,7 +184,13 @@ def main() -> None:
         missing = selected - {row["record_id"] for row in rows}
         if missing:
             raise ValueError(f"Unknown or technically failed records: {sorted(missing)}")
-    if args.limit:
+    if args.offset < 0:
+        raise ValueError("--offset cannot be negative")
+    if args.offset:
+        rows = rows[args.offset :]
+    if args.limit is not None:
+        if args.limit <= 0:
+            raise ValueError("--limit must be greater than zero")
         rows = rows[: args.limit]
     prior = {
         row["record_id"]: row for row in read_csv(args.output)
