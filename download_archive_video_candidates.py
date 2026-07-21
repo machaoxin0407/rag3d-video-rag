@@ -58,6 +58,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-bytes", type=int, default=350_000_000)
     parser.add_argument("--delay-seconds", type=float, default=2.0)
     parser.add_argument(
+        "--plan-only",
+        action="store_true",
+        help="Resolve metadata and print chosen files without downloading.",
+    )
+    parser.add_argument(
         "--record-id",
         action="append",
         help="Process only the selected record ID; repeat for multiple candidates.",
@@ -263,6 +268,12 @@ def main() -> None:
                 f"https://archive.org/download/{quote(identifier, safe='')}/"
                 f"{quote(filename, safe='')}"
             )
+            if args.plan_only:
+                print(
+                    f"planned={record_id} bytes={numeric(selected.get('size'))} "
+                    f"file={filename} url={direct_url}"
+                )
+                continue
             suffix = Path(filename).suffix.lower()
             destination = args.output_dir / f"{record_id}{suffix}"
             if destination.exists():
