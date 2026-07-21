@@ -91,7 +91,7 @@ FFmpeg 的场景变化分数用于生成边界。每个片段转为 H.264/AAC MP
 
 VLM 阶段使用 `Qwen/Qwen3-VL-8B-Instruct`，为每个场景在内部时间点抽取 1–3 张审计帧，并生成中英文摘要、可见产品、部件、动作、状态、安全文字与不确定性。产品清单类别只用于通用设备类别消歧，不允许据此推断型号、规格或不可见动作。
 
-输出默认标记为 `review_status=pending`。模型描述可以进入实验检索索引，但不能当作人工金标准；三人标注团队仍需按 `docs/VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md` 中的队列优先级复核。
+输出默认标记为 `review_status=pending`。模型描述可以进入实验检索索引，但不能当作人工金标准；R1 仍需按 `docs/AI_SINGLE_REVIEWER_ANNOTATION_PROTOCOL_2026-07-22.md` 完成接受项全量复核和拒绝项抽查。
 
 ## 5. 统一证据清单
 
@@ -123,4 +123,4 @@ VLM 阶段使用 `Qwen/Qwen3-VL-8B-Instruct`，为每个场景在内部时间点
 
 ## 当前边界
 
-当前 `video_scene` 已融合 ASR、OCR 与 VLM 描述，25 个场景均有非空检索文本。检索已支持 BM25、Qwen3 文本向量、Qwen3-VL 直接视频向量、两路 RRF 和三路 RRF。下一阶段需要在冻结的三人人工标注集上决定默认模式，并评估可选 multimodal reranker。文本 dense 配置见 `docs/VIDEO_DENSE_RETRIEVAL_BASELINE_2026-07-20.md`，直接视频配置见 `docs/VIDEO_VISUAL_RETRIEVAL_BASELINE_2026-07-20.md`。
+当前 `video_scene` 已融合 ASR、OCR 与 VLM 描述，25 个场景均有非空检索文本。检索已支持 BM25、Qwen3 文本向量、Qwen3-VL 直接视频向量、两路 RRF 和三路 RRF。下一阶段需要在冻结并由 R1 全量复核的人工金标准上决定默认模式，并评估可选 multimodal reranker。文本 dense 配置见 `docs/VIDEO_DENSE_RETRIEVAL_BASELINE_2026-07-20.md`，直接视频配置见 `docs/VIDEO_VISUAL_RETRIEVAL_BASELINE_2026-07-20.md`。

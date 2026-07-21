@@ -1,10 +1,11 @@
 # 产品支持三模态 Video RAG：研发与论文总计划
 
-> 文档状态：Baseline v1.1（视频检索 API 与 VLM 场景描述已完成）
+> 文档状态：Baseline v1.2（采用 AI 预标注 + 单人复核）
 > 固化日期：2026-07-16  
 > 计划周期：10 周（目标 2–3 个月完成可部署产品与 SCI 首投）  
 > 第一周执行清单：[WEEK_01_EXECUTION_PLAN.md](./WEEK_01_EXECUTION_PLAN.md)
 > 最新执行基线：[VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md](./VIDEO_VLM_CAPTION_BASELINE_2026-07-20.md)
+> 当前标注协议：[AI_SINGLE_REVIEWER_ANNOTATION_PROTOCOL_2026-07-22.md](./AI_SINGLE_REVIEWER_ANNOTATION_PROTOCOL_2026-07-22.md)
 
 ## 1. 项目目标
 
@@ -29,7 +30,7 @@
 - 当前没有现成视频资料；
 - 采用“开放许可视频开发 + 独立创作者委托录制测试”的数据路线；
 - 第一阶段接受只覆盖 8–12 类代表性产品；
-- 有 3 人可以参与人工标注；
+- 采用 AI 预标注，由 1 名复核人完成人工最终判断；
 - 可公开脱敏后的代码和标注；
 - 可使用两张 RTX 4090 24GB 和其他必要资源；
 - 目标为 2–3 个月形成首次 SCI 投稿；
@@ -223,14 +224,15 @@ manual_section_id, manual_image_ids,
 error_type, severity, evidence_text
 ```
 
-三人分工原则：
+标注与复核原则：
 
-- 训练集：一人主标，一人抽检；
-- 验证集：两人独立标注，第三人裁决；
-- 测试集：两人独立标注，第三人全部复核；
-- 每周抽取 10% 重复标注；
-- 时间边界计算 temporal IoU；
-- 类别标注计算 Cohen's Kappa 或 Krippendorff's Alpha。
+- AI 对全部候选视频生成结构化预标注，并保留模型、提示词版本和原始输出；
+- R1 全量复核所有 AI 保留视频，可修正类别、过程相关性、功能步骤、时间边界、隐私和安全标签；
+- R1 对 AI 拒绝视频进行固定种子、按产品类别分层的 20% 抽查；
+- R1 全量复核冻结后的 100 个检索问题及其相关性、时间边界和来源泄漏标签；
+- 数据划分在模型选择前按来源冻结，测试集不得用于提示词或阈值调优；
+- 报告 AI 接受项修正率、最终接受率、拒绝抽查误拒率及 Wilson 95% 置信区间；
+- 由于只有一名人工复核人，不计算或声称 Cohen's Kappa、Krippendorff's Alpha 等标注员间一致性。
 
 ### 7.4 防止数据泄漏
 

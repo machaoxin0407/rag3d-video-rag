@@ -1,12 +1,12 @@
 # 视频预处理流水线
 
-该流水线把已授权并通过 A/B/C 终审的原始视频转换为后续 ASR、OCR、镜头切分和检索所需的基础产物。默认全程使用 CPU 与 FFmpeg，不申请 GPU，也不启动常驻服务。
+该流水线把已授权并通过最终人工复核的原始视频转换为后续 ASR、OCR、镜头切分和检索所需的基础产物。初始 11 条历史数据使用 A/B/C 记录；新增候选采用 AI 预标注 + R1 单人复核。默认全程使用 CPU 与 FFmpeg，不申请 GPU，也不启动常驻服务。
 
 ## 输入门禁
 
 `preprocess_video_sources.py` 只处理同时满足以下条件的记录：
 
-1. `review_assignments.csv` 中 A、B、C 三个状态均为通过；
+1. 初始历史批次在 `review_assignments.csv` 中 A、B、C 三个状态均为通过；新增批次必须先从单人复核队列迁移为同等效力的最终接受记录；
 2. `final_decision` 为 `accept`；
 3. `download_receipts.csv` 中存在下载凭证；
 4. 原始文件的实际 SHA-256 与凭证一致。
