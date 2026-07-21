@@ -9,6 +9,8 @@ import hashlib
 import html
 import os
 import re
+import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -55,6 +57,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--max-bytes", type=int, default=350_000_000)
     parser.add_argument("--delay-seconds", type=float, default=2.0)
+    parser.add_argument(
+        "--transport",
+        choices=("requests", "powershell"),
+        default="powershell" if sys.platform == "win32" else "requests",
+    )
     parser.add_argument(
         "--authorization-reference",
         default="owner-confirmed-2026-07-21-dataset-expansion",
@@ -152,9 +159,37 @@ def license_fields(metadata: dict[str, Any], authorization: str) -> tuple[str, s
 
 
 def download(
-    session: requests.Session, url: str, destination: Path, max_bytes: int
-) -> requests.Response:
+    session: requests.Session,
+    url: str,
+    destination: Path,
+    max_bytes: int,
+    transport: str,
+) -> dict[str, str]:
     partial = destination.with_suffix(destination.suffix + ".part")
+    partial.unlink(missing_ok=True)
+    if transport == "powershell":
+        environment = os.environ.copy()
+        environment["RAG3D_ARCHIVE_URL"] = url
+        environment["RAG3D_ARCHIVE_OUTPUT"] = str(partial.resolve())
+        command = (
+            "$ProgressPreference='SilentlyContinue'; "
+            "$u=[Environment]::GetEnvironmentVariable('RAG3D_ARCHIVE_URL'); "
+            "$o=[Environment]::GetEnvironmentVariable('RAG3D_ARCHIVE_OUTPUT'); "
+            "Invoke-WebRequest -UseBasicParsing -Uri $u -OutFile $o -TimeoutSec 1800"
+        )
+        try:
+            subprocess.run(
+                ["powershell.exe", "-NoProfile", "-Command", command],
+                check=True,
+                env=environment,
+            )
+            if partial.stat().st_size > max_bytes:
+                raise ValueError(f"download exceeds limit {max_bytes}")
+            os.replace(partial, destination)
+            return {}
+        finally:
+            partial.unlink(missing_ok=True)
+
     response = session.get(url, stream=True, timeout=(20, 300))
     response.raise_for_status()
     expected = numeric(response.headers.get("content-length"))
@@ -172,7 +207,13 @@ def download(
                     raise ValueError(f"stream exceeds limit {max_bytes}")
                 stream.write(block)
         os.replace(partial, destination)
-        return response
+        headers = {
+            "content-type": response.headers.get("content-type", ""),
+            "etag": response.headers.get("etag", ""),
+            "last-modified": response.headers.get("last-modified", ""),
+        }
+        response.close()
+        return headers
     except Exception:
         response.close()
         partial.unlink(missing_ok=True)
@@ -213,7 +254,9 @@ def main() -> None:
             )
             suffix = Path(filename).suffix.lower()
             destination = args.output_dir / f"{record_id}{suffix}"
-            response = download(session, direct_url, destination, args.max_bytes)
+            response_headers = download(
+                session, direct_url, destination, args.max_bytes, args.transport
+            )
             digest = sha256_file(destination)
             license_id, license_url, redistribution = license_fields(
                 metadata, args.authorization_reference
@@ -253,17 +296,16 @@ def main() -> None:
                 "source_page_url": source_page,
                 "direct_url": direct_url,
                 "source_variant": plain(selected.get("format")) or "archive_file",
-                "transport": "requests",
+                "transport": args.transport,
                 "local_path": str(destination.relative_to(ROOT)),
                 "downloaded_at": datetime.now(timezone.utc).isoformat(),
                 "bytes": str(destination.stat().st_size),
                 "sha256": digest,
-                "content_type": response.headers.get("content-type", "").split(";", 1)[0],
-                "etag": response.headers.get("etag", ""),
-                "last_modified": response.headers.get("last-modified", ""),
+                "content_type": response_headers.get("content-type", "").split(";", 1)[0],
+                "etag": response_headers.get("etag", ""),
+                "last_modified": response_headers.get("last-modified", ""),
                 "authorization_reference": args.authorization_reference,
             }
-            response.close()
             write_rows(args.inventory, INVENTORY_FIELDS, inventory)
             write_rows(args.receipts, RECEIPT_FIELDS, receipts)
             print(
