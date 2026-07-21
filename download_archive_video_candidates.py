@@ -58,6 +58,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-bytes", type=int, default=350_000_000)
     parser.add_argument("--delay-seconds", type=float, default=2.0)
     parser.add_argument(
+        "--record-id",
+        action="append",
+        help="Process only the selected record ID; repeat for multiple candidates.",
+    )
+    parser.add_argument(
         "--transport",
         choices=("requests", "powershell"),
         default="powershell" if sys.platform == "win32" else "requests",
@@ -227,6 +232,12 @@ def main() -> None:
     receipts = load_rows(args.receipts, "record_id")
     with args.seeds.open("r", encoding="utf-8", newline="") as stream:
         seeds = list(csv.DictReader(stream))
+    if args.record_id:
+        selected_ids = set(args.record_id)
+        seeds = [seed for seed in seeds if seed["record_id"] in selected_ids]
+        missing_ids = selected_ids - {seed["record_id"] for seed in seeds}
+        if missing_ids:
+            raise ValueError(f"Unknown record IDs: {', '.join(sorted(missing_ids))}")
 
     session = requests.Session()
     session.headers["User-Agent"] = "RAG3D-DatasetBuilder/0.2 (academic dataset audit)"
@@ -254,9 +265,19 @@ def main() -> None:
             )
             suffix = Path(filename).suffix.lower()
             destination = args.output_dir / f"{record_id}{suffix}"
-            response_headers = download(
-                session, direct_url, destination, args.max_bytes, args.transport
-            )
+            if destination.exists():
+                existing_bytes = destination.stat().st_size
+                if existing_bytes < 500_000 or existing_bytes > args.max_bytes:
+                    raise ValueError(
+                        f"existing file size {existing_bytes} is outside allowed bounds"
+                    )
+                response_headers: dict[str, str] = {}
+                transport = "existing_recovery"
+            else:
+                response_headers = download(
+                    session, direct_url, destination, args.max_bytes, args.transport
+                )
+                transport = args.transport
             digest = sha256_file(destination)
             license_id, license_url, redistribution = license_fields(
                 metadata, args.authorization_reference
@@ -296,7 +317,7 @@ def main() -> None:
                 "source_page_url": source_page,
                 "direct_url": direct_url,
                 "source_variant": plain(selected.get("format")) or "archive_file",
-                "transport": args.transport,
+                "transport": transport,
                 "local_path": str(destination.relative_to(ROOT)),
                 "downloaded_at": datetime.now(timezone.utc).isoformat(),
                 "bytes": str(destination.stat().st_size),
