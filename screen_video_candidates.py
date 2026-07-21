@@ -289,6 +289,10 @@ def main() -> None:
     args = parse_args()
     if args.samples <= 0:
         raise ValueError("--samples must be greater than zero")
+    for name in ("receipts", "inventory", "output", "frames_dir"):
+        value = getattr(args, name)
+        if not value.is_absolute():
+            setattr(args, name, project_path(str(value)))
     import imageio_ffmpeg
 
     ffmpeg = Path(imageio_ffmpeg.get_ffmpeg_exe())
