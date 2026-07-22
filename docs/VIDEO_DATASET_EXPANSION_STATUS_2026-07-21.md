@@ -26,25 +26,29 @@
 | AI 拒绝项进入 R1 分层抽查 | 9 / 42 |
 | R1 当前总复核队列 | 35 |
 | 其中高风险优先复核 | 6 |
+| R1 已完成 | 35 / 35 |
+| R1 最终接受 | 19 |
+| R1 最终拒绝 | 16 |
+| AI 拒绝抽查误拒 | 0 / 9 |
 | 五帧视觉近重复对（阈值 12） | 0 |
 
 7 条技术淘汰项只因文件过小或分辨率不足；42 条内容淘汰项主要是搜索词误命中，包括航天真空试验、Hoover 人名/水坝、压力清洗机、3D 打印、动物或影片标题等。它们保留审计行，其中 9 条按固定种子和产品类别分层进入人工抽查，其余不进入正式数据池。
 
 ## 3. 当前缺口估计
 
-下表只把“正式已接受视频 + 普通优先级人工候选”计入可用上限。高风险候选不计入，因为其中已有明显类别错配或缺少功能步骤。第一阶段目标为每类 13 条。
+下表合并初始 10 条正式视频与本轮 R1 接受的 19 条视频。第一阶段目标为每类 13 条。
 
-| 产品类别 | 正式已接受 | 普通候选 | 高风险候选 | 审核前可用上限 | 距 13 条仍缺 |
-|---|---:|---:|---:|---:|---:|
-| Air Fryer | 0 | 2 | 0 | 2 | 11 |
-| Espresso Machine | 3 | 7 | 1 | 10 | 3 |
-| Pressure Cooker | 1 | 0 | 3 | 1 | 12 |
-| Washing Machine | 3 | 4 | 0 | 7 | 6 |
-| Vacuum | 2 | 5 | 1 | 7 | 6 |
-| Printer | 1 | 2 | 1 | 3 | 10 |
-| **合计** | **10** | **20** | **6** | **30** | **48** |
+| 产品类别 | 初始正式接受 | 本轮 R1 接受 | 当前合计 | 距 13 条仍缺 |
+|---|---:|---:|---:|---:|
+| Air Fryer | 0 | 3 | 3 | 10 |
+| Espresso Machine | 3 | 7 | 10 | 3 |
+| Pressure Cooker | 1 | 0 | 1 | 12 |
+| Washing Machine | 3 | 3 | 6 | 7 |
+| Vacuum | 2 | 4 | 6 | 7 |
+| Printer | 1 | 2 | 3 | 10 |
+| **合计** | **10** | **19** | **29** | **49** |
 
-这是审核前的乐观上限，不是最终规模。R1 复核仍可能淘汰普通候选，因此实际缺口可能更大。
+Pressure Cooker、Air Fryer 和 Printer 仍是最高优先级缺口。本批审核完成记录见 `SINGLE_REVIEWER_COMPLETION_2026-07-22.md`。
 
 ## 4. 六条高风险候选
 
@@ -59,10 +63,17 @@
 
 ## 5. 正在执行的下载队列
 
-以下 7 个已授权 Internet Archive 任务已进入 Windows BITS 可续传队列，完成后仍需登记、哈希、技术筛选和内容筛选：
+7 个已授权 Internet Archive 任务中，4 个已经下载落盘：
 
-- Air Fryer：`airfryer-002`、`airfryer-005`、`airfryer-008`；
-- Pressure Cooker：`pressure-010`、`pressure-011`、`pressure-012`、`pressure-017`。
+- Air Fryer：`airfryer-002`、`airfryer-008`；
+- Pressure Cooker：`pressure-010`、`pressure-017`。
+
+3 个仍在 Windows BITS 可续传队列：
+
+- Air Fryer：`airfryer-005`；
+- Pressure Cooker：`pressure-011`、`pressure-012`。
+
+7 条全部仍需登记、哈希、技术筛选和 AI 内容筛选；只有通过筛选的条目才进入增量 R1 复核包。
 
 Archive CDN 当前吞吐较低且偶发 HTTP 500。任务使用可续传方式，不绕过访问控制，也不把未完成文件计入数据集规模。
 
@@ -70,8 +81,8 @@ Archive CDN 当前吞吐较低且偶发 HTTP 500。任务使用可续传方式�
 
 审核清单为 `data_video/manifests/candidate_review_queue.csv`：
 
-1. R1 全量复核 26 条 `full_positive_review`，先处理 6 条 `high` 风险项，再处理 20 条普通项；
-2. R1 复核 9 条 `rejected_audit_sample`。该样本为 42 条 AI 拒绝项的 20% 向上取整，并保证每个存在 AI 拒绝项的产品类别至少一条；
+1. R1 已全量复核 26 条 `full_positive_review`；
+2. R1 已复核 9 条 `rejected_audit_sample`，9 条均确认拒绝；
 3. R1 打开来源页并查看完整视频，填写许可证据状态、修正类别/过程/功能步骤、隐私与安全风险、修正原因、最终决定和复核时间；
 4. 只有 `review_status=completed`、`license_evidence_status=verified` 且 `final_decision=accept` 的视频才允许迁移到正式清单；
 5. 抽查发现 AI 误拒时，将该条改为 `accept` 并按完整接受项标准补齐字段；
@@ -80,7 +91,7 @@ Archive CDN 当前吞吐较低且偶发 HTTP 500。任务使用可续传方式�
 ## 7. 后续执行顺序
 
 1. 完成 7 个 BITS 下载并运行同一套登记、技术和 VLM 筛选；
-2. R1 完成当前 35 条队列：26 条 AI 保留项全量复核 + 9 条 AI 拒绝项抽查；
+2. 将本轮 19 条接受项迁移到正式清单，并保留 16 条拒绝项作为审计记录；
 3. 继续定向补 Pressure Cooker、Air Fryer 和 Printer；普通网页搜索不再直接批量下载，先验证类别和许可证；
 4. 将最终接受项合并到 `video_source_inventory.csv`、`download_receipts.csv` 和 `review_assignments.csv`；
 5. 对接受项依次执行预处理、场景切分、ASR/OCR/VLM、证据构建和三路检索索引；
