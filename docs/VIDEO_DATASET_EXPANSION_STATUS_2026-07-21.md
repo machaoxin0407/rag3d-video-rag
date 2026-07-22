@@ -63,14 +63,13 @@ Pressure Cooker、Air Fryer 和 Printer 仍是最高优先级缺口。本批审�
 
 ## 5. 正在执行的下载队列
 
-7 个已授权 Internet Archive 任务中，4 个已经下载落盘：
+7 个已授权 Internet Archive 任务中，5 个已经下载落盘并生成 SHA-256 凭证：
 
-- Air Fryer：`airfryer-002`、`airfryer-008`；
+- Air Fryer：`airfryer-002`、`airfryer-005`、`airfryer-008`；
 - Pressure Cooker：`pressure-010`、`pressure-017`。
 
-3 个仍在 Windows BITS 可续传队列：
+2 个仍在 Windows BITS 可续传队列：
 
-- Air Fryer：`airfryer-005`；
 - Pressure Cooker：`pressure-011`、`pressure-012`。
 
 7 条全部仍需登记、哈希、技术筛选和 AI 内容筛选；只有通过筛选的条目才进入增量 R1 复核包。

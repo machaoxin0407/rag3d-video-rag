@@ -58,15 +58,23 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 
 def accepted_record_ids(review_path: Path) -> set[str]:
-    """Return records unanimously completed and finally accepted by A/B/C."""
+    """Return records accepted by either the legacy or current review gate."""
     accepted: set[str] = set()
     for row in read_csv(review_path):
-        complete = (
+        legacy_complete = (
             row.get("license_review_status") == "approved"
             and row.get("content_review_status") == "approved"
             and row.get("adjudication_status") == "approved"
         )
-        if complete and row.get("final_decision") == "accept":
+        single_reviewer_complete = (
+            row.get("review_protocol") == "ai_single_reviewer_v1"
+            and row.get("reviewer_id") == "R1"
+            and row.get("review_status") == "completed"
+            and row.get("license_evidence_status") == "verified"
+        )
+        if (legacy_complete or single_reviewer_complete) and row.get(
+            "final_decision"
+        ) == "accept":
             accepted.add(row["record_id"])
     return accepted
 
@@ -184,6 +192,30 @@ def write_manifest(path: Path, rows: list[dict[str, str]]) -> None:
     os.replace(temporary, path)
 
 
+def reusable_preprocessing_row(
+    row: dict[str, str], receipt: dict[str, str], interval_seconds: float
+) -> bool:
+    """Return whether a successful prior row and its artifacts remain reusable."""
+    if row.get("status") != "success":
+        return False
+    if row.get("source_sha256") != receipt.get("sha256"):
+        return False
+    try:
+        prior_interval = float(row.get("keyframe_interval_seconds", ""))
+    except ValueError:
+        return False
+    if prior_interval != interval_seconds:
+        return False
+    frame_dir = resolve_project_path(row.get("keyframe_dir", ""))
+    if not frame_dir.is_dir() or not next(frame_dir.glob("frame_*.jpg"), None):
+        return False
+    if row.get("audio_status") == "extracted":
+        audio_path = resolve_project_path(row.get("audio_path", ""))
+        if not audio_path.is_file():
+            return False
+    return True
+
+
 def preprocess_one(
     receipt: dict[str, str], ffmpeg: Path, ffmpeg_version: str, interval_seconds: float
 ) -> dict[str, str]:
@@ -229,7 +261,7 @@ def preprocess_collection(
     manifest_path: Path = DEFAULT_MANIFEST,
     interval_seconds: float = 5.0,
 ) -> list[dict[str, str]]:
-    """Preprocess every downloaded record that passed the final A/B/C gate."""
+    """Preprocess every downloaded record that passed a supported review gate."""
     import imageio_ffmpeg
 
     accepted = accepted_record_ids(reviews_path)
@@ -241,9 +273,21 @@ def preprocess_collection(
 
     ffmpeg = Path(imageio_ffmpeg.get_ffmpeg_exe())
     ffmpeg_version = imageio_ffmpeg.get_ffmpeg_version()
+    prior = (
+        {row["record_id"]: row for row in read_csv(manifest_path)}
+        if manifest_path.exists()
+        else {}
+    )
     rows: list[dict[str, str]] = []
     for receipt in sorted(receipts, key=lambda row: row["record_id"]):
         record_id = receipt["record_id"]
+        prior_row = prior.get(record_id)
+        if prior_row and reusable_preprocessing_row(
+            prior_row, receipt, interval_seconds
+        ):
+            rows.append(prior_row)
+            print(f"preprocessing_skipped={record_id}", flush=True)
+            continue
         print(f"preprocessing={record_id}", flush=True)
         try:
             row = preprocess_one(receipt, ffmpeg, ffmpeg_version, interval_seconds)
