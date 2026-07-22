@@ -1276,6 +1276,26 @@ pressure-011-ocr-00340,pressure-011,frame_000062,310.000,data_video/keyframes/pr
 pressure-011-ocr-00341,pressure-011,frame_000062,310.000,data_video/keyframes/pressure-011/frame_000062.jpg,Maryland,0.999971,"[[583.0,243.0],[686.0,245.0],[686.0,274.0],[582.0,272.0]]",de,PP-OCRv5
 pressure-011-ocr-00342,pressure-011,frame_000062,310.000,data_video/keyframes/pressure-011/frame_000062.jpg,Copyright ©,0.987310,"[[329.0,272.0],[467.0,270.0],[468.0,305.0],[330.0,307.0]]",de,PP-OCRv5
 pressure-011-ocr-00343,pressure-011,frame_000062,310.000,data_video/keyframes/pressure-011/frame_000062.jpg,2020,0.999959,"[[463.0,274.0],[522.0,274.0],[522.0,299.0],[463.0,299.0]]",de,PP-OCRv5
+pressure-012-ocr-00001,pressure-012,frame_000000,0.000,data_video/keyframes/pressure-012/frame_000000.jpg,NSTANT,0.988395,"[[357.0,196.0],[719.0,196.0],[719.0,320.0],[357.0,320.0]]",de,PP-OCRv5
+pressure-012-ocr-00002,pressure-012,frame_000000,0.000,data_video/keyframes/pressure-012/frame_000000.jpg,POT,0.988100,"[[723.0,193.0],[919.0,193.0],[919.0,323.0],[723.0,323.0]]",de,PP-OCRv5
+pressure-012-ocr-00003,pressure-012,frame_000000,0.000,data_video/keyframes/pressure-012/frame_000000.jpg,TERIYAKI,0.934192,"[[441.0,306.0],[837.0,306.0],[837.0,429.0],[441.0,429.0]]",de,PP-OCRv5
+pressure-012-ocr-00004,pressure-012,frame_000000,0.000,data_video/keyframes/pressure-012/frame_000000.jpg,CHICKEN,0.938217,"[[441.0,413.0],[840.0,415.0],[839.0,538.0],[440.0,536.0]]",de,PP-OCRv5
+pressure-012-ocr-00005,pressure-012,frame_000002,10.000,data_video/keyframes/pressure-012/frame_000002.jpg,PEPPER,0.998465,"[[465.0,22.0],[817.0,26.0],[816.0,152.0],[464.0,148.0]]",de,PP-OCRv5
+pressure-012-ocr-00006,pressure-012,frame_000005,25.000,data_video/keyframes/pressure-012/frame_000005.jpg,S,0.708603,"[[714.0,441.0],[1015.0,389.0],[1049.0,592.0],[748.0,645.0]]",de,PP-OCRv5
+pressure-012-ocr-00007,pressure-012,frame_000006,30.000,data_video/keyframes/pressure-012/frame_000006.jpg,PEPPER,0.999337,"[[466.0,23.0],[819.0,26.0],[818.0,150.0],[465.0,147.0]]",de,PP-OCRv5
+pressure-012-ocr-00008,pressure-012,frame_000007,35.000,data_video/keyframes/pressure-012/frame_000007.jpg,SESAME,0.998994,"[[460.0,12.0],[822.0,12.0],[822.0,140.0],[460.0,140.0]]",de,PP-OCRv5
+pressure-012-ocr-00009,pressure-012,frame_000007,35.000,data_video/keyframes/pressure-012/frame_000007.jpg,OIL,0.986442,"[[561.0,163.0],[719.0,163.0],[719.0,291.0],[561.0,291.0]]",de,PP-OCRv5
+pressure-012-ocr-00010,pressure-012,frame_000013,65.000,data_video/keyframes/pressure-012/frame_000013.jpg,Ultra,0.996421,"[[594.0,112.0],[709.0,80.0],[722.0,129.0],[607.0,161.0]]",de,PP-OCRv5
+pressure-012-ocr-00011,pressure-012,frame_000013,65.000,data_video/keyframes/pressure-012/frame_000013.jpg,Start,0.999669,"[[546.0,393.0],[700.0,344.0],[721.0,412.0],[567.0,461.0]]",de,PP-OCRv5
+pressure-012-ocr-00012,pressure-012,frame_000015,75.000,data_video/keyframes/pressure-012/frame_000015.jpg,CORNSTARCH,0.999835,"[[323.0,16.0],[932.0,16.0],[932.0,136.0],[323.0,136.0]]",de,PP-OCRv5
+pressure-012-ocr-00013,pressure-012,frame_000015,75.000,data_video/keyframes/pressure-012/frame_000015.jpg,MIXTURE,0.999645,"[[440.0,166.0],[840.0,166.0],[840.0,288.0],[440.0,288.0]]",de,PP-OCRv5
+pressure-012-ocr-00014,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,Sweet,0.999959,"[[366.0,270.0],[515.0,270.0],[515.0,317.0],[366.0,317.0]]",de,PP-OCRv5
+pressure-012-ocr-00015,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,&,0.999856,"[[518.0,271.0],[557.0,271.0],[557.0,316.0],[518.0,316.0]]",de,PP-OCRv5
+pressure-012-ocr-00016,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,SAVORY,0.999633,"[[308.0,319.0],[667.0,319.0],[667.0,401.0],[308.0,401.0]]",de,PP-OCRv5
+pressure-012-ocr-00017,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,MEALS,0.999435,"[[677.0,316.0],[979.0,318.0],[979.0,404.0],[677.0,402.0]]",de,PP-OCRv5
+pressure-012-ocr-00018,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,Easy recipes,0.999890,"[[408.0,407.0],[621.0,407.0],[621.0,446.0],[408.0,446.0]]",de,PP-OCRv5
+pressure-012-ocr-00019,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,for,0.999990,"[[623.0,405.0],[679.0,408.0],[678.0,444.0],[622.0,441.0]]",de,PP-OCRv5
+pressure-012-ocr-00020,pressure-012,frame_000022,110.000,data_video/keyframes/pressure-012/frame_000022.jpg,foc,0.999068,"[[681.0,405.0],[738.0,408.0],[737.0,444.0],[680.0,441.0]]",de,PP-OCRv5
 printer-006-ocr-00001,printer-006,frame_000000,0.000,data_video/keyframes/printer-006/frame_000000.jpg,valejet,0.968245,"[[372.0,207.0],[563.0,207.0],[563.0,283.0],[372.0,283.0]]",de,PP-OCRv5
 printer-006-ocr-00002,printer-006,frame_000000,0.000,data_video/keyframes/printer-006/frame_000000.jpg,tv,0.998782,"[[525.0,266.0],[557.0,266.0],[557.0,291.0],[525.0,291.0]]",de,PP-OCRv5
 printer-006-ocr-00003,printer-006,frame_000001,5.000,data_video/keyframes/printer-006/frame_000001.jpg,valejet,0.999505,"[[479.0,223.0],[511.0,226.0],[510.0,238.0],[478.0,235.0]]",de,PP-OCRv5

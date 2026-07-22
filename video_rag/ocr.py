@@ -7,7 +7,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .manifest_io import ROOT, project_path, successful_preprocessing, write_csv
+from .manifest_io import (
+    ROOT,
+    project_path,
+    read_csv,
+    successful_preprocessing,
+    write_csv,
+)
 
 
 DEFAULT_INPUT = ROOT / "data_video" / "manifests" / "preprocessing_manifest.csv"
@@ -179,10 +185,41 @@ def ocr_collection(
         use_doc_unwarping=False,
         use_textline_orientation=False,
     )
+    existing_runs = (
+        {row["record_id"]: row for row in read_csv(runs_path)}
+        if runs_path.exists()
+        else {}
+    )
+    existing_observations: dict[str, list[dict[str, str]]] = {}
+    if observations_path.exists():
+        for observation in read_csv(observations_path):
+            existing_observations.setdefault(
+                observation["record_id"], []
+            ).append(observation)
     runs: list[dict[str, str]] = []
     all_observations: list[dict[str, str]] = []
     for row in successful_preprocessing(input_path):
         record_id = row["record_id"]
+        prior_run = existing_runs.get(record_id)
+        prior_observations = existing_observations.get(record_id, [])
+        reusable = (
+            prior_run is not None
+            and prior_run["status"] == "success"
+            and prior_run["language_profile"] == language_profile
+            and prior_run["ocr_version"] == ocr_version
+            and datetime.fromisoformat(prior_run["processed_at"])
+            >= datetime.fromisoformat(row["processed_at"])
+            and prior_run["minimum_score"] == f"{minimum_score:g}"
+            and int(prior_run["frame_count"]) == int(row["keyframe_count"])
+            and int(prior_run["observation_count"]) == len(prior_observations)
+        )
+        if reusable:
+            print(f"ocr_skipped={record_id}", flush=True)
+            runs.append(prior_run)
+            all_observations.extend(prior_observations)
+            write_csv(runs_path, RUN_FIELDS, runs)
+            write_csv(observations_path, OBSERVATION_FIELDS, all_observations)
+            continue
         print(f"ocr={record_id}", flush=True)
         try:
             run, observations = ocr_record(

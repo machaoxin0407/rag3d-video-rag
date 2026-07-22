@@ -18,6 +18,7 @@ pressure-001,success,nn,0.613281,120.647,0,0,large-v3,cuda,0,float16,2026-07-22T
 pressure-006,success,en,0.994629,59.931,5,82,large-v3,cuda,0,float16,2026-07-22T12:54:51.601184+00:00,
 pressure-010,success,en,1.000000,251.077,41,609,large-v3,cuda,0,float16,2026-07-22T12:55:37.031889+00:00,
 pressure-011,success,en,0.995605,316.790,48,641,large-v3,cuda,0,float16,2026-07-22T12:56:26.976149+00:00,
+pressure-012,success,nn,0.613281,115.566,0,0,large-v3,cuda,0,float16,2026-07-22T20:27:19.898718+00:00,
 printer-001,success,nn,0.613281,33.807,0,0,large-v3,cuda,0,float16,2026-07-22T12:56:27.702020+00:00,
 printer-003,success,nn,0.613281,95.404,0,0,large-v3,cuda,0,float16,2026-07-22T12:56:29.297550+00:00,
 printer-006,success,pt,1.000000,155.731,18,230,large-v3,cuda,0,float16,2026-07-22T12:56:52.240211+00:00,

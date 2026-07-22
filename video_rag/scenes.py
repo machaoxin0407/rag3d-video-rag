@@ -9,7 +9,13 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .manifest_io import ROOT, project_path, successful_preprocessing, write_csv
+from .manifest_io import (
+    ROOT,
+    project_path,
+    read_csv,
+    successful_preprocessing,
+    write_csv,
+)
 
 
 DEFAULT_INPUT = ROOT / "data_video" / "manifests" / "preprocessing_manifest.csv"
@@ -146,8 +152,30 @@ def segment_collection(
     import imageio_ffmpeg
 
     ffmpeg = Path(imageio_ffmpeg.get_ffmpeg_exe())
+    existing_by_record: dict[str, list[dict[str, str]]] = {}
+    if output_path.exists():
+        for scene in read_csv(output_path):
+            existing_by_record.setdefault(scene["record_id"], []).append(scene)
     results: list[dict[str, str]] = []
     for row in successful_preprocessing(input_path):
+        existing = existing_by_record.get(row["record_id"], [])
+        reusable = bool(existing) and all(
+            scene["status"] == "success"
+            and scene["source_path"] == row["source_path"]
+            and scene["source_sha256"] == row["source_sha256"]
+            and scene["detector"] == "ffmpeg_scene_score"
+            and scene["threshold"] == f"{threshold:g}"
+            and scene["minimum_scene_seconds"] == f"{minimum:g}"
+            and project_path(scene["clip_path"]).is_file()
+            and project_path(scene["clip_path"]).stat().st_size
+            == int(scene["clip_bytes"])
+            for scene in existing
+        )
+        if reusable:
+            print(f"segmenting_skipped={row['record_id']}", flush=True)
+            results.extend(existing)
+            write_csv(output_path, SCENE_FIELDS, results)
+            continue
         print(f"segmenting={row['record_id']}", flush=True)
         results.extend(segment_record(row, ffmpeg, threshold, minimum))
         write_csv(output_path, SCENE_FIELDS, results)

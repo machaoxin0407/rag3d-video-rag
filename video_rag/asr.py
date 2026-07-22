@@ -7,7 +7,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .manifest_io import ROOT, project_path, successful_preprocessing, write_csv
+from .manifest_io import (
+    ROOT,
+    project_path,
+    read_csv,
+    successful_preprocessing,
+    write_csv,
+)
 
 
 DEFAULT_INPUT = ROOT / "data_video" / "manifests" / "preprocessing_manifest.csv"
@@ -156,10 +162,37 @@ def transcribe_collection(
         compute_type=compute_type,
         download_root=str(model_cache),
     )
+    existing_runs = (
+        {row["record_id"]: row for row in read_csv(runs_path)}
+        if runs_path.exists()
+        else {}
+    )
+    existing_segments: dict[str, list[dict[str, str]]] = {}
+    if segments_path.exists():
+        for segment in read_csv(segments_path):
+            existing_segments.setdefault(segment["record_id"], []).append(segment)
     runs: list[dict[str, str]] = []
     all_segments: list[dict[str, str]] = []
     for row in successful_preprocessing(input_path):
         record_id = row["record_id"]
+        prior_run = existing_runs.get(record_id)
+        prior_segments = existing_segments.get(record_id, [])
+        reusable = (
+            prior_run is not None
+            and prior_run["status"] == "success"
+            and prior_run["model"] == model_name
+            and datetime.fromisoformat(prior_run["processed_at"])
+            >= datetime.fromisoformat(row["processed_at"])
+            and int(prior_run["segment_count"]) == len(prior_segments)
+            and all(segment["model"] == model_name for segment in prior_segments)
+        )
+        if reusable:
+            print(f"transcribing_skipped={record_id}", flush=True)
+            runs.append(prior_run)
+            all_segments.extend(prior_segments)
+            write_csv(runs_path, RUN_FIELDS, runs)
+            write_csv(segments_path, SEGMENT_FIELDS, all_segments)
+            continue
         print(f"transcribing={record_id}", flush=True)
         try:
             run, segments = transcribe_record(model, row, model_name, beam_size)
