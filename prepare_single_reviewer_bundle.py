@@ -140,9 +140,9 @@ def write_instructions(path: Path, total: int, positives: int, audits: int) -> N
 1. 用浏览器打开 `index.html`，按 `high`、`normal`、`audit` 顺序查看。
 2. 每条必须播放完整视频；采样帧只用于快速定位，不能代替完整视频。
 3. 点击来源页，核对作者、许可证和授权范围。
-4. 用 Excel、LibreOffice 或兼容表格软件打开 `review_form.csv`，只能填写人工字段，不要修改 `record_id` 和 AI 原始字段。
+4. 优先用 Excel 打开 `R1_video_review_workbook.xlsx`；如果该文件尚未生成，再使用 `review_form.csv`。只能填写黄色人工字段，不要修改 `record_id` 和 AI 原始字段。
 5. 每完成一条，将 `review_status` 填为 `completed`，填写许可证据、人工修正、风险、最终决定、数据切分和 ISO-8601 时间。
-6. 完成后保留文件名 `review_form.csv`，通知项目维护者执行自动校验与导入。
+6. 完成后保留原文件名，通知项目维护者执行自动校验并导出规范 CSV。
 
 详细取值和判断规则见项目文档 `docs/AI_SINGLE_REVIEWER_ANNOTATION_PROTOCOL_2026-07-22.md`。
 """

@@ -24,6 +24,7 @@ data_video/review/single_reviewer_bundle/
 single_reviewer_bundle/
   README.md
   index.html
+  R1_video_review_workbook.xlsx
   review_form.csv
   source_queue_snapshot.csv
   bundle_manifest.csv
@@ -41,7 +42,7 @@ single_reviewer_bundle/
 3. 按 `high → normal → audit` 的顺序复核。
 4. 每条视频必须完整播放一次；五张采样帧仅用于快速回看。
 5. 点击来源链接，核对创作者、许可证及授权范围。
-6. 用 Excel 或 LibreOffice 打开 `review_form.csv`，不要排序后只保存部分行，不要修改 `record_id` 和 `ai_*` 字段。
+6. 优先用 Excel 打开 `R1_video_review_workbook.xlsx`。工作簿包含进度汇总、填写说明、下拉选项和黄色人工填写区域；不要修改 `record_id` 和 `ai_*` 字段。只有在工作簿不可用时才填写 `review_form.csv`。
 7. 只填写下列人工字段：
    - `review_status`；
    - `license_evidence_status`；
@@ -55,8 +56,8 @@ single_reviewer_bundle/
    - `dataset_split`；
    - `reviewed_at`。
 8. 每完成一行，将 `review_status` 改为 `completed`。不确定项用 `hold`，不要猜测。
-9. 保存为 UTF-8 CSV，文件名保持 `review_form.csv`。
-10. 全部完成后通知项目维护者；维护者执行枚举、必填字段、重复 ID、来源切分和哈希校验，再导入正式 manifest。
+9. 工作簿文件名保持 `R1_video_review_workbook.xlsx`；若使用 CSV，保存为 UTF-8 且保持文件名 `review_form.csv`。
+10. 全部完成后通知项目维护者；维护者执行枚举、必填字段、重复 ID、来源切分和哈希校验，再导出规范 CSV 并写入正式 manifest。
 
 字段取值、抽查制度和论文写法以 [AI_SINGLE_REVIEWER_ANNOTATION_PROTOCOL_2026-07-22.md](./AI_SINGLE_REVIEWER_ANNOTATION_PROTOCOL_2026-07-22.md) 为准。
 
