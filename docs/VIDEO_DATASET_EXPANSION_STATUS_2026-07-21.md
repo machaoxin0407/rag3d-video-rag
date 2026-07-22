@@ -14,14 +14,15 @@
 |---|---:|
 | Wikimedia 候选发现 | 72 |
 | Wikimedia 成功下载并生成 SHA-256 凭证 | 71 |
-| Internet Archive 成功下载并生成 SHA-256 凭证 | 4 |
-| 当前隔离区有凭证的视频 | 75 |
+| Internet Archive 成功下载并生成 SHA-256 凭证 | 10 |
+| 当前隔离区有凭证的视频 | 81 |
 | Wikimedia 技术通过 | 64 |
 | Wikimedia 技术淘汰 | 7 |
-| Archive 技术通过 | 4 |
+| Archive 技术通过 | 10 |
 | Wikimedia VLM 保留供人工复核 | 22 |
 | Wikimedia VLM 明确排除 | 42 |
-| Archive VLM 保留供人工复核 | 4 |
+| Archive VLM 保留供人工复核 | 8 |
+| Archive VLM 明确排除 | 2 |
 | AI 保留项进入 R1 全量复核 | 26 |
 | AI 拒绝项进入 R1 分层抽查 | 9 / 42 |
 | R1 当前总复核队列 | 35 |
@@ -30,6 +31,8 @@
 | R1 最终接受 | 19 |
 | R1 最终拒绝 | 16 |
 | AI 拒绝抽查误拒 | 0 / 9 |
+| 增量 R1 待复核 | 6（AI 保留 4 + 拒绝抽查 2） |
+| 正式视频预处理 | 30 / 30 成功 |
 | 五帧视觉近重复对（阈值 12） | 0 |
 
 7 条技术淘汰项只因文件过小或分辨率不足；42 条内容淘汰项主要是搜索词误命中，包括航天真空试验、Hoover 人名/水坝、压力清洗机、3D 打印、动物或影片标题等。它们保留审计行，其中 9 条按固定种子和产品类别分层进入人工抽查，其余不进入正式数据池。
@@ -63,16 +66,16 @@ Pressure Cooker、Air Fryer 和 Printer 仍是最高优先级缺口。本批审�
 
 ## 5. 正在执行的下载队列
 
-7 个已授权 Internet Archive 任务中，5 个已经下载落盘并生成 SHA-256 凭证：
+7 个已授权 Internet Archive 任务中，6 个已经下载落盘并生成 SHA-256 凭证：
 
 - Air Fryer：`airfryer-002`、`airfryer-005`、`airfryer-008`；
-- Pressure Cooker：`pressure-010`、`pressure-017`。
+- Pressure Cooker：`pressure-010`、`pressure-011`、`pressure-017`。
 
-2 个仍在 Windows BITS 可续传队列：
+1 个仍在 Windows BITS 可续传队列：
 
-- Pressure Cooker：`pressure-011`、`pressure-012`。
+- Pressure Cooker：`pressure-012`。
 
-7 条全部仍需登记、哈希、技术筛选和 AI 内容筛选；只有通过筛选的条目才进入增量 R1 复核包。
+已完成的 6 条均已登记、生成 SHA-256 并通过技术筛选。VLM 将 `airfryer-002`、`airfryer-005`、`pressure-010`、`pressure-011` 保留为全量复核项，将 `airfryer-008`、`pressure-017` 判为错域；两条错域项均按拒绝审计规则进入抽查。增量队列见 `data_video/manifests/candidate_review_queue_incremental_20260722.csv`。
 
 Archive CDN 当前吞吐较低且偶发 HTTP 500。任务使用可续传方式，不绕过访问控制，也不把未完成文件计入数据集规模。
 
@@ -89,8 +92,8 @@ Archive CDN 当前吞吐较低且偶发 HTTP 500。任务使用可续传方式�
 
 ## 7. 后续执行顺序
 
-1. 完成 7 个 BITS 下载并运行同一套登记、技术和 VLM 筛选；
-2. 将本轮 19 条接受项迁移到正式清单，并保留 16 条拒绝项作为审计记录；
+1. 完成剩余 `pressure-012` BITS 下载，并运行同一套登记、技术和 VLM 筛选；
+2. 已将本轮 19 条接受项迁移到正式清单并完成预处理，同时保留 16 条拒绝项作为审计记录；
 3. 继续定向补 Pressure Cooker、Air Fryer 和 Printer；普通网页搜索不再直接批量下载，先验证类别和许可证；
 4. 将最终接受项合并到 `video_source_inventory.csv`、`download_receipts.csv` 和 `review_assignments.csv`；
 5. 对接受项依次执行预处理、场景切分、ASR/OCR/VLM、证据构建和三路检索索引；

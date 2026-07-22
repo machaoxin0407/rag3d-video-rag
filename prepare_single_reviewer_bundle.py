@@ -61,6 +61,12 @@ ANNOTATION_FIELDS = {
     "reviewed_at",
 }
 
+PENDING_DEFAULTS = {
+    "license_evidence_status": "pending",
+    "final_decision": "pending",
+    "dataset_split": "pending",
+}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -125,7 +131,10 @@ def existing_form_has_work(path: Path) -> bool:
     for row in read_csv(path):
         if row.get("review_status", "pending") != "pending":
             return True
-        if any(row.get(field, "") for field in ANNOTATION_FIELDS - {"reviewer_id", "review_status"}):
+        if any(
+            row.get(field, "") not in {"", PENDING_DEFAULTS.get(field, "")}
+            for field in ANNOTATION_FIELDS - {"reviewer_id", "review_status"}
+        ):
             return True
     return False
 

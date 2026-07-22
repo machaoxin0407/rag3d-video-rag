@@ -65,6 +65,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--dtype", default="bfloat16")
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Load the model and processor only from --model-cache.",
+    )
     parser.add_argument("--record-id", action="append")
     parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--limit", type=int)
@@ -201,11 +206,16 @@ def main() -> None:
     model = AutoModelForImageTextToText.from_pretrained(
         args.model,
         cache_dir=args.model_cache,
+        local_files_only=args.offline,
         dtype=dtype_value,
         device_map=args.device,
         low_cpu_mem_usage=True,
     )
-    processor = AutoProcessor.from_pretrained(args.model, cache_dir=args.model_cache)
+    processor = AutoProcessor.from_pretrained(
+        args.model,
+        cache_dir=args.model_cache,
+        local_files_only=args.offline,
+    )
     revision = str(getattr(model.config, "_commit_hash", "") or "unresolved")
     output_rows = dict(prior)
     for index, row in enumerate(rows, start=1):

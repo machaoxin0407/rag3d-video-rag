@@ -54,6 +54,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--reject-audit-rate", type=float, default=0.20)
     parser.add_argument("--sample-seed", default="candidate-reject-audit-v1")
     parser.add_argument(
+        "--exclude-queue",
+        type=Path,
+        action="append",
+        default=[],
+        help="Exclude record IDs already present in an earlier review queue.",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=ROOT / "data_video" / "manifests" / "candidate_review_queue.csv",
@@ -146,6 +153,16 @@ def main() -> None:
     content = index_rows(args.content_screen, "content-screen")
     technical = index_rows(args.technical_screen, "technical-screen")
     inventory = index_rows(args.inventory, "inventory")
+    excluded = {
+        row["record_id"]
+        for path in args.exclude_queue
+        for row in read_csv(path)
+    }
+    content = {
+        record_id: row
+        for record_id, row in content.items()
+        if record_id not in excluded
+    }
     retained = [
         row
         for row in content.values()
@@ -221,7 +238,8 @@ def main() -> None:
     high = sum(row["review_priority"] == "high" for row in queue)
     print(
         f"review_queue={len(queue)} positives={len(retained)} "
-        f"rejected_audit={len(audit_sample)}/{len(rejected)} high_priority={high}"
+        f"rejected_audit={len(audit_sample)}/{len(rejected)} high_priority={high} "
+        f"excluded_existing={len(excluded)}"
     )
 
 
