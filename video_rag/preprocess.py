@@ -308,4 +308,7 @@ def preprocess_collection(
             )
         rows.append(row)
         write_manifest(manifest_path, rows)
+    # The final accepted records may all reuse prior artifacts. Persist once
+    # more after the loop so a trailing run of skipped rows is not omitted.
+    write_manifest(manifest_path, rows)
     return rows

@@ -1,0 +1,18 @@
+metric,value,denominator,rate,notes
+reviewed_total,6,,,
+final_accept,4,6,0.666667,
+final_reject,2,6,0.333333,
+accepted_split::development,2,,,
+accepted_split::source_disjoint_test,2,,,
+ai_retained_final_accept,4,4,1.000000,
+ai_retained_final_reject,0,4,0.000000,
+ai_retained_product_class_corrections,0,4,0.000000,
+ai_retained_procedure_corrections,0,4,0.000000,
+ai_retained_functional_step_corrections,0,4,0.000000,
+reject_audit_false_rejects,0,2,0.000000,"Wilson 95% CI [0.000000, 0.657620]"
+accepted_class::Air Fryer,2,,,
+accepted_class::Espresso Machine,0,,,
+accepted_class::Pressure Cooker,2,,,
+accepted_class::Printer,0,,,
+accepted_class::Vacuum,0,,,
+accepted_class::Washing Machine,0,,,

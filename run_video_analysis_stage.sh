@@ -36,12 +36,13 @@ case "$stage" in
       --minimum-score 0.50
     ;;
   vlm)
-    export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
-    export HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
+    export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
+    export TRANSFORMERS_OFFLINE="${TRANSFORMERS_OFFLINE:-1}"
     exec .venv-vlm/bin/python caption_video_scenes.py \
       --model Qwen/Qwen3-VL-8B-Instruct \
       --device cuda:0 \
-      --dtype bfloat16
+      --dtype bfloat16 \
+      --offline
     ;;
   evidence)
     exec .venv/bin/python build_video_evidence.py

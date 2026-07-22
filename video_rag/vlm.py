@@ -337,6 +337,7 @@ def caption_collection(
     model_cache: Path = DEFAULT_MODEL_CACHE,
     device: str = "cuda:0",
     dtype: str = "bfloat16",
+    offline: bool = False,
     scene_ids: set[str] | None = None,
 ) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     """Load one VLM and caption every accepted scene with incremental manifests."""
@@ -348,11 +349,16 @@ def caption_collection(
     model = AutoModelForImageTextToText.from_pretrained(
         model_name,
         cache_dir=model_cache,
+        local_files_only=offline,
         dtype=dtype_value,
         device_map=device,
         low_cpu_mem_usage=True,
     )
-    processor = AutoProcessor.from_pretrained(model_name, cache_dir=model_cache)
+    processor = AutoProcessor.from_pretrained(
+        model_name,
+        cache_dir=model_cache,
+        local_files_only=offline,
+    )
     revision = str(getattr(model.config, "_commit_hash", "") or "unresolved")
     runs: list[dict[str, str]] = []
     captions: list[dict[str, str]] = []

@@ -29,6 +29,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Load the model and processor only from --model-cache.",
+    )
+    parser.add_argument(
         "--scene-id",
         action="append",
         default=[],
@@ -49,6 +54,7 @@ def main() -> None:
         model_cache=args.model_cache,
         device=args.device,
         dtype=args.dtype,
+        offline=args.offline,
         scene_ids=set(args.scene_id) or None,
     )
     failures = sum(row["status"] != "success" for row in runs)

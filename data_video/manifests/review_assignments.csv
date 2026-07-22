@@ -1,4 +1,6 @@
 record_id,review_protocol,license_reviewer,license_review_status,content_reviewer,content_review_status,adjudicator,adjudication_status,reviewer_id,review_status,license_evidence_status,final_decision,dataset_split,reviewed_at
+airfryer-002,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,development,2026-07-22
+airfryer-005,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,source_disjoint_test,2026-07-22
 airfryer-006,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,development,2026-07-22
 airfryer-011,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,source_disjoint_test,2026-07-22
 camera-001,legacy_abc,A,approved,B,approved,C,approved,,,,accept,,
@@ -15,6 +17,8 @@ espresso-015,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,developmen
 espresso-016,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,development,2026-07-22
 pressure-001,legacy_abc,A,approved,B,approved,C,approved,,,,accept,,
 pressure-006,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,development,2026-07-22
+pressure-010,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,development,2026-07-22
+pressure-011,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,source_disjoint_test,2026-07-22
 printer-001,legacy_abc,A,approved,B,approved,C,approved,,,,accept,,
 printer-003,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,development,2026-07-22
 printer-006,ai_single_reviewer_v1,,,,,,,R1,completed,verified,accept,source_disjoint_test,2026-07-22

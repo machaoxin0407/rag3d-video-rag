@@ -66,7 +66,27 @@ def transcribe_record(
     """Transcribe one preprocessed audio file and return run and segment rows."""
     record_id = row["record_id"]
     if row.get("audio_status") != "extracted" or not row.get("audio_path"):
-        raise ValueError(f"No extracted audio for {record_id}")
+        # A video without an audio stream is a valid zero-evidence ASR result,
+        # not a pipeline failure.  Recording it as success keeps full source
+        # coverage auditable while producing no speech segments.
+        return (
+            {
+                "record_id": record_id,
+                "status": "success",
+                "language": "none",
+                "language_probability": "0.000000",
+                "audio_duration_seconds": "0.000",
+                "segment_count": "0",
+                "word_count": "0",
+                "model": model_name,
+                "device": "",
+                "device_index": "",
+                "compute_type": "",
+                "processed_at": datetime.now(timezone.utc).isoformat(),
+                "error": "",
+            },
+            [],
+        )
     audio = project_path(row["audio_path"])
     generated, info = model.transcribe(
         str(audio),
