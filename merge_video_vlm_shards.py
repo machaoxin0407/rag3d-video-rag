@@ -6,8 +6,14 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from video_rag.manifest_io import ROOT, read_csv, write_csv
-from video_rag.vlm import CAPTION_FIELDS, DEFAULT_CAPTIONS, DEFAULT_RUNS, DEFAULT_SCENES, RUN_FIELDS
+from video_rag.manifest_io import read_csv, write_csv
+from video_rag.vlm import (
+    CAPTION_FIELDS,
+    DEFAULT_CAPTIONS,
+    DEFAULT_RUNS,
+    DEFAULT_SCENES,
+    RUN_FIELDS,
+)
 
 
 def parse_args() -> argparse.Namespace:

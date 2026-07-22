@@ -27,7 +27,7 @@ start() {
   nohup .venv-embedding/bin/python serve_video_embeddings.py \
     >"$log_file" 2>&1 </dev/null &
   echo "$!" >"$pid_file"
-  for _ in $(seq 1 30); do
+  for _ in $(seq 1 60); do
     if curl -fs "http://${host}:${port}/health" >/dev/null; then
       echo "video_embedding_service=ready pid=$(cat "$pid_file") endpoint=http://${host}:${port}"
       return

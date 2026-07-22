@@ -20,7 +20,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--completed-runs",
         type=Path,
-        default=ROOT / "data_video" / "manifests" / "vlm_runs.csv",
+        action="append",
+        default=None,
+        help="Completed VLM run CSV; repeat to union multiple partial runs.",
     )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--shards", type=int, default=2)
@@ -32,15 +34,16 @@ def main() -> None:
     if args.shards <= 0:
         raise ValueError("--shards must be greater than zero")
     scenes = [row for row in read_csv(args.scenes) if row["status"] == "success"]
-    completed = (
-        {
-            row["scene_id"]
-            for row in read_csv(args.completed_runs)
-            if row["status"] == "success"
-        }
-        if args.completed_runs.exists()
-        else set()
-    )
+    completed_paths = args.completed_runs or [
+        ROOT / "data_video" / "manifests" / "vlm_runs.csv"
+    ]
+    completed = {
+        row["scene_id"]
+        for path in completed_paths
+        if path.exists()
+        for row in read_csv(path)
+        if row["status"] == "success"
+    }
     known = {row["scene_id"] for row in scenes}
     unknown = sorted(completed - known)
     if unknown:
