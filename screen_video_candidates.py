@@ -123,6 +123,8 @@ def stream_descriptions(ffmpeg: Path, source: Path) -> str:
         stdout=subprocess.DEVNULL,
         stderr=subprocess.PIPE,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         check=False,
     )
     return result.stderr
@@ -273,7 +275,7 @@ def screen_one(
         "video_codec": str(metadata.get("codec", "")).rstrip(","),
         "audio_present": "yes" if "Audio:" in descriptions else "no",
         "sample_frame_paths": "|".join(
-            str(path.relative_to(ROOT)) for path in sample_paths
+            str(path.relative_to(ROOT)).replace("\\", "/") for path in sample_paths
         ),
         "sample_frame_count": str(len(sample_paths)),
         "duplicate_of": duplicate_of,
@@ -307,7 +309,14 @@ def main() -> None:
     for index, receipt in enumerate(selected, start=1):
         record_id = receipt["record_id"]
         prior_row = prior.get(record_id)
-        if prior_row and prior_row.get("source_sha256") == receipt.get("sha256"):
+        if (
+            prior_row
+            and prior_row.get("source_sha256") == receipt.get("sha256")
+            and not prior_row.get("technical_reasons", "").startswith("decode_error:")
+        ):
+            prior_row["sample_frame_paths"] = prior_row.get(
+                "sample_frame_paths", ""
+            ).replace("\\", "/")
             rows.append(prior_row)
             digest = prior_row.get("source_sha256", "")
             if digest and not prior_row.get("duplicate_of"):

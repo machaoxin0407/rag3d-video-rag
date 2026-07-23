@@ -25,6 +25,7 @@ from .manifest_io import ROOT
 DEFAULT_EVIDENCE = ROOT / "data_video" / "manifests" / "video_evidence_manifest.csv"
 DEFAULT_INVENTORY = ROOT / "data_video" / "manifests" / "video_source_inventory.csv"
 PRODUCT_ALIASES: dict[str, tuple[str, ...]] = {
+    "Air Fryer": ("air fryer", "air-fryer", "airfryer", "空气炸锅", "气炸锅"),
     "Camera": ("camera", "digital camera", "ccd", "相机", "数码相机", "摄像机"),
     "Espresso Machine": (
         "espresso",

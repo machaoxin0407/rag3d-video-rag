@@ -29,7 +29,9 @@ def write_csv(path: Path, fields: list[str], rows: list[dict[str, str]]) -> None
 
 def project_path(relative_path: str) -> Path:
     """Resolve a project-relative path while rejecting directory traversal."""
-    candidate = (ROOT / relative_path).resolve()
+    # Manifests may be produced on Windows and consumed on Linux (or vice
+    # versa), so normalize both separator styles before resolving.
+    candidate = (ROOT / relative_path.replace("\\", "/")).resolve()
     try:
         candidate.relative_to(ROOT.resolve())
     except ValueError as exc:

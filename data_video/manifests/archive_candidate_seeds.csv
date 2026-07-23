@@ -1,35 +1,35 @@
 record_id,product_class,archive_identifier,procedure_or_scene,candidate_split
-airfryer-001,Air Fryer,youtube-DosjRtIxuEg,air fryer cooking procedure,source_disjoint_test_candidate
+airfryer-029,Air Fryer,youtube-DosjRtIxuEg,air fryer cooking procedure,source_disjoint_test_candidate
 airfryer-002,Air Fryer,gctvva-Library_Kitchen_-_Air_Fryer_Oreos,air fryer recipe procedure,source_disjoint_test_candidate
-airfryer-003,Air Fryer,hcectvky-Cooking_Healthy_Snacks_with_an_Air_fryer_-_Hardin_County_Extension_Today_June_2019,healthy snack preparation,source_disjoint_test_candidate
+airfryer-030,Air Fryer,hcectvky-Cooking_Healthy_Snacks_with_an_Air_fryer_-_Hardin_County_Extension_Today_June_2019,healthy snack preparation,source_disjoint_test_candidate
 airfryer-004,Air Fryer,youtube-DB4kX7Qp7Fs,air fryer pork cooking,development_candidate
 airfryer-005,Air Fryer,youtube-RaolUs_38zQ,air fryer breakfast cooking,development_candidate
 airfryer-006,Air Fryer,make-easy-air-fryer-oreos-at-home-with-only-2-ingredients,air fryer recipe procedure,development_candidate
-airfryer-007,Air Fryer,videate_youtube_67lWuMjFuy8_948_-_We_Bought_An_Air_Fryer_-_The_Daily_Talk_Show,air fryer setup and use,development_candidate
+airfryer-031,Air Fryer,videate_youtube_67lWuMjFuy8_948_-_We_Bought_An_Air_Fryer_-_The_Daily_Talk_Show,air fryer setup and use,development_candidate
 airfryer-008,Air Fryer,youtube-Xt12oOxMGfU,air fryer comparison and controls,development_candidate
-airfryer-009,Air Fryer,how-to-clean-your-air-fryer-smelly-dirty-new-watch-this,air fryer cleaning,development_candidate
+airfryer-032,Air Fryer,how-to-clean-your-air-fryer-smelly-dirty-new-watch-this,air fryer cleaning,development_candidate
 airfryer-010,Air Fryer,HeissluftfritteuseKaufen2019Die9BestenHeissluftfritteusenImVergleich3Preisklassen,air fryer comparison and operation,development_candidate
 airfryer-011,Air Fryer,monterca-Monterey_Recreation_Presents_-_That_s_Good_Air_Fryer_Grilled_Cheese,air fryer cooking procedure,development_candidate
-airfryer-012,Air Fryer,ratao_frKY4As3ctXhnhf4,air fryer teardown and repair,development_candidate
-airfryer-013,Air Fryer,twitch-vod-v2316447606,air fryer bread cooking,development_candidate
-airfryer-014,Air Fryer,twitch-vod-v2316446781,air fryer bread cooking,development_candidate
+airfryer-033,Air Fryer,ratao_frKY4As3ctXhnhf4,air fryer teardown and repair,development_candidate
+airfryer-034,Air Fryer,twitch-vod-v2316447606,air fryer bread cooking,development_candidate
+airfryer-035,Air Fryer,twitch-vod-v2316446781,air fryer bread cooking,development_candidate
 airfryer-015,Air Fryer,twitch-vod-v2801450145,air fryer pastry cooking,development_candidate
 airfryer-016,Air Fryer,twitch-vod-v1872302018,air fryer stuffed mushroom cooking,development_candidate
-pressure-002,Pressure Cooker,scm-214736-usingapressurecooker,pressure cooker beef stew,source_disjoint_test_candidate
-pressure-003,Pressure Cooker,fagor-pressure-cooker,pressure cooker setup and operation,source_disjoint_test_candidate
+pressure-032,Pressure Cooker,scm-214736-usingapressurecooker,pressure cooker beef stew,source_disjoint_test_candidate
+pressure-033,Pressure Cooker,fagor-pressure-cooker,pressure cooker setup and operation,source_disjoint_test_candidate
 pressure-004,Pressure Cooker,wfktvme-Senior_College_-_Know_your_Instapot_2022,electric pressure cooker controls,source_disjoint_test_candidate
-pressure-005,Pressure Cooker,pressure-cooking-is-as-easy-as-1-2-3-with-fagor-00s-90s-instructional-vhs,pressure cooker instruction,development_candidate
+pressure-034,Pressure Cooker,pressure-cooking-is-as-easy-as-1-2-3-with-fagor-00s-90s-instructional-vhs,pressure cooker instruction,development_candidate
 pressure-006,Pressure Cooker,multi-function-pressure-cooker,multifunction pressure cooker operation,development_candidate
-pressure-007,Pressure Cooker,youtube-PgKX9HVdKiU,pressure cooker cooking procedure,development_candidate
-pressure-008,Pressure Cooker,youtube-CZ7moF9ZvlA,pressure cooker review and controls,development_candidate
+pressure-035,Pressure Cooker,youtube-PgKX9HVdKiU,pressure cooker cooking procedure,development_candidate
+pressure-036,Pressure Cooker,youtube-CZ7moF9ZvlA,pressure cooker review and controls,development_candidate
 pressure-009,Pressure Cooker,best-pressure-cooker-by-decent-cookware-built-for-everyday-indian-kitchens,pressure cooker components and use,development_candidate
 pressure-010,Pressure Cooker,mctvscia-Instant_Pot._Group_C,electric pressure cooker group demonstration,development_candidate
 pressure-011,Pressure Cooker,hcctvmd-Pulled_Pork_Instant_Pot_I_Simply_Cooking_Demo,electric pressure cooker cooking,development_candidate
 pressure-012,Pressure Cooker,instant-pot-teriyaki-chicken,electric pressure cooker cooking,development_candidate
 pressure-013,Pressure Cooker,cocnhSeniorSpeakNH_-_Instant_Pot_101_2_1__Output_1_,electric pressure cooker tutorial,development_candidate
-pressure-014,Pressure Cooker,youtube-N-DG_bleUlg,electric pressure cooker functions,development_candidate
-pressure-015,Pressure Cooker,youtube-8A_9ze1CNh8,electric pressure cooker comparison,development_candidate
+pressure-037,Pressure Cooker,youtube-N-DG_bleUlg,electric pressure cooker functions,development_candidate
+pressure-038,Pressure Cooker,youtube-8A_9ze1CNh8,electric pressure cooker comparison,development_candidate
 pressure-016,Pressure Cooker,sccnc-Extension_in_the_Kitchen_-_Instant_Pot_Recipes,electric pressure cooker recipes,development_candidate
 pressure-017,Pressure Cooker,pressure-cooking,pressure cooking tutorial,development_candidate
-pressure-018,Pressure Cooker,wvf09_14-Jill_Nussinow,pressure cooking demonstration,development_candidate
-pressure-019,Pressure Cooker,prkcitut-Making_Butternut_Pumpkin_Soup_with_Stacey_Springer,pressure cooker soup preparation,development_candidate
+pressure-039,Pressure Cooker,wvf09_14-Jill_Nussinow,pressure cooking demonstration,development_candidate
+pressure-040,Pressure Cooker,prkcitut-Making_Butternut_Pumpkin_Soup_with_Stacey_Springer,pressure cooker soup preparation,development_candidate
