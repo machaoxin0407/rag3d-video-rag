@@ -69,6 +69,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Recompute raw and bundle video SHA-256 values (slower).",
     )
+    parser.add_argument(
+        "--skip-bundle",
+        action="store_true",
+        help="Validate repository manifests and raw videos without a local R1 bundle.",
+    )
     return parser.parse_args()
 
 
@@ -137,27 +142,30 @@ def main() -> None:
         f"unexpected positive R1 class counts: {positive_class_counts}",
     )
 
-    for name in ("index.html", "README.md", "review_form.csv", "source_queue_snapshot.csv", "bundle_manifest.csv"):
-        require((bundle_dir / name).is_file(), f"bundle file missing: {name}")
+    bundle_manifest: list[dict[str, str]] = []
     workbook = bundle_dir / "R1_video_review_workbook.xlsx"
-    require(workbook.is_file(), "R1 workbook is missing")
-    with zipfile.ZipFile(workbook) as archive:
-        workbook_xml = archive.read("xl/workbook.xml").decode("utf-8", errors="replace")
-        for sheet_name in ("Progress", "Instructions", "Validation_Lists", "Review_Form", "Field_Reference"):
-            require(sheet_name in workbook_xml, f"R1 workbook sheet missing: {sheet_name}")
-        worksheet_xml = [
-            archive.read(name).decode("utf-8", errors="replace")
-            for name in archive.namelist()
-            if name.startswith("xl/worksheets/sheet") and name.endswith(".xml")
-        ]
-        validation_rule_count = sum(xml.count("<x:dataValidation ") for xml in worksheet_xml)
-        require(validation_rule_count == 8, f"R1 workbook must contain eight dropdown rules, found {validation_rule_count}")
-        formula_errors = ("#REF!", "#DIV/0!", "#VALUE!", "#NAME?")
-        require(not any(error in xml for xml in worksheet_xml for error in formula_errors), "R1 workbook contains formula errors")
+    validation_rule_count = 0
+    if not args.skip_bundle:
+        for name in ("index.html", "README.md", "review_form.csv", "source_queue_snapshot.csv", "bundle_manifest.csv"):
+            require((bundle_dir / name).is_file(), f"bundle file missing: {name}")
+        require(workbook.is_file(), "R1 workbook is missing")
+        with zipfile.ZipFile(workbook) as archive:
+            workbook_xml = archive.read("xl/workbook.xml").decode("utf-8", errors="replace")
+            for sheet_name in ("Progress", "Instructions", "Validation_Lists", "Review_Form", "Field_Reference"):
+                require(sheet_name in workbook_xml, f"R1 workbook sheet missing: {sheet_name}")
+            worksheet_xml = [
+                archive.read(name).decode("utf-8", errors="replace")
+                for name in archive.namelist()
+                if name.startswith("xl/worksheets/sheet") and name.endswith(".xml")
+            ]
+            validation_rule_count = sum(xml.count("<x:dataValidation ") for xml in worksheet_xml)
+            require(validation_rule_count == 8, f"R1 workbook must contain eight dropdown rules, found {validation_rule_count}")
+            formula_errors = ("#REF!", "#DIV/0!", "#VALUE!", "#NAME?")
+            require(not any(error in xml for xml in worksheet_xml for error in formula_errors), "R1 workbook contains formula errors")
 
-    bundle_manifest = load_csv(bundle_dir / "bundle_manifest.csv")
-    bundle_ids = unique_ids(bundle_manifest, "bundle manifest")
-    require(bundle_ids == queue_ids, "bundle manifest and R1 queue IDs differ")
+        bundle_manifest = load_csv(bundle_dir / "bundle_manifest.csv")
+        bundle_ids = unique_ids(bundle_manifest, "bundle manifest")
+        require(bundle_ids == queue_ids, "bundle manifest and R1 queue IDs differ")
 
     receipt_by_id = {row["record_id"]: row for row in receipts}
     digest_cache: dict[tuple[int, int, int], str] = {}
@@ -213,13 +221,17 @@ def main() -> None:
             "priority": dict(priority_counts),
             "full_positive_by_class": dict(positive_class_counts),
         },
-        "bundle": {
-            "directory": os.fspath(bundle_dir),
-            "videos": len(bundle_manifest),
-            "frames": len(bundle_manifest) * 5,
-            "workbook": os.fspath(workbook),
-            "dropdown_rules": validation_rule_count,
-        },
+        "bundle": (
+            {"skipped": True}
+            if args.skip_bundle
+            else {
+                "directory": os.fspath(bundle_dir),
+                "videos": len(bundle_manifest),
+                "frames": len(bundle_manifest) * 5,
+                "workbook": os.fspath(workbook),
+                "dropdown_rules": validation_rule_count,
+            }
+        ),
         "queries": len(queries),
         "hashes_recomputed": checked_hashes,
     }
