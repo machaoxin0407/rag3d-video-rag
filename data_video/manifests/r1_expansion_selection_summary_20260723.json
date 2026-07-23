@@ -1,0 +1,56 @@
+{
+  "selection_protocol": "r1_exact_class_balance_diversity_v1",
+  "baseline_policy": "all existing six-class inventory records; legacy review status preserved",
+  "target_per_class": 13,
+  "baseline_counts": {
+    "Air Fryer": 5,
+    "Espresso Machine": 10,
+    "Pressure Cooker": 4,
+    "Printer": 3,
+    "Vacuum": 6,
+    "Washing Machine": 6
+  },
+  "requested_additions": {
+    "Air Fryer": 8,
+    "Espresso Machine": 3,
+    "Pressure Cooker": 9,
+    "Printer": 10,
+    "Vacuum": 7,
+    "Washing Machine": 7
+  },
+  "eligible_counts": {
+    "Air Fryer": 9,
+    "Espresso Machine": 2,
+    "Pressure Cooker": 10,
+    "Printer": 11,
+    "Vacuum": 18,
+    "Washing Machine": 24
+  },
+  "selected_counts": {
+    "Air Fryer": 8,
+    "Espresso Machine": 2,
+    "Pressure Cooker": 9,
+    "Printer": 10,
+    "Vacuum": 7,
+    "Washing Machine": 7
+  },
+  "final_counts_before_pending_gap_review": {
+    "Air Fryer": 13,
+    "Espresso Machine": 12,
+    "Pressure Cooker": 13,
+    "Printer": 13,
+    "Vacuum": 13,
+    "Washing Machine": 13
+  },
+  "remaining_gaps": {
+    "Air Fryer": 0,
+    "Espresso Machine": 1,
+    "Pressure Cooker": 0,
+    "Printer": 0,
+    "Vacuum": 0,
+    "Washing Machine": 0
+  },
+  "selected_total": 43,
+  "reserve_total": 31,
+  "not_eligible_total": 47
+}

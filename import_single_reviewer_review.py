@@ -234,16 +234,27 @@ def wilson_interval(successes: int, total: int, z: float = 1.959963984540054) ->
 
 def summary_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
     positives = [row for row in rows if row["review_scope"] == "full_positive_review"]
+    labeled_procedure_positives = [
+        row
+        for row in positives
+        if row["ai_procedure_relevance"] in AI_PROCEDURE_TO_BINARY
+    ]
+    labeled_step_positives = [
+        row
+        for row in positives
+        if row["ai_functional_step_visible"] in {"yes", "no", "uncertain"}
+    ]
+    labeled_class_positives = [
+        row for row in positives if row["ai_predicted_product_class"]
+    ]
     audits = [row for row in rows if row["review_scope"] == "rejected_audit_sample"]
     accepted = [row for row in rows if row["final_decision"] == "accept"]
     rejected = [row for row in rows if row["final_decision"] == "reject"]
     false_rejects = sum(row["final_decision"] == "accept" for row in audits)
     low, high = wilson_interval(false_rejects, len(audits))
     procedure_corrections = 0
-    for row in positives:
+    for row in labeled_procedure_positives:
         ai_procedure = row["ai_procedure_relevance"]
-        if ai_procedure not in AI_PROCEDURE_TO_BINARY:
-            raise ValueError(f"Unknown AI procedure label: {ai_procedure}")
         procedure_corrections += (
             AI_PROCEDURE_TO_BINARY[ai_procedure]
             != row["corrected_procedure_relevance"]
@@ -251,11 +262,11 @@ def summary_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
     step_corrections = sum(
         row["ai_functional_step_visible"]
         != row["corrected_functional_step_visible"]
-        for row in positives
+        for row in labeled_step_positives
     )
     corrected_class = sum(
         row["ai_predicted_product_class"] != row["corrected_product_class"]
-        for row in positives
+        for row in labeled_class_positives
     )
     class_counts = Counter(row["corrected_product_class"] for row in accepted)
 
@@ -287,9 +298,26 @@ def summary_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
         ),
         metric("ai_retained_final_accept", sum(r["final_decision"] == "accept" for r in positives), len(positives)),
         metric("ai_retained_final_reject", sum(r["final_decision"] == "reject" for r in positives), len(positives)),
-        metric("ai_retained_product_class_corrections", corrected_class, len(positives)),
-        metric("ai_retained_procedure_corrections", procedure_corrections, len(positives)),
-        metric("ai_retained_functional_step_corrections", step_corrections, len(positives)),
+        metric(
+            "ai_retained_product_class_corrections",
+            corrected_class,
+            len(labeled_class_positives),
+        ),
+        metric(
+            "ai_retained_procedure_corrections",
+            procedure_corrections,
+            len(labeled_procedure_positives),
+        ),
+        metric(
+            "ai_retained_functional_step_corrections",
+            step_corrections,
+            len(labeled_step_positives),
+        ),
+        metric(
+            "ai_manual_review_without_complete_labels",
+            len(positives) - len(labeled_procedure_positives),
+            len(positives),
+        ),
         metric(
             "reject_audit_false_rejects",
             false_rejects,
