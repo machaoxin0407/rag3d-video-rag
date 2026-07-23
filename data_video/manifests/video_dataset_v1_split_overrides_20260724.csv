@@ -1,0 +1,3 @@
+record_id,original_split,normalized_split,reason
+airfryer-011,source_disjoint_test,development,Creator City of Monterey CA also appears in development; move all creator-linked records out of the source-disjoint test set
+airfryer-017,development,source_disjoint_test,Unique creator replacement preserves Air Fryer test coverage and the frozen test-set size

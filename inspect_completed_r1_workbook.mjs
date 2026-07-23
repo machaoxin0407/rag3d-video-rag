@@ -5,12 +5,14 @@ import { FileBlob, SpreadsheetFile } from "@oai/artifact-tool";
 const input =
   process.argv[2] ??
   "C:\\Users\\MAXS\\Desktop\\single_reviewer_bundle_expansion_20260723\\R1_video_review_workbook.xlsx";
-const outputDir = path.join(
-  process.cwd(),
-  "outputs",
-  "20260723-video-expansion",
-  "completed-r1-inspection",
-);
+const outputDir =
+  process.argv[3] ??
+  path.join(
+    process.cwd(),
+    "outputs",
+    "20260723-video-expansion",
+    "completed-r1-inspection",
+  );
 await fs.mkdir(outputDir, { recursive: true });
 
 const workbook = await SpreadsheetFile.importXlsx(await FileBlob.load(input));
@@ -36,7 +38,7 @@ const errors = await workbook.inspect({
 });
 
 const review = workbook.worksheets.getItem("Review_Form");
-const values = review.getRange("A1:AD122").values;
+const values = review.getUsedRange(true).values;
 const cellString = (value) =>
   value instanceof Date ? value.toISOString() : String(value ?? "");
 const headers = values[0].map(cellString);

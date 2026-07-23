@@ -81,7 +81,7 @@ data_video/manifests/r1_expansion_selection_summary_20260723.json
 
 未选中的 31 条合格项保留为备用池，没有删除。
 
-## 3. 唯一剩余视频缺口
+## 3. Espresso 缺口已关闭
 
 原 121 条中 Espresso Machine 只有 2 条通过 R1，因此不能通过降低标准凑足 3 条。
 
@@ -90,7 +90,7 @@ data_video/manifests/r1_expansion_selection_summary_20260723.json
 | 记录 | 技术检查 | AI 内容预筛 | 处理 |
 |---|---|---|---|
 | espresso-039 | 通过 | 拒绝：整机不可见 | 不进入 R1 |
-| espresso-040 | 通过 | 保留：整机和手柄操作可见 | 首选，待 R1 |
+| espresso-040 | 通过 | 保留：整机和手柄操作可见 | R1 接受，已晋升 |
 | espresso-041 | 通过 | 保留：装入手柄步骤可见 | 备用 |
 | espresso-042 | 通过 | 保留：萃取过程可见 | 备用 |
 
@@ -104,21 +104,33 @@ data_video/manifests/r1_expansion_selection_summary_20260723.json
 - Qwen3-VL 判定 `retain_for_human_review`；
 - 仅手臂可见，无可识别人脸。
 
-单条 R1 复核包：
+R1 于 2026-07-23 完成 `espresso-040` 复核：许可已验证，产品类别、操作过程和功能步骤均确认，无隐私或安全风险，最终决定为 `accept`，归入 `development`。
+
+完成工作簿 SHA-256：
 
 ```text
-C:\Users\MAXS\Desktop\single_reviewer_bundle_espresso_gap_20260723
+39202E76418790DFE89948247F7262C92377E286EA654378287F3BEBA98D4FFD
 ```
 
-复核工作簿：
+最终 44 条队列：
 
 ```text
-C:\Users\MAXS\Desktop\single_reviewer_bundle_espresso_gap_20260723\R1_video_review_workbook.xlsx
+data_video/manifests/r1_expansion_selected_44_final_20260724.csv
 ```
 
-只需完整播放 `espresso-040`，并填写 `Review_Form` 黄色 S–AD 列。
+实际晋升结果：
 
-如果 R1 接受，将形成精确新增 44 条和六类各 13 条。若 R1 拒绝，则依次启用 `espresso-041`、`espresso-042`，不降低标准。
+```text
+promoted=44 formal_inventory=80 formal_receipts=79 formal_reviews=80 dry_run=False
+```
+
+论文六类数据集已冻结为 78 条，每类 13 条；另保留 1 条 Camera 兼容性记录，不计入论文六类统计。服务器已重新计算并核对 78/78 个源文件 SHA-256。冻结切分为 development 65 条、source_disjoint_test 13 条，来源 URL 无重复，上传者跨切分泄漏为 0。
+
+冻结清单：
+
+```text
+data_video/manifests/video_dataset_v1_freeze_20260724.json
+```
 
 ## 4. 100 问题设计
 
@@ -135,15 +147,15 @@ C:\Users\MAXS\Desktop\single_reviewer_bundle_espresso_gap_20260723\R1_video_revi
 当前状态：
 
 ```text
-design_frozen_pending_final_78_video_index
+design_frozen_video_dataset_frozen_pending_rebuilt_index
 ```
 
 ## 5. 完成第 44 条后的自动流水线
 
-1. 严格导入单条 R1 结果；
-2. 合并 43+1 条晋升队列；
-3. 实际执行晋升，冻结 78 条六类正式视频；
-4. 校验来源隔离、SHA-256、许可、隐私、安全和类别计数；
+1. 严格导入单条 R1 结果（已完成）；
+2. 合并 43+1 条晋升队列（已完成）；
+3. 实际执行晋升，冻结 78 条六类正式视频（已完成）；
+4. 校验来源隔离、SHA-256、许可、隐私、安全和类别计数（已完成）；
 5. 在服务器重建：
    - 视频预处理与关键帧；
    - 场景切分；
@@ -167,6 +179,6 @@ design_frozen_pending_final_78_video_index
 - 最终相关性等级固定为 0–3；
 - 只有在 78 条视频、五路候选池、100 问题相关性和时间边界全部冻结后，才能称为论文正式 v1 金标准。
 
-## 7. 当前阻塞点
+## 7. 当前执行点
 
-唯一必要输入是 `espresso-040` 的一行 R1 复核结果。服务器两张 RTX 4090 已释放，当前无项目 GPU 进程。
+当前不再需要视频级人工输入。正在服务器重建 78 条正式视频的预处理、场景、ASR、OCR、VLM、证据和两类向量索引；完成后进入 100 问题候选池与相关性预标注阶段。
