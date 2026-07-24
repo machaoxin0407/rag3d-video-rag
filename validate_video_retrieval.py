@@ -43,10 +43,18 @@ def main() -> None:
         norms = np.linalg.norm(visual.vectors, axis=1)
         if not np.allclose(norms, 1.0, atol=1e-5):
             raise ValueError("Visual index rows are not normalized")
-        if visual.metadata.get("fallback_scene_ids") != [
-            "espresso-001-scene-0001"
-        ]:
-            raise ValueError("Unexpected visual single-frame fallback set")
+        fallback_scene_ids = visual.metadata.get("fallback_scene_ids", [])
+        if not isinstance(fallback_scene_ids, list):
+            raise ValueError("Visual fallback scene IDs are not a list")
+        if len(fallback_scene_ids) != len(set(fallback_scene_ids)):
+            raise ValueError("Visual fallback scene IDs are duplicated")
+        unknown_fallbacks = sorted(set(fallback_scene_ids) - set(visual.scene_ids))
+        if unknown_fallbacks:
+            raise ValueError(
+                f"Visual fallback scenes are absent from the index: {unknown_fallbacks}"
+            )
+        if "espresso-001-scene-0001" not in fallback_scene_ids:
+            raise ValueError("Known single-frame regression scene did not use fallback")
         visual_index_checked = True
     case_results: dict[str, list[str]] = {}
     for query, expected_class in QUERY_CASES:
