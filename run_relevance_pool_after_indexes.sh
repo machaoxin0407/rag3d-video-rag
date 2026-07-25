@@ -37,8 +37,8 @@ export VIDEO_VISUAL_EMBEDDING_PORT=8092
 .venv/bin/python pool_video_relevance_candidates.py \
   --top-k-per-mode 20 \
   --modes bm25 dense visual hybrid tri_hybrid \
-  --dense-endpoint http://127.0.0.1:8091/embed \
-  --visual-endpoint http://127.0.0.1:8092/embed \
+  --dense-endpoint http://127.0.0.1:8091 \
+  --visual-endpoint http://127.0.0.1:8092 \
   --require-all-modes
 .venv/bin/python validate_paper_relevance_pool.py
 
