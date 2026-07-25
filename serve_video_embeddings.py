@@ -20,6 +20,7 @@ MODEL_ID = os.getenv("VIDEO_EMBEDDING_MODEL", DEFAULT_MODEL_ID)
 MODEL_CACHE = os.getenv("VIDEO_EMBEDDING_CACHE", "models/qwen3-embedding-0.6b")
 DEVICE = os.getenv("VIDEO_EMBEDDING_DEVICE", "cuda:0")
 QUERY_TASK = os.getenv("VIDEO_EMBEDDING_QUERY_TASK", DEFAULT_QUERY_TASK)
+OFFLINE = os.getenv("VIDEO_EMBEDDING_OFFLINE", "1").lower() not in {"0", "false", "no"}
 model: SentenceTransformer | None = None
 
 
@@ -49,6 +50,7 @@ async def lifespan(_: FastAPI):
         MODEL_ID,
         cache_folder=MODEL_CACHE,
         device=DEVICE,
+        local_files_only=OFFLINE,
         model_kwargs={"dtype": dtype},
     )
     yield

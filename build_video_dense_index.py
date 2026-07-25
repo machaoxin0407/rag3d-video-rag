@@ -33,6 +33,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-cache", type=Path, default=Path("models/qwen3-embedding-0.6b"))
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument(
+        "--allow-model-download",
+        action="store_true",
+        help="Permit network access when the requested model is absent from the cache.",
+    )
     return parser.parse_args()
 
 
@@ -58,6 +63,7 @@ def main() -> None:
         args.model,
         cache_folder=str(args.model_cache),
         device=args.device,
+        local_files_only=not args.allow_model_download,
         model_kwargs={"dtype": dtype},
     )
     vectors = model.encode(
