@@ -181,4 +181,34 @@ design_frozen_video_dataset_frozen_pending_rebuilt_index
 
 ## 7. 当前执行点
 
-当前不再需要视频级人工输入。正在服务器重建 78 条正式视频的预处理、场景、ASR、OCR、VLM、证据和两类向量索引；完成后进入 100 问题候选池与相关性预标注阶段。
+当前不再需要视频级人工输入。
+
+截至 2026-07-25，服务器端已经完成并复核：
+
+- 79 条处理记录（78 条论文视频 + 1 条 Camera 兼容性记录）；
+- 1,263 个场景，VLM 运行状态全部为 `success`；
+- 1,263 条唯一场景描述；
+- 3,663 条 ASR 片段；
+- 16,156 条 OCR 观察；
+- 21,082 条统一视频证据，其中场景证据 1,263 条、语音证据 3,663 条、画面文字证据 16,156 条。
+
+`espresso-040-scene-0001` 的原始 VLM 任务因 4K 竖屏视频触发显存不足。该场景使用同一
+`Qwen/Qwen3-VL-8B-Instruct` 模型、同一模型 revision 的候选预筛结果进行显式恢复，并保留原始错误、
+输入帧、模型版本、提示词版本、R1 视频审核结论和恢复规格的审计记录。恢复记录位于：
+
+```text
+data_video/manifests/vlm_caption_recovery_audit_espresso040_20260725.json
+```
+
+当前阻塞点不是数据，而是服务器 GPU 运行环境：NVIDIA 内核模块版本为 `580.159.03`，用户态 NVML
+库版本为 `580.173`，`nvidia-smi` 返回 `Driver/library version mismatch`，PyTorch CUDA 初始化也失败。
+2026-07-23 生成的两个向量索引早于本轮正式数据冻结与完整 VLM 结果，必须视为旧索引，不能用于论文
+候选池。
+
+管理员完成维护重启并确认 `nvidia-smi` 与 PyTorch CUDA 均恢复后，按以下顺序继续：
+
+1. 重建文本稠密索引和 Qwen3-VL 直接视觉索引；
+2. 执行 `validate_video_retrieval.py`；
+3. 对 100 问题运行五路原生检索并生成候选池；
+4. 执行 `validate_paper_relevance_pool.py`；
+5. 生成 AI 相关性预标注和单人 R1 正式复核工作簿。
