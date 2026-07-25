@@ -64,19 +64,32 @@ def main() -> None:
         if runs[scene_id]["record_id"] != captions[scene_id]["record_id"]:
             raise ValueError(f"{scene_id}: run/caption record_id differs")
 
-    signatures = {
+    primary_signatures = {
         (row["model"], row["model_revision"], row["dtype"], row["prompt_version"])
         for row in runs.values()
+        if row["prompt_version"] == "catalog-grounded-visible-scene-json-v2"
     }
-    if len(signatures) != 1:
-        raise ValueError(f"VLM shards have inconsistent run signatures: {signatures}")
+    if len(primary_signatures) != 1:
+        raise ValueError(f"VLM shards have inconsistent primary signatures: {primary_signatures}")
+    primary = next(iter(primary_signatures))
+    fallback_ids = []
+    for scene_id, row in runs.items():
+        if row["prompt_version"] == primary[3]:
+            continue
+        if (
+            row["prompt_version"] != "candidate-scope-screen-v1-derived-caption-v1"
+            or row["device"] != "prescreen-recovery"
+            or (row["model"], row["model_revision"], row["dtype"]) != primary[:3]
+        ):
+            raise ValueError(f"Unsupported VLM fallback signature: {scene_id} {row}")
+        fallback_ids.append(scene_id)
     ordered_runs = [runs[scene_id] for scene_id in scene_ids]
     ordered_captions = [captions[scene_id] for scene_id in scene_ids]
     write_csv(args.output_runs, RUN_FIELDS, ordered_runs)
     write_csv(args.output_captions, CAPTION_FIELDS, ordered_captions)
     print(
         f"vlm_shards_merged scenes={len(scene_ids)} failures=0 "
-        f"signature={next(iter(signatures))}"
+        f"primary_signature={primary} fallback_scenes={sorted(fallback_ids)}"
     )
 
 

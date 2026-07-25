@@ -1,0 +1,25 @@
+{
+  "scene_id": "espresso-040-scene-0001",
+  "record_id": "espresso-040",
+  "catalog_product_class": "Espresso Machine",
+  "product_name": "espresso machine",
+  "summary_zh": "画面中一只手正在操作 Ninja 咖啡机的手柄，将手柄插入冲煮头并锁定，这是制作浓缩咖啡的关键操作步骤。",
+  "visible_components": [
+    "espresso machine",
+    "portafilter",
+    "group head"
+  ],
+  "visible_actions": [
+    "inserting and locking the portafilter"
+  ],
+  "visible_states": [],
+  "safety_or_warning_text": [],
+  "human_video_review": {
+    "reviewer_id": "R1",
+    "review_status": "completed",
+    "license_evidence_status": "verified",
+    "final_decision": "accept",
+    "dataset_split": "development",
+    "reviewed_at": "2026-07-23"
+  }
+}
