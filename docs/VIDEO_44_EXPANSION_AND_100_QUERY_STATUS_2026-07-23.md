@@ -147,7 +147,7 @@ data_video/manifests/video_dataset_v1_freeze_20260724.json
 当前状态：
 
 ```text
-design_frozen_video_dataset_frozen_pending_rebuilt_index
+candidate_pool_frozen_pending_ai_preannotation
 ```
 
 ## 5. 完成第 44 条后的自动流水线
@@ -156,7 +156,7 @@ design_frozen_video_dataset_frozen_pending_rebuilt_index
 2. 合并 43+1 条晋升队列（已完成）；
 3. 实际执行晋升，冻结 78 条六类正式视频（已完成）；
 4. 校验来源隔离、SHA-256、许可、隐私、安全和类别计数（已完成）；
-5. 在服务器重建：
+5. 在服务器重建（已完成）：
    - 视频预处理与关键帧；
    - 场景切分；
    - ASR；
@@ -165,8 +165,8 @@ design_frozen_video_dataset_frozen_pending_rebuilt_index
    - 视频证据清单；
    - 文本稠密索引；
    - Qwen3-VL 直接视觉索引；
-6. 对 100 问题分别运行 BM25、dense、visual、hybrid、tri_hybrid 五路 top-20；
-7. 合并去重并生成盲审候选池；
+6. 对 100 问题分别运行 BM25、dense、visual、hybrid、tri_hybrid 五路 top-20（已完成）；
+7. 合并去重并生成盲审候选池（已完成）；
 8. 生成 AI 相关性预标注；
 9. 生成正式 R1 相关性工作簿；
 10. 完成论文级数据版本、运行清单、统计检验和可复现实验报告。
@@ -200,15 +200,36 @@ design_frozen_video_dataset_frozen_pending_rebuilt_index
 data_video/manifests/vlm_caption_recovery_audit_espresso040_20260725.json
 ```
 
-当前阻塞点不是数据，而是服务器 GPU 运行环境：NVIDIA 内核模块版本为 `580.159.03`，用户态 NVML
-库版本为 `580.173`，`nvidia-smi` 返回 `Driver/library version mismatch`，PyTorch CUDA 初始化也失败。
-2026-07-23 生成的两个向量索引早于本轮正式数据冻结与完整 VLM 结果，必须视为旧索引，不能用于论文
-候选池。
+GPU 驱动不一致已通过停止 GDM、卸载旧 NVIDIA 模块并从磁盘热加载 `580.173.02` 解决，未重启服务器，
+Newpulse Docker 服务未受影响。两张 RTX 4090 和三套 Python 环境均重新通过 CUDA 检查。
 
-管理员完成维护重启并确认 `nvidia-smi` 与 PyTorch CUDA 均恢复后，按以下顺序继续：
+正式文本稠密索引和 Qwen3-VL 直接视觉索引已经重建：
 
-1. 重建文本稠密索引和 Qwen3-VL 直接视觉索引；
-2. 执行 `validate_video_retrieval.py`；
-3. 对 100 问题运行五路原生检索并生成候选池；
-4. 执行 `validate_paper_relevance_pool.py`；
-5. 生成 AI 相关性预标注和单人 R1 正式复核工作簿。
+- 文本索引：1,263 个场景，1,024 维，Qwen3-Embedding revision
+  `97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3`；
+- 视觉索引：1,263 个场景，2,048 维，索引完整性标记和单位范数检查通过；
+- `validate_video_retrieval.py` 已通过六类查询、API 序列化、媒体鉴权和路径穿越检查。
+
+100 问题五路候选池于 2026-07-25 冻结：
+
+- 3,775 个唯一问题–场景对；
+- 每题 21–64 个候选，平均 37.75；
+- BM25、dense、visual、hybrid、tri_hybrid 各产生 1,967 条 top-20 结果；
+- 五路全部使用原生模式，无静默回退；
+- 审计池与盲审池一一对应，盲审标签字段为空；
+- GPU 查询服务已在完成后停止，显存已释放。
+
+正式文件：
+
+```text
+data_video/manifests/paper_relevance_pool_audit_v1.csv
+data_video/review/paper_relevance_pool_blind_v1.csv
+data_video/manifests/paper_relevance_pool_run_v1.json
+```
+
+当前下一步：
+
+1. 对 3,775 个问题–场景对生成 AI 相关性等级、证据理由和时间边界预标注；
+2. 生成单人 R1 正式复核工作簿；
+3. 完成 R1 后计算 AI–R1 一致率、修正率、拒绝抽查假阴性率和 Wilson 区间；
+4. 冻结论文正式 v1 金标准并运行检索指标、消融和统计检验。
