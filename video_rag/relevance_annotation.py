@@ -54,6 +54,8 @@ RUN_FIELDS = [
     "model_revision",
     "device",
     "dtype",
+    "batch_size",
+    "max_new_tokens",
     "prompt_version",
     "input_sha256",
     "prompt_sha256",
@@ -285,6 +287,55 @@ def generate_text(model: Any, processor: Any, prompt: str, max_new_tokens: int) 
     )[0]
 
 
+def generate_batch_text(
+    model: Any,
+    processor: Any,
+    prompts: list[str],
+    max_new_tokens: int,
+) -> list[str]:
+    """Generate one response per text prompt with fixed padded batching."""
+    conversations = [
+        [
+            {
+                "role": "user",
+                "content": [{"type": "text", "text": prompt}],
+            }
+        ]
+        for prompt in prompts
+    ]
+    texts = [
+        processor.apply_chat_template(
+            conversation,
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        for conversation in conversations
+    ]
+    tokenizer = processor.tokenizer
+    original_padding_side = tokenizer.padding_side
+    tokenizer.padding_side = "left"
+    try:
+        inputs = processor(
+            text=texts,
+            padding=True,
+            return_tensors="pt",
+        ).to(model.device)
+    finally:
+        tokenizer.padding_side = original_padding_side
+    input_length = inputs.input_ids.shape[1]
+    generated = model.generate(
+        **inputs,
+        max_new_tokens=max_new_tokens,
+        do_sample=False,
+    )
+    trimmed = generated[:, input_length:]
+    return processor.batch_decode(
+        trimmed,
+        skip_special_tokens=True,
+        clean_up_tokenization_spaces=False,
+    )
+
+
 def annotate_shard(
     *,
     pool_path: Path,
@@ -297,13 +348,16 @@ def annotate_shard(
     dtype: str = "bfloat16",
     offline: bool = True,
     limit: int | None = None,
-    max_new_tokens: int = 320,
+    max_new_tokens: int = 220,
+    batch_size: int = 4,
 ) -> dict[str, int]:
     import torch
     from transformers import AutoModelForImageTextToText, AutoProcessor
 
     if shard_count <= 0 or not 0 <= shard_index < shard_count:
         raise ValueError("Invalid shard selection")
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive")
     rows = read_csv(pool_path)
     identifiers = [pair_id(row) for row in rows]
     if len(identifiers) != len(set(identifiers)):
@@ -339,76 +393,102 @@ def annotate_shard(
         local_files_only=offline,
     )
     revision = str(getattr(model.config, "_commit_hash", "") or "unresolved")
-    failures = 0
-    for position, row in enumerate(pending, start=1):
-        identifier = pair_id(row)
-        prompt = annotation_prompt(row)
-        raw = ""
-        now = datetime.now(timezone.utc).isoformat()
-        base = {
-            "pair_id": identifier,
-            "query_id": row["query_id"],
-            "candidate_scene_id": row["candidate_scene_id"],
-            "model": model_name,
-            "model_revision": revision,
-            "device": device,
-            "dtype": dtype,
-            "prompt_version": PROMPT_VERSION,
-            "input_sha256": sha256_text(
-                json.dumps(
-                    {
-                        "query_id": row["query_id"],
-                        "query_text": row["query_text"],
-                        "product_class": row["product_class"],
-                        "query_type": row["query_type"],
-                        "candidate_scene_id": row["candidate_scene_id"],
-                        "start_seconds": row["start_seconds"],
-                        "end_seconds": row["end_seconds"],
-                        "scene_text": compact_evidence(row["scene_text"]),
-                    },
-                    ensure_ascii=False,
-                    sort_keys=True,
-                )
-            ),
-            "prompt_sha256": sha256_text(prompt),
-            "processed_at": now,
-        }
+    for batch_start in range(0, len(pending), batch_size):
+        batch = pending[batch_start : batch_start + batch_size]
+        prompts = [annotation_prompt(row) for row in batch]
         print(
-            f"ai_relevance shard={shard_index} item={position}/{len(pending)} "
-            f"pair={identifier}",
+            f"ai_relevance shard={shard_index} "
+            f"batch={batch_start // batch_size + 1}/"
+            f"{math.ceil(len(pending) / batch_size)} "
+            f"items={batch_start + 1}-{batch_start + len(batch)}/{len(pending)}",
             flush=True,
         )
         try:
-            raw = generate_text(model, processor, prompt, max_new_tokens)
-            try:
-                label = parse_payload(raw, row)
-            except (ValueError, json.JSONDecodeError):
-                repair_prompt = (
-                    prompt
-                    + "\n\nYour previous response was invalid. Return one corrected JSON "
-                    "object only, obeying the grade and time-offset rules."
-                )
-                raw = generate_text(model, processor, repair_prompt, max_new_tokens)
-                label = parse_payload(raw, row)
-            label.update(
-                {
-                    "model": model_name,
-                    "model_revision": revision,
-                    "prompt_version": PROMPT_VERSION,
-                    "processed_at": now,
-                }
+            raw_outputs = generate_batch_text(
+                model,
+                processor,
+                prompts,
+                max_new_tokens,
             )
-            record = {**base, "status": "success", "raw_output": raw, "error": ""}
-            record["label"] = label
-        except Exception as exc:  # noqa: BLE001 - retain failures for audited retry
-            failures += 1
-            record = {
-                **base,
-                "status": "failed",
-                "raw_output": raw,
-                "error": f"{type(exc).__name__}: {exc}",
+            if len(raw_outputs) != len(batch):
+                raise ValueError("Batch generation returned the wrong response count")
+            batch_errors: list[Exception | None] = [None] * len(batch)
+        except Exception as exc:  # noqa: BLE001 - retry each item independently
+            raw_outputs = [""] * len(batch)
+            batch_errors = [exc] * len(batch)
+        for row, prompt, raw, batch_error in zip(
+            batch, prompts, raw_outputs, batch_errors
+        ):
+            identifier = pair_id(row)
+            now = datetime.now(timezone.utc).isoformat()
+            base = {
+                "pair_id": identifier,
+                "query_id": row["query_id"],
+                "candidate_scene_id": row["candidate_scene_id"],
+                "model": model_name,
+                "model_revision": revision,
+                "device": device,
+                "dtype": dtype,
+                "batch_size": str(batch_size),
+                "max_new_tokens": str(max_new_tokens),
+                "prompt_version": PROMPT_VERSION,
+                "input_sha256": sha256_text(
+                    json.dumps(
+                        {
+                            "query_id": row["query_id"],
+                            "query_text": row["query_text"],
+                            "product_class": row["product_class"],
+                            "query_type": row["query_type"],
+                            "candidate_scene_id": row["candidate_scene_id"],
+                            "start_seconds": row["start_seconds"],
+                            "end_seconds": row["end_seconds"],
+                            "scene_text": compact_evidence(row["scene_text"]),
+                        },
+                        ensure_ascii=False,
+                        sort_keys=True,
+                    )
+                ),
+                "prompt_sha256": sha256_text(prompt),
+                "processed_at": now,
             }
-        append_journal(journal_path, record)
+            try:
+                if batch_error is not None:
+                    raw = generate_text(model, processor, prompt, max_new_tokens)
+                try:
+                    label = parse_payload(raw, row)
+                except (ValueError, json.JSONDecodeError):
+                    repair_prompt = (
+                        prompt
+                        + "\n\nYour previous response was invalid. Return one corrected "
+                        "JSON object only, obeying the grade and time-offset rules."
+                    )
+                    raw = generate_text(
+                        model, processor, repair_prompt, max_new_tokens
+                    )
+                    label = parse_payload(raw, row)
+                label.update(
+                    {
+                        "model": model_name,
+                        "model_revision": revision,
+                        "prompt_version": PROMPT_VERSION,
+                        "processed_at": now,
+                    }
+                )
+                record = {
+                    **base,
+                    "status": "success",
+                    "raw_output": raw,
+                    "error": "",
+                }
+                record["label"] = label
+            except Exception as exc:  # noqa: BLE001 - retain failure for retry
+                record = {
+                    **base,
+                    "status": "failed",
+                    "raw_output": raw,
+                    "error": f"{type(exc).__name__}: {exc}",
+                }
+            append_journal(journal_path, record)
     selected_ids = {pair_id(row) for row in selected}
     completed = sum(
         value.get("status") == "success"
@@ -455,6 +535,8 @@ def merge_journals(
             row["model"],
             row["model_revision"],
             row["dtype"],
+            row["batch_size"],
+            row["max_new_tokens"],
             row["prompt_version"],
         )
         for row in merged.values()
@@ -484,8 +566,12 @@ def merge_journals(
         "model": signature[0],
         "model_revision": signature[1],
         "dtype": signature[2],
-        "prompt_version": signature[3],
-        "deterministic_generation": {"do_sample": False},
+        "batch_size": int(signature[3]),
+        "prompt_version": signature[5],
+        "deterministic_generation": {
+            "do_sample": False,
+            "max_new_tokens": int(signature[4]),
+        },
         "evidence_compaction": {
             "maximum_characters": MAX_EVIDENCE_CHARS,
             "strategy": "full text or deterministic head-tail truncation",
