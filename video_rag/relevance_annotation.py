@@ -209,6 +209,18 @@ def parse_payload(raw: str, row: dict[str, str]) -> dict[str, Any]:
             raise ValueError("Grades 2 and 3 require numeric time offsets")
         start_value = float(start_offset)
         end_value = float(end_offset)
+        time_basis_normalization = "relative"
+        # Qwen occasionally returns the absolute source-video timestamps visible
+        # in the evidence interval instead of the requested scene-relative
+        # offsets. Recognize that unambiguous case before validating. The raw
+        # response remains in the append-only journal for audit.
+        if (
+            scene_start - 0.05 <= start_value < end_value
+            and end_value <= scene_end + 0.05
+        ):
+            start_value -= scene_start
+            end_value -= scene_start
+            time_basis_normalization = "absolute_to_relative"
         if (
             not math.isfinite(start_value)
             or not math.isfinite(end_value)
@@ -231,6 +243,9 @@ def parse_payload(raw: str, row: dict[str, str]) -> dict[str, Any]:
         "ai_evidence_sources": "|".join(normalized_sources),
         "ai_uncertainty": uncertainty,
         "ai_uncertainty_reason": reason,
+        "time_basis_normalization": (
+            time_basis_normalization if grade >= 2 else "not_applicable"
+        ),
     }
 
 
