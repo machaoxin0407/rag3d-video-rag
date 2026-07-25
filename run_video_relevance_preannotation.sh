@@ -3,6 +3,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 export PYTHONDONTWRITEBYTECODE=1
+export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
+export TRANSFORMERS_OFFLINE="${TRANSFORMERS_OFFLINE:-1}"
 work_dir="data_video/work/relevance_ai"
 mkdir -p "$work_dir"
 declare -a pids=()
