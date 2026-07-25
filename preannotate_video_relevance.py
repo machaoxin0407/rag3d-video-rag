@@ -27,7 +27,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--max-new-tokens", type=int, default=220)
-    parser.add_argument("--batch-size", type=int, default=4)
+    parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--allow-model-download", action="store_true")
     return parser.parse_args()
 

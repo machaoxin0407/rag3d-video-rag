@@ -349,7 +349,7 @@ def annotate_shard(
     offline: bool = True,
     limit: int | None = None,
     max_new_tokens: int = 220,
-    batch_size: int = 4,
+    batch_size: int = 8,
 ) -> dict[str, int]:
     import torch
     from transformers import AutoModelForImageTextToText, AutoProcessor

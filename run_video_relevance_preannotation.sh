@@ -21,6 +21,7 @@ for shard in 0 1; do
     --shard-index "$shard" \
     --shard-count 2 \
     --device cuda:0 \
+    --batch-size 8 \
     >"$work_dir/worker_${shard}.log" 2>&1 &
   pids[$shard]=$!
 done
