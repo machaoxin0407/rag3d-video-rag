@@ -241,6 +241,11 @@ class VideoEvidenceRetriever:
 
         bm25_scores = np.asarray(self.bm25.get_scores(query_tokens), dtype=np.float64)
         detected = self.detect_product_classes(query)
+        # Video retrieval is product-scoped. Generic service questions can share
+        # short Chinese n-grams with captions (for example, 什么/为什么), so a
+        # positive lexical score alone is not sufficient evidence of intent.
+        if not detected:
+            return []
         for index, row in enumerate(self.documents):
             if row["product_class"] in detected:
                 bm25_scores[index] += 3.0
@@ -278,11 +283,7 @@ class VideoEvidenceRetriever:
 
         eligible: list[int] = []
         for index, row in enumerate(self.documents):
-            if detected and row["product_class"] not in detected:
-                continue
-            # Without an explicit supported product, require lexical domain evidence.
-            # This prevents unrelated service questions from receiving arbitrary videos.
-            if not detected and bm25_scores[index] <= 0:
+            if row["product_class"] not in detected:
                 continue
             if effective_mode == "bm25" and bm25_scores[index] <= 0:
                 continue
