@@ -31,6 +31,8 @@ export VIDEO_EMBEDDING_DEVICE=cuda:0
 export VIDEO_EMBEDDING_PORT=8091
 export VIDEO_VISUAL_CUDA_VISIBLE_DEVICES=1
 export VIDEO_VISUAL_EMBEDDING_PORT=8092
+export VIDEO_DENSE_TIMEOUT_S=30
+export VIDEO_VISUAL_DENSE_TIMEOUT_S=30
 ./video_embedding_service.sh start
 ./video_visual_embedding_service.sh start
 

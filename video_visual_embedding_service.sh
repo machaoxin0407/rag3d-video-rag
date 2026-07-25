@@ -29,6 +29,14 @@ start() {
   echo "$!" >"$pid_file"
   for _ in $(seq 1 60); do
     if curl -fs "http://${host}:${port}/health" >/dev/null; then
+      if ! curl --max-time 60 -fsS \
+        -H "Content-Type: application/json" \
+        -d '{"texts":["How do I set the cooking temperature and time on an air fryer?"]}' \
+        "http://${host}:${port}/v1/embeddings/query" >/dev/null; then
+        stop
+        echo "Visual embedding service warm-up failed; inspect $log_file" >&2
+        return 1
+      fi
       echo "video_visual_embedding_service=ready pid=$(cat "$pid_file") endpoint=http://${host}:${port}"
       return
     fi
