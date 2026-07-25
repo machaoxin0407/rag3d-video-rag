@@ -14,7 +14,7 @@ if ! flock -n 7; then
 fi
 
 for shard in 0 1; do
-  CUDA_VISIBLE_DEVICES="$shard" .venv/bin/python preannotate_video_relevance.py \
+  CUDA_VISIBLE_DEVICES="$shard" .venv-vlm/bin/python preannotate_video_relevance.py \
     --journal "$work_dir/annotations_shard_${shard}.jsonl" \
     --shard-index "$shard" \
     --shard-count 2 \
