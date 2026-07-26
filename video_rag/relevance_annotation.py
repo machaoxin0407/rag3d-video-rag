@@ -209,6 +209,8 @@ def parse_payload(raw: str, row: dict[str, str]) -> dict[str, Any]:
             raise ValueError("Grades 2 and 3 require numeric time offsets")
         start_value = float(start_offset)
         end_value = float(end_offset)
+        if not math.isfinite(start_value) or not math.isfinite(end_value):
+            raise ValueError("Relevant offsets must be finite")
         time_basis_normalization = "relative"
         # Qwen occasionally returns the absolute source-video timestamps visible
         # in the evidence interval instead of the requested scene-relative
@@ -222,9 +224,42 @@ def parse_payload(raw: str, row: dict[str, str]) -> dict[str, Any]:
             end_value -= scene_start
             time_basis_normalization = "absolute_to_relative"
         if (
-            not math.isfinite(start_value)
-            or not math.isfinite(end_value)
-            or start_value < 0
+            0 <= start_value <= duration + 0.05
+            and abs(end_value - start_value) <= 0.05
+        ):
+            # A point timestamp cannot serve as an interval. Expand it to a
+            # deterministic one-second support window, clipped to the scene.
+            point = min(duration, max(0.0, start_value))
+            start_value = max(0.0, point - 0.5)
+            end_value = min(duration, point + 0.5)
+            if end_value <= start_value:
+                start_value = max(0.0, duration - 1.0)
+                end_value = duration
+            time_basis_normalization += "|point_to_window"
+            if uncertainty == "low":
+                uncertainty = "medium"
+            reason = (
+                f"{reason} AI returned a point timestamp; it was expanded to "
+                "a clipped one-second review window."
+            ).strip()
+        if (
+            start_value < 0
+            or end_value <= start_value
+            or end_value > duration + 0.05
+        ):
+            # The relevance evidence itself is frozen at scene level. Preserve
+            # the grade but use the full scene when the model's numeric offsets
+            # cannot be reconciled with either relative or absolute time.
+            start_value = 0.0
+            end_value = duration
+            time_basis_normalization += "|invalid_to_full_scene"
+            uncertainty = "high"
+            reason = (
+                f"{reason} AI offsets could not be reconciled with the scene; "
+                "the full scene was retained for mandatory R1 review."
+            ).strip()
+        if (
+            start_value < 0
             or end_value <= start_value
             or end_value > duration + 0.05
         ):
