@@ -560,6 +560,11 @@ def merge_journals(
     runs_path: Path = DEFAULT_RUNS,
     manifest_path: Path = DEFAULT_MANIFEST,
 ) -> dict[str, Any]:
+    pool_path = pool_path.resolve()
+    journals = [path.resolve() for path in journals]
+    labels_path = labels_path.resolve()
+    runs_path = runs_path.resolve()
+    manifest_path = manifest_path.resolve()
     pool = read_csv(pool_path)
     expected = {pair_id(row): row for row in pool}
     merged: dict[str, dict[str, Any]] = {}
@@ -629,6 +634,11 @@ def merge_journals(
         "time_boundary_policy": {
             "grades_0_1": "blank",
             "grades_2_3": "absolute interval constrained to candidate scene",
+            "normalization": (
+                "absolute timestamps are converted to scene-relative offsets; "
+                "point timestamps become clipped one-second windows; "
+                "irreconcilable offsets retain the full scene and high uncertainty"
+            ),
         },
         "journals": [str(path.relative_to(ROOT)).replace("\\", "/") for path in journals],
         "outputs": {
