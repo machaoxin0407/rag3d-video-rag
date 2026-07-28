@@ -23,6 +23,8 @@
 - `video_rag/`：授权视频预处理、ASR/OCR/VLM、证据融合和本地视频检索。
 - `run_video_analysis_stage.sh`：镜头、ASR、OCR、VLM 与证据构建的服务器统一入口。
 - `validate_video_analysis.py` / `validate_video_retrieval.py`：视频产物完整性与 API 合约验收。
+- `validate_paper_retrieval_release.py`：正式论文视频检索发布包的哈希、结构和完整复跑验收。
+- `data_video/releases/paper_video_retrieval_v1/`：可在干净仓库中复跑的冻结候选池、qrels、清单和正式结果。
 - `validation_outputs/`：验证报告 CSV/JSON/Markdown 产物。
 - `delivery_docs/`：初赛 Markdown 交付材料，覆盖 API 接口、源码运行、技术方案和验证报告。
 
@@ -64,6 +66,15 @@ python validate_performance.py
 ```bash
 python validate_performance.py --api-base-url http://127.0.0.1:8000
 ```
+
+复跑论文正式五模式检索评测：
+
+```bash
+python validate_paper_retrieval_release.py --replay
+```
+
+详细输入范围、哈希和直接评测命令见
+`data_video/releases/paper_video_retrieval_v1/REPRODUCE.md`。
 
 预期 `/health` 返回 `status=ok`，`/chat` 返回如下结构：
 
