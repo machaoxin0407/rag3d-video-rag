@@ -119,8 +119,12 @@ def bootstrap_difference(
     observed = mean(reference) - mean(comparison)
     lower = differences[int(0.025 * BOOTSTRAP_SAMPLES)]
     upper = differences[int(0.975 * BOOTSTRAP_SAMPLES)]
-    nonpositive = sum(value <= 0 for value in differences) / BOOTSTRAP_SAMPLES
-    nonnegative = sum(value >= 0 for value in differences) / BOOTSTRAP_SAMPLES
+    nonpositive = (
+        sum(value <= 0 for value in differences) + 1
+    ) / (BOOTSTRAP_SAMPLES + 1)
+    nonnegative = (
+        sum(value >= 0 for value in differences) + 1
+    ) / (BOOTSTRAP_SAMPLES + 1)
     return {
         "observed_difference": observed,
         "ci95_low": lower,
@@ -330,6 +334,15 @@ def main() -> None:
         significance[f"tri_hybrid_vs_{mode}_ndcg_at_10"] = (
             bootstrap_difference(reference, comparison)
         )
+    run_depth = {
+        mode: {
+            "total_results": sum(len(items) for items in ranked[mode].values()),
+            "minimum_per_query": min(len(items) for items in ranked[mode].values()),
+            "maximum_per_query": max(len(items) for items in ranked[mode].values()),
+            "mean_per_query": mean(len(items) for items in ranked[mode].values()),
+        }
+        for mode in MODES
+    }
 
     write_csv(
         output_dir / "paper_retrieval_metrics_summary_v1.csv",
@@ -363,6 +376,34 @@ def main() -> None:
         ]
         for row in primary_rows
     ]
+    significance_rows = []
+    for key, values in significance.items():
+        comparison = key.removeprefix("tri_hybrid_vs_").removesuffix(
+            "_ndcg_at_10"
+        )
+        significance_rows.append([
+            comparison,
+            f"{values['observed_difference']:.3f}",
+            f"[{values['ci95_low']:.3f}, {values['ci95_high']:.3f}]",
+            f"{values['two_sided_p']:.4f}",
+        ])
+    product_groups = sorted({
+        row["group"]
+        for row in breakdown_rows
+        if row["dimension"] == "product_class"
+    })
+    product_rows = []
+    for group in product_groups:
+        by_mode = {
+            row["mode"]: row
+            for row in breakdown_rows
+            if row["dimension"] == "product_class" and row["group"] == group
+        }
+        product_rows.append([
+            group,
+            str(next(iter(by_mode.values()))["queries"]),
+            *[f"{float(by_mode[mode]['ndcg']):.3f}" for mode in MODES],
+        ])
     paper_markdown = f"""# Formal video retrieval evaluation
 
 Generated: {datetime.now(timezone.utc).isoformat()}
@@ -385,8 +426,19 @@ no-positive queries as zero, providing a conservative coverage-adjusted view.
 ## Paired bootstrap on nDCG@10
 
 10,000 paired query bootstrap samples, seed {BOOTSTRAP_SEED}; reference is
-tri-hybrid. See `paper_retrieval_evaluation_v1.json` for confidence intervals
-and two-sided p-values.
+tri-hybrid.
+
+{markdown_table(
+    ["Comparison", "Delta", "95% CI", "Two-sided p"],
+    significance_rows,
+)}
+
+## nDCG@10 by product class
+
+{markdown_table(
+    ["Product", "Queries", *MODES],
+    product_rows,
+)}
 """
     (output_dir / "paper_retrieval_table_v1.md").write_text(
         paper_markdown, encoding="utf-8"
@@ -405,6 +457,7 @@ and two-sided p-values.
             any(grade >= BINARY_THRESHOLD for grade in judgments.values())
             for judgments in qrels_by_query.values()
         ),
+        "run_depth": run_depth,
         "summary": summary_rows,
         "paired_bootstrap": significance,
         "inputs": {
