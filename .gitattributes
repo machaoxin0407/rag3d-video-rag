@@ -8,9 +8,11 @@
 *.jpeg binary
 *.faiss binary
 *.pkl binary
+*.xlsx binary
 
 # Frozen research releases must retain byte-identical payloads across platforms.
 data_video/releases/**/*.csv binary
 data_video/releases/**/*.json binary
 data_video/releases/**/*.txt binary
+data_video/releases/**/review_audit/*.md binary
 *.sha256 text eol=lf

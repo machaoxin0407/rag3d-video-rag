@@ -64,6 +64,20 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def read_trec_qrels(path: Path) -> dict[tuple[str, str], int]:
+    rows: dict[tuple[str, str], int] = {}
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            parts = line.rstrip("\n").split()
+            require(len(parts) == 4, f"Invalid TREC qrels line {line_number}: {path}")
+            query_id, iteration, scene_id, grade = parts
+            require(iteration == "0", f"Invalid TREC iteration at line {line_number}")
+            key = (query_id, scene_id)
+            require(key not in rows, f"Duplicate TREC qrels pair: {key}")
+            rows[key] = int(grade)
+    return rows
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
@@ -121,6 +135,29 @@ def validate_dataset_manifests(release_root: Path, scope: dict[str, Any]) -> Non
     require(
         len(freeze["target_classes"]) == scope["product_classes"],
         "Frozen product class count mismatch",
+    )
+    for name, expected_digest in freeze["manifest_sha256"].items():
+        frozen_input = manifest_root / name
+        require(frozen_input.is_file(), f"Frozen dataset input is missing: {name}")
+        require(
+            sha256_file(frozen_input) == expected_digest,
+            f"{name} does not match the dataset freeze manifest",
+        )
+    target_classes = set(freeze["target_classes"])
+    formal_inventory = [
+        row
+        for row in inventory
+        if row["product_class"] in target_classes and row["status"] == "accepted"
+    ]
+    require(
+        len(formal_inventory) == freeze["video_count"],
+        "Accepted formal inventory count mismatch",
+    )
+    formal_class_counts = Counter(row["product_class"] for row in formal_inventory)
+    require(
+        dict(sorted(formal_class_counts.items()))
+        == dict(sorted(freeze["class_counts"].items())),
+        "Accepted formal inventory class distribution mismatch",
     )
 
 
@@ -223,6 +260,162 @@ def validate_pool_and_qrels(
     return pool, qrels
 
 
+def validate_historical_manifests(
+    release_root: Path,
+    release_manifest: dict[str, Any],
+    pool: list[dict[str, str]],
+    qrels: list[dict[str, str]],
+) -> None:
+    manifest_root = release_root / "manifests"
+    pool_manifest = read_json(manifest_root / "paper_relevance_pool_run_v1.json")
+    require(
+        pool_manifest["schema_version"] == "paper-relevance-pool-v1",
+        "Unexpected pool manifest schema",
+    )
+    require(pool_manifest["query_count"] == 100, "Pool manifest query count mismatch")
+    require(
+        pool_manifest["pooled_pair_count"] == len(pool),
+        "Pool manifest pair count mismatch",
+    )
+    per_query_counts = Counter(row["query_id"] for row in pool)
+    require(min(per_query_counts.values()) == pool_manifest["per_query_min"], "Pool min mismatch")
+    require(max(per_query_counts.values()) == pool_manifest["per_query_max"], "Pool max mismatch")
+    require(
+        sum(per_query_counts.values()) / len(per_query_counts)
+        == pool_manifest["per_query_mean"],
+        "Pool mean mismatch",
+    )
+    require(pool_manifest["modes"] == list(MODES), "Pool mode order mismatch")
+    require(pool_manifest["top_k_per_mode"] == 20, "Pool Top-K mismatch")
+
+    pool_inputs = {
+        "queries_sha256": manifest_root / "paper_video_queries_v1.csv",
+        "evidence_sha256": manifest_root / "video_evidence_manifest.csv",
+        "inventory_sha256": (
+            manifest_root / "pool_generation_inputs" / "video_source_inventory.csv"
+        ),
+    }
+    for digest_key, path in pool_inputs.items():
+        require(
+            sha256_file(path) == pool_manifest["inputs"][digest_key],
+            f"Pool input lineage mismatch: {digest_key}",
+        )
+
+    frozen_inventory = read_csv(manifest_root / "video_source_inventory.csv")
+    pool_inventory = read_csv(
+        manifest_root / "pool_generation_inputs" / "video_source_inventory.csv"
+    )
+    require(
+        frozen_inventory == pool_inventory,
+        "Dataset-freeze and pool-generation inventories differ semantically",
+    )
+    require(
+        sha256_file(manifest_root / "video_source_inventory.csv")
+        != sha256_file(
+            manifest_root / "pool_generation_inputs" / "video_source_inventory.csv"
+        ),
+        "Expected byte-distinct inventory snapshots are not distinct",
+    )
+
+    locator = read_json(release_root / "LARGE_ARTIFACT_LOCATOR.json")
+    artifacts = locator["artifacts"]
+    require(
+        artifacts["dense_index"]["sha256"]
+        == pool_manifest["inputs"]["dense_index_sha256"],
+        "Dense index lineage mismatch",
+    )
+    require(
+        artifacts["visual_index"]["sha256"]
+        == pool_manifest["inputs"]["visual_index_sha256"],
+        "Visual index lineage mismatch",
+    )
+
+    observed_mode_counts: Counter[tuple[str, str]] = Counter()
+    for row in pool:
+        for mode, score in json.loads(row["method_scores_json"]).items():
+            observed_mode_counts[(mode, score["effective_mode"])] += 1
+    for requested_mode, effective_counts in pool_manifest[
+        "effective_mode_counts"
+    ].items():
+        for effective_mode, expected_count in effective_counts.items():
+            require(
+                observed_mode_counts[(requested_mode, effective_mode)]
+                == expected_count,
+                f"Effective mode count mismatch: {requested_mode}/{effective_mode}",
+            )
+    require(
+        sum(observed_mode_counts.values())
+        == sum(
+            sum(counts.values())
+            for counts in pool_manifest["effective_mode_counts"].values()
+        ),
+        "Unexpected effective-mode entries in pool",
+    )
+
+    qrels_root = manifest_root / "paper_qrels_v1"
+    qrels_manifest = read_json(qrels_root / "paper_video_qrels_manifest_v1.json")
+    require(qrels_manifest["frozen"] is True, "Qrels manifest is not frozen")
+    scope = qrels_manifest["judgment_scope"]
+    expected_scope = {
+        "queries": release_manifest["scope"]["queries"],
+        "query_scene_pairs": release_manifest["scope"]["query_scene_pairs"],
+        "unique_scenes": release_manifest["scope"]["unique_judged_scenes"],
+        "grade_counts": release_manifest["judgments"]["grade_counts"],
+        "source_leakage_counts": release_manifest["judgments"][
+            "source_leakage_counts"
+        ],
+        "queries_with_grade_ge_1": release_manifest["judgments"][
+            "queries_with_grade_ge_1"
+        ],
+        "queries_with_grade_ge_2": release_manifest["judgments"][
+            "queries_with_grade_ge_2"
+        ],
+    }
+    require(scope == expected_scope, "Qrels manifest judgment scope mismatch")
+
+    protocol = qrels_manifest["human_review_protocol"]
+    for key, value in protocol.items():
+        require(
+            release_manifest["judgments"].get(key) == value,
+            f"Human-review protocol mismatch: {key}",
+        )
+
+    review_root = release_root / "review_audit"
+    for source in qrels_manifest["source_files"].values():
+        path = review_root / source["name"]
+        require(path.is_file(), f"Missing review audit source: {source['name']}")
+        require(
+            sha256_file(path) == source["sha256"],
+            f"Review audit source hash mismatch: {source['name']}",
+        )
+
+    for output in qrels_manifest["outputs"].values():
+        path = qrels_root / output["name"]
+        require(path.is_file(), f"Missing qrels output: {output['name']}")
+        require(
+            sha256_file(path) == output["sha256"],
+            f"Qrels output hash mismatch: {output['name']}",
+        )
+
+    expected_graded = {
+        (row["query_id"], row["candidate_scene_id"]): int(row["relevance_grade"])
+        for row in qrels
+    }
+    expected_binary = {
+        key: int(grade >= 2) for key, grade in expected_graded.items()
+    }
+    require(
+        read_trec_qrels(qrels_root / "paper_video_qrels_graded_v1.txt")
+        == expected_graded,
+        "Graded TREC qrels differ from audit CSV",
+    )
+    require(
+        read_trec_qrels(qrels_root / "paper_video_qrels_binary_ge2_v1.txt")
+        == expected_binary,
+        "Binary TREC qrels differ from audit CSV",
+    )
+
+
 def validate_frozen_results(release_root: Path, manifest: dict[str, Any]) -> None:
     result_root = release_root / "results" / "paper_retrieval_eval_v1"
     summary = read_csv(result_root / "paper_retrieval_metrics_summary_v1.csv")
@@ -312,7 +505,8 @@ def main() -> None:
 
     validate_payloads(release_root, manifest)
     validate_dataset_manifests(release_root, manifest["scope"])
-    validate_pool_and_qrels(release_root, manifest)
+    pool, qrels = validate_pool_and_qrels(release_root, manifest)
+    validate_historical_manifests(release_root, manifest, pool, qrels)
     validate_frozen_results(release_root, manifest)
     if args.replay:
         replay_evaluation(release_root)

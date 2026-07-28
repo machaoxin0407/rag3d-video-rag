@@ -4,6 +4,12 @@ This directory is the byte-stable evaluation replay release for the formal five-
 
 It contains the frozen queries, pooled native rankings, adjudicated qrels, supporting scene/evidence manifests, formal results and SHA-256 checksums. It does not redistribute raw videos, generated clips, keyframes or model weights.
 
+Additional audit material:
+
+- `LINEAGE_NOTES.md` explains the byte-distinct but semantically identical dataset-freeze and pool-generation inventory snapshots;
+- `review_audit/` retains the exact workbook and reports referenced by the qrels manifest;
+- `LARGE_ARTIFACT_LOCATOR.json` records the authorized server paths, sizes, available hashes and known hash-coverage limits for media and indexes.
+
 ## Requirements
 
 - Python 3.10 or newer;
@@ -12,7 +18,7 @@ It contains the frozen queries, pooled native rankings, adjudicated qrels, suppo
 
 ## One-command validation
 
-Validate payload hashes, row counts, qrels/pool consistency, native run depths and frozen metrics:
+Validate payload hashes, dataset/pool/qrels manifest lineage, human-review audit hashes, TREC/CSV consistency, row counts, native run depths and frozen metrics:
 
 ```bash
 python validate_paper_retrieval_release.py
@@ -69,6 +75,6 @@ Do not edit a v1 payload in place. Corrections require a new release directory a
 
 ## Large artifacts
 
-Raw video and generated media remain outside Git. Their source or clip hashes and relative paths are retained in the included manifests.
+Raw video and generated media remain outside Git. Their source or clip hashes and relative paths are retained in the included manifests. Exact server locations and v1 hash-coverage limitations are recorded in `LARGE_ARTIFACT_LOCATOR.json`.
 
 The frozen candidate pool already stores native method ranks and scores for all five modes, so replaying the formal evaluation does not require GPUs, embedding services or the original video files.

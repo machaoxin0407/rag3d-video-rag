@@ -1,0 +1,44 @@
+{
+  "schema_version": "paper-video-large-artifact-locator-v1",
+  "captured_at": "2026-07-29",
+  "storage": {
+    "ssh_alias": "newpulse-server",
+    "project_root": "~/rag3d-video",
+    "retention_policy": "Preserve in place; do not delete or overwrite as part of release validation."
+  },
+  "artifacts": {
+    "raw_video_directory": {
+      "relative_path": "data_video/raw",
+      "file_count": 244,
+      "total_bytes": 8230556974,
+      "hash_coverage": "Accepted source hashes are recorded per record in manifests/video_source_inventory.csv; the directory also contains non-release candidates."
+    },
+    "processed_media_directory": {
+      "relative_path": "data_video/processed",
+      "file_count": 1348,
+      "total_bytes": 3167930557,
+      "hash_coverage": "The 1263 formal scene clip hashes and byte sizes are recorded in manifests/scene_manifest.csv."
+    },
+    "keyframe_directory": {
+      "relative_path": "data_video/keyframes",
+      "file_count": 4640,
+      "total_bytes": 286726547,
+      "hash_coverage": "Relative keyframe paths are recorded in manifests/video_evidence_manifest.csv; per-keyframe SHA-256 was not frozen in v1."
+    },
+    "dense_index": {
+      "relative_path": "data_video/indexes/video_dense_qwen3_embedding_0_6b.npz",
+      "bytes": 3150613,
+      "sha256": "3afbcfaf1f3d24c790bb897099cb80bb6a67529776e1d8bf8c8c31ca1e53d99d"
+    },
+    "visual_index": {
+      "relative_path": "data_video/indexes/video_visual_qwen3_vl_embedding_2b.npz",
+      "bytes": 5752132,
+      "sha256": "77b3685a18627307efddd22b0a5cb21edabe703a881585330387a2afcf5b7d71"
+    }
+  },
+  "limitations": [
+    "The SSH alias resolves only on an authorized maintainer workstation.",
+    "Raw and processed media are not part of the Git release.",
+    "Per-keyframe hashes were not frozen in v1; keyframes are not required for metric replay."
+  ]
+}

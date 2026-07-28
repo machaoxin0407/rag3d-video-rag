@@ -38,7 +38,12 @@
     "queries_with_grade_ge_1": 100,
     "queries_with_grade_ge_2": 75,
     "minimum_independent_human_reviewers_per_row": 2,
-    "third_party_adjudication_rows": 146
+    "disputed_rows_receive_third_human_adjudication": true,
+    "full_crosscheck_rows": 3775,
+    "full_crosscheck_agreement": 0.951,
+    "high_grade_deep_review_rows": 245,
+    "third_party_adjudication_rows": 146,
+    "applied_r3_corrections": 142
   },
   "frozen_primary_result": {
     "mode": "tri_hybrid",
@@ -50,6 +55,14 @@
     "precision": "0.298667"
   },
   "payload_files": {
+    "LARGE_ARTIFACT_LOCATOR.json": {
+      "bytes": 1863,
+      "sha256": "bd85dd0e00e8eb6ecba659947ff49196947a68eadcec78275fcfd932e9bd1554"
+    },
+    "manifests/download_receipts.csv": {
+      "bytes": 37804,
+      "sha256": "8f7e46e0fe9258259b4f5283bf0160b5ee15946f4b656f232a42706d0a29e5a3"
+    },
     "manifests/paper_qrels_v1/paper_video_qrels_binary_ge2_v1.txt": {
       "bytes": 129869,
       "sha256": "5fd4720a3cfc936df5ea1f20700f18be1e65eb1e0ded5c3e17f0f89e6899a400"
@@ -78,6 +91,14 @@
       "bytes": 26188,
       "sha256": "4d82480f1ae4bfafef526d66de7c5f408e8032f5643d6b20fdd0a51c65be69cb"
     },
+    "manifests/pool_generation_inputs/video_source_inventory.csv": {
+      "bytes": 62440,
+      "sha256": "8add044028c5d5761fc5ec8fce701776db4ae1f660fc78989fe9714711abef3b"
+    },
+    "manifests/review_assignments.csv": {
+      "bytes": 8250,
+      "sha256": "9caac7ad04f7fa66837b25458b9264a8c4eea6bf796c4180bbb4d93acc6d9a5d"
+    },
     "manifests/scene_manifest.csv": {
       "bytes": 482860,
       "sha256": "62ef0bf186a6d59368e568ef2afbcad7f76a33a371c58c61b8e04bfdc9eac305"
@@ -91,8 +112,8 @@
       "sha256": "ff2f1d154b07d38c26bd08d1f411e899d6648349ed1f662f938ce76e613cc0dd"
     },
     "manifests/video_source_inventory.csv": {
-      "bytes": 62440,
-      "sha256": "8add044028c5d5761fc5ec8fce701776db4ae1f660fc78989fe9714711abef3b"
+      "bytes": 62521,
+      "sha256": "0c749a48974072ab772f771f6d9819dc9e96528ef18a289aff0abc9beb263643"
     },
     "results/paper_retrieval_eval_v1/paper_retrieval_evaluation_v1.json": {
       "bytes": 13164,
@@ -113,6 +134,18 @@
     "results/paper_retrieval_eval_v1/paper_retrieval_table_v1.md": {
       "bytes": 2214,
       "sha256": "f957cd8cd4fabd4986b39cf48e63b8553d876bf346ae4a9d3ce5f7059485e52a"
+    },
+    "review_audit/R1_paper_relevance_review_workbook.xlsx": {
+      "bytes": 3360569,
+      "sha256": "fdfbc924deeef5753cd536a5b2305edffe72601bbe7512609e24dcb4591802dd"
+    },
+    "review_audit/_crosscheck_r3_report.md": {
+      "bytes": 3110,
+      "sha256": "e1f512157508261eff45d650a32004a10d5bb5cc1906460cf340ffffbb89b6db"
+    },
+    "review_audit/review_progress_report.md": {
+      "bytes": 8781,
+      "sha256": "07fd337b2c36fe364a9feb36da665d27aec5d435167e369d86f146b7b4b807a1"
     }
   },
   "excluded_large_artifacts": {
