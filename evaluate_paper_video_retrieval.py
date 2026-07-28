@@ -307,6 +307,10 @@ def main() -> None:
                     "mode": mode,
                     "cutoff": cutoff,
                     "queries": len(selected),
+                    "binary_evaluable_queries": sum(
+                        metric_store[mode][cutoff]["recall"][index] is not None
+                        for index in selected
+                    ),
                 }
                 for metric in ("ndcg", "map", "mrr", "recall", "precision", "hit"):
                     row[metric] = format_metric(
