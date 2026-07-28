@@ -175,7 +175,9 @@ def load_rows(workbook_path: Path) -> list[dict[str, Any]]:
 
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8-sig", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=AUDIT_FIELDS)
+        writer = csv.DictWriter(
+            stream, fieldnames=AUDIT_FIELDS, lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
