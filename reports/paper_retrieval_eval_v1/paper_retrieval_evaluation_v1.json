@@ -1,6 +1,6 @@
 {
   "schema_version": "paper-video-retrieval-evaluation-v1",
-  "created_at": "2026-07-28T17:39:30.591791+00:00",
+  "created_at": "2026-07-28T17:44:58.671915+00:00",
   "modes": [
     "bm25",
     "dense",
@@ -455,7 +455,7 @@
     },
     "qrels_manifest": {
       "path": "data_video/manifests/paper_qrels_v1/paper_video_qrels_manifest_v1.json",
-      "sha256": "439bba62de70985ddd01b63cb762547840aff4726343c0429ddc235ed600f031"
+      "sha256": "a1b4da95c856b00fe942c7629a624cb115ab30fe593eb328f49e184d1b546196"
     }
   }
 }

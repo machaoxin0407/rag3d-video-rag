@@ -1,6 +1,6 @@
 # Formal video retrieval evaluation
 
-Generated: 2026-07-28T17:39:30.590656+00:00
+Generated: 2026-07-28T17:44:58.670883+00:00
 
 Primary binary relevance is grade >= 2. Graded nDCG uses
 gain $2^{grade}-1$. All rankings are the frozen native Top-20 outputs pooled
