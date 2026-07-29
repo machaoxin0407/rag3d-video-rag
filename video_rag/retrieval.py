@@ -62,6 +62,28 @@ _NON_VIDEO_INTENT_RE = re.compile(
     r"(保修|退款|退货|订单|物流|价格|电话|笑话)",
     re.IGNORECASE,
 )
+_RELEVANCE_STOP_TOKENS = {
+    "how",
+    "what",
+    "where",
+    "do",
+    "does",
+    "should",
+    "the",
+    "a",
+    "an",
+    "on",
+    "in",
+    "to",
+    "with",
+    "use",
+    "is",
+    "are",
+    "怎么",
+    "如何",
+    "怎样",
+    "哪里",
+}
 
 
 def has_video_intent(query: str) -> bool:
@@ -160,6 +182,9 @@ class VideoEvidenceRetriever:
         self.visual_query_encoder = visual_query_encoder
         self.tokenized_documents = [tokenize(text) for text in self.search_texts]
         self.bm25 = BM25Okapi(self.tokenized_documents)
+        self.content_bm25 = BM25Okapi(
+            [tokenize(row.get("text", "")) for row in self.documents]
+        )
         self.dense_index: DenseSceneIndex | None = None
         self.dense_index_error: str | None = None
         self.visual_index: DenseSceneIndex | None = None
@@ -249,6 +274,31 @@ class VideoEvidenceRetriever:
                 detected.add(product_class)
         return detected
 
+    def content_relevance_score(self, query: str, products: set[str]) -> float:
+        """Lexical evidence threshold independent of injected product aliases."""
+        alias_tokens = {
+            token
+            for product in products
+            for alias in (product, *PRODUCT_ALIASES.get(product, ()))
+            for token in tokenize(alias)
+        }
+        content_query = [
+            token
+            for token in tokenize(query)
+            if token not in alias_tokens and token not in _RELEVANCE_STOP_TOKENS
+        ]
+        if not content_query:
+            return 0.0
+        scores = self.content_bm25.get_scores(content_query)
+        return max(
+            (
+                float(scores[index])
+                for index, row in enumerate(self.documents)
+                if row["product_class"] in products
+            ),
+            default=0.0,
+        )
+
     def _dense_scores(self, query: str) -> np.ndarray | None:
         if self.dense_index is None:
             return None
@@ -337,6 +387,9 @@ class VideoEvidenceRetriever:
         # Product mention alone is insufficient: service, policy, and entertainment
         # questions must not receive a fixed number of operation clips.
         if not detected or not has_video_intent(query):
+            return []
+        minimum_relevance = float(os.getenv("VIDEO_MIN_CONTENT_BM25", "2.0"))
+        if self.content_relevance_score(query, detected) < minimum_relevance:
             return []
         for index, row in enumerate(self.documents):
             if row["product_class"] in detected:

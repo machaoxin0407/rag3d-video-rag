@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import tempfile
+import os
+import time
 import unittest
 from pathlib import Path
 
@@ -88,6 +90,14 @@ class P1ProductTests(unittest.TestCase):
             retriever.search("air fryer warranty refund phone number", top_k=3),
             [],
         )
+        self.assertEqual(
+            retriever.search("Where is the fax modem on an espresso machine?", top_k=3),
+            [],
+        )
+        self.assertEqual(
+            retriever.search("压力锅怎样播放蓝光电影？", top_k=3),
+            [],
+        )
 
     def test_video_citation_requires_answer_tag(self) -> None:
         item = api_server.VideoEvidenceItem(
@@ -122,6 +132,58 @@ class P1ProductTests(unittest.TestCase):
         self.assertEqual(filename, "Manual08_0.jpg")
         root = Path(api_server.__file__).resolve().parent / "手册" / "插图"
         self.assertTrue((root / filename).is_file())
+
+    def test_chinese_manual_evidence_supports_answer_sentence(self) -> None:
+        trace = {
+            "events": [
+                {
+                    "kind": "pre_retrieval",
+                    "sections": [
+                        {
+                            "chunk_id": 8,
+                            "product": "Air Fryer",
+                            "heading": "控制面板",
+                            "section_summary": "使用温度按钮调节烹饪温度。",
+                            "pics": [],
+                        }
+                    ],
+                }
+            ]
+        }
+        citations, _images = api_server._structured_evidence(
+            "按下温度按钮设置温度。",
+            [],
+            [],
+            trace,
+        )
+        self.assertEqual(len(citations), 1)
+        self.assertEqual(citations[0].supports, ["sentence-1"])
+
+    def test_failed_upload_can_be_discarded_and_stale_lock_recovers(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            manager = VideoJobManager(Path(temp_dir))
+            job_id, target = manager.create(
+                "clip.mp4",
+                "video/mp4",
+                "",
+                "Air Fryer",
+            )
+            target.write_bytes(b"partial")
+            manager.discard_upload(job_id)
+            self.assertFalse(target.parent.exists())
+
+            job_id, _target = manager.create(
+                "clip.mp4",
+                "video/mp4",
+                "",
+                "Air Fryer",
+            )
+            lock_path = Path(temp_dir) / job_id / ".state.lock"
+            lock_path.write_text("", encoding="utf-8")
+            old = time.time() - 600
+            os.utime(lock_path, (old, old))
+            manager.update(job_id, status="queued")
+            self.assertEqual(manager.get(job_id)["status"], "queued")
 
 
 if __name__ == "__main__":

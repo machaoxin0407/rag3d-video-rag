@@ -766,19 +766,27 @@ def _answer_sentences(answer: str) -> list[str]:
 
 
 def _supporting_sentence_ids(answer: str, evidence: str) -> list[str]:
-    evidence_tokens = set(
-        re.findall(r"[a-z0-9]{3,}|[\u4e00-\u9fff]{2,}", evidence.casefold())
-    )
+    evidence_tokens = _citation_tokens(evidence)
     if not evidence_tokens:
         return []
     supported: list[str] = []
     for index, sentence in enumerate(_answer_sentences(answer), start=1):
-        sentence_tokens = set(
-            re.findall(r"[a-z0-9]{3,}|[\u4e00-\u9fff]{2,}", sentence.casefold())
-        )
+        sentence_tokens = _citation_tokens(sentence)
         if len(evidence_tokens & sentence_tokens) >= 2:
             supported.append(f"sentence-{index}")
     return supported[:8]
+
+
+def _citation_tokens(text: str) -> set[str]:
+    tokens = set(re.findall(r"[a-z0-9]{3,}", text.casefold()))
+    for sequence in re.findall(r"[\u4e00-\u9fff]+", text):
+        if len(sequence) == 1:
+            tokens.add(sequence)
+        else:
+            tokens.update(
+                sequence[index : index + 2] for index in range(len(sequence) - 1)
+            )
+    return tokens
 
 
 def _run_agent_sync(
@@ -1024,7 +1032,7 @@ async def create_video_job(
                 stream.write(chunk)
     except Exception:
         try:
-            manager.delete(job_id)
+            manager.discard_upload(job_id)
         except Exception:
             pass
         raise

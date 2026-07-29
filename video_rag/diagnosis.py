@@ -105,6 +105,14 @@ class VideoJobManager:
                 raise RuntimeError("active video job cannot be deleted")
         shutil.rmtree(job_dir)
 
+    def discard_upload(self, job_id: str) -> None:
+        """Remove a job that failed before it could enter the worker queue."""
+        job_dir = self._job_dir(job_id)
+        state = self.get(job_id)
+        if state.get("status") != "uploading":
+            raise RuntimeError("only an uploading job can be discarded")
+        shutil.rmtree(job_dir)
+
     def claim_next(self) -> str | None:
         """Atomically claim one queued job for a separate worker process."""
         with self._lock:
@@ -161,6 +169,13 @@ class VideoJobManager:
             try:
                 descriptor = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
             except FileExistsError:
+                try:
+                    lock_age = time.time() - lock_path.stat().st_mtime
+                    if lock_age > float(os.getenv("USER_VIDEO_LOCK_STALE_S", "300")):
+                        lock_path.unlink(missing_ok=True)
+                        continue
+                except FileNotFoundError:
+                    continue
                 if time.monotonic() >= deadline:
                     raise
                 time.sleep(0.02)
