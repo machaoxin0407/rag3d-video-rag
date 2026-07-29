@@ -652,6 +652,11 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=ROOT / "reports" / "p2" / "online")
     parser.add_argument("--skip-diagnosis", action="store_true")
     parser.add_argument("--skip-performance", action="store_true")
+    parser.add_argument(
+        "--skip-e2e",
+        action="store_true",
+        help="Reuse an already merged end_to_end_per_query.csv in output-dir.",
+    )
     args = parser.parse_args()
     load_dotenv(ROOT / ".env")
     token = os.environ["KAFU_API_TOKEN"]
@@ -663,13 +668,18 @@ def main() -> None:
     if not video_health.get("exact_ready"):
         raise RuntimeError("strict Tri-Hybrid is not ready")
     output = args.output_dir.resolve()
-    rows, latencies = run_end_to_end(
-        args.base_url,
-        headers,
-        output,
-        min(100, max(1, args.limit)),
-        max(0, args.offset),
-    )
+    if args.skip_e2e:
+        existing = read_csv(output / "end_to_end_per_query.csv")
+        rows = existing
+        latencies = [float(row["latency_seconds"]) for row in existing]
+    else:
+        rows, latencies = run_end_to_end(
+            args.base_url,
+            headers,
+            output,
+            min(100, max(1, args.limit)),
+            max(0, args.offset),
+        )
     if not args.skip_diagnosis:
         run_diagnosis(args.base_url, headers, output)
     if not args.skip_performance:
