@@ -343,6 +343,7 @@ def _vision_diagnosis(
         messages=[{"role": "user", "content": content}],
         response_format={"type": "json_object"},
         temperature=0,
+        extra_body={"enable_thinking": False},
     )
     result = json.loads(response.choices[0].message.content or "{}")
     required = {"label", "current_step", "deviation_type", "next_action", "confidence", "evidence", "safety_note"}

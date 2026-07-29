@@ -531,14 +531,16 @@ def run_performance_and_faults(
         "query_text": "How do I set the cooking temperature and time on an air fryer?"
     }
     concurrency_rows: list[dict[str, Any]] = []
-    for concurrency in (2, 4, 8):
+    standalone_latencies: list[float] = []
+    for concurrency in (1, 2, 4, 8):
         started = time.monotonic()
         latencies: list[float] = []
         failures = 0
+        requests_at_level = 5 if concurrency == 1 else concurrency
         with ThreadPoolExecutor(max_workers=concurrency) as pool:
             futures = [
                 pool.submit(chat_once, base, headers, query)
-                for _ in range(concurrency)
+                for _ in range(requests_at_level)
             ]
             for future in as_completed(futures):
                 try:
@@ -549,7 +551,7 @@ def run_performance_and_faults(
         concurrency_rows.append(
             {
                 "concurrency": concurrency,
-                "requests": concurrency,
+                "requests": requests_at_level,
                 "failures": failures,
                 "wall_seconds": f"{time.monotonic() - started:.6f}",
                 "p50_seconds": f"{percentile(latencies, .5):.6f}",
@@ -557,6 +559,8 @@ def run_performance_and_faults(
                 "p99_seconds": f"{percentile(latencies, .99):.6f}",
             }
         )
+        if concurrency == 1:
+            standalone_latencies = latencies
     write_csv(output / "chat_concurrency.csv", concurrency_rows)
     faults: list[dict[str, Any]] = []
     for name, fault_headers, expected in (
@@ -619,14 +623,21 @@ def run_performance_and_faults(
     summary = {
         "experiment_id": "PERF-20260729-001",
         "created_at": utc_now(),
-        "sequential_e2e_requests": len(e2e_latencies),
-        "sequential_e2e_latency_seconds": {
+        "formal_e2e_requests": len(e2e_latencies),
+        "formal_e2e_workload_latency_seconds": {
             "p50": percentile(e2e_latencies, 0.50),
             "p95": percentile(e2e_latencies, 0.95),
             "p99": percentile(e2e_latencies, 0.99),
+            "note": "formal run used four non-overlapping concurrent shards",
+        },
+        "sequential_e2e_requests": len(standalone_latencies),
+        "sequential_e2e_latency_seconds": {
+            "p50": percentile(standalone_latencies, 0.50),
+            "p95": percentile(standalone_latencies, 0.95),
+            "p99": percentile(standalone_latencies, 0.99),
         },
         "gpu_snapshot": gpu,
-        "concurrency_levels": [2, 4, 8],
+        "concurrency_levels": [1, 2, 4, 8],
         "faults_passed": sum(row["passed"] for row in faults),
         "faults_total": len(faults),
         "cold_start": "captured by first sequential request",
