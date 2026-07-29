@@ -22,7 +22,8 @@ HTTP 503，不再静默退化为 BM25。
 - Ubuntu 服务器、NVIDIA 驱动和两张 RTX 4090；
 - 项目位于 `~/rag3d-video`；
 - `.venv`、`.venv-embedding`、`.venv-visual-embedding` 已按现有脚本建立；
-- `ffmpeg`、`ffprobe` 和 `curl` 可用；
+- `curl` 可用；系统 FFmpeg 可选，缺失时自动使用
+  `requirements-video-base.txt` 固定的用户态 `imageio-ffmpeg`；
 - `.env` 只保存在服务器，至少配置 `KAFU_API_TOKEN`、主回答模型、
   embedding 与 rerank 的密钥；
 - GPU0 固定运行 Dense 文本模型，GPU1 固定运行 Visual 模型。
@@ -166,6 +167,18 @@ curl -sS http://127.0.0.1:8000/health | python -m json.tool
 - Dense/Visual 两个服务 `ready=true`；
 - `/v2/chat` 技术问题的 `effective_mode=tri_hybrid`；
 - 视频任务能从 `queued` 进入 `completed` 或有明确 `failed` 原因。
+
+冻结 100 问题的在线精确模式验收：
+
+```bash
+python validate_p1_online_retrieval.py
+```
+
+完整认证 smoke（包含媒体实体和异步视频任务）：
+
+```bash
+python deploy/server_p1_smoke.py
+```
 
 诊断 Macro-F1、60 秒视频耗时和 100 问题端到端批量评测属于下一阶段 P2 的
 正式量化验收。在这些指标完成前，用户视频诊断在论文和产品中必须标记为

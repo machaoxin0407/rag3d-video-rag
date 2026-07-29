@@ -18,6 +18,8 @@ REQUIRED = [
     "video_rag/diagnosis.py",
     "web_demo/index.html",
     "docs/P1_DEPLOYMENT_RUNBOOK.md",
+    "docs/P1_COMPLETION_AND_ACCEPTANCE_2026-07-29.md",
+    "validation_outputs/p1_online_100_report.json",
     "deploy/nginx.p1.conf.example",
     "deploy/rotate_p1_access_token.py",
     "deploy/import_authorized_model_config.py",

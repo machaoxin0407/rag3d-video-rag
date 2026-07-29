@@ -1,0 +1,808 @@
+{
+  "status": "passed",
+  "queries": 100,
+  "strict_tri_hybrid_queries": 100,
+  "failures": [],
+  "rows": [
+    {
+      "query_id": "VQ-001",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-002",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-003",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-004",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-005",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-006",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-007",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-008",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-009",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-010",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-011",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-012",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-013",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-014",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-015",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-016",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-017",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-018",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-019",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-020",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-021",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-022",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-023",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-024",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-025",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-026",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-027",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-028",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-029",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-030",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-031",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-032",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-033",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-034",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-035",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-036",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-037",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-038",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-039",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-040",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-041",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-042",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-043",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-044",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-045",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-046",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-047",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-048",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-049",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-050",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-051",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-052",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-053",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-054",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-055",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-056",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-057",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-058",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-059",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-060",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-061",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-062",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-063",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-064",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-065",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-066",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-067",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-068",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-069",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-070",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-071",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-072",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-073",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-074",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-075",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-076",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-077",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-078",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-079",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-080",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-081",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-082",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-083",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-084",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-085",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-086",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-087",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-088",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-089",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-090",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-091",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-092",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-093",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-094",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-095",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-096",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-097",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-098",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-099",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    },
+    {
+      "query_id": "VQ-100",
+      "results": 10,
+      "modes": [
+        "tri_hybrid"
+      ],
+      "passed": true
+    }
+  ]
+}
