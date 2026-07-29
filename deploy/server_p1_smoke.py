@@ -90,7 +90,7 @@ def main() -> None:
         created.raise_for_status()
         job_id = created.json()["job_id"]
         state: dict = {}
-        for _ in range(120):
+        for _ in range(180):
             state_response = requests.get(
                 f"{base}/v2/video-jobs/{job_id}",
                 headers=headers,

@@ -317,7 +317,12 @@ def _vision_diagnosis(
                 "image_url": {"url": f"data:image/jpeg;base64,{encoded}"},
             }
         )
-    client = OpenAI(base_url=base_url, api_key=api_key, timeout=90, max_retries=1)
+    client = OpenAI(
+        base_url=base_url,
+        api_key=api_key,
+        timeout=float(os.getenv("USER_VIDEO_VLM_TIMEOUT_S", "60")),
+        max_retries=0,
+    )
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": content}],
@@ -414,12 +419,28 @@ def run_diagnosis_job(
             f"[VIDEO:{item['scene_id']}] {item['start_seconds']}-{item['end_seconds']}s: {item['text'][:500]}"
             for item in standards
         )
-        diagnosis, model_info = _vision_diagnosis(
-            frames,
-            question=state.get("question", ""),
-            product_class=state.get("product_class", ""),
-            standard_context="\n".join(part for part in (manual_context, video_context) if part),
-        )
+        try:
+            diagnosis, model_info = _vision_diagnosis(
+                frames,
+                question=state.get("question", ""),
+                product_class=state.get("product_class", ""),
+                standard_context="\n".join(part for part in (manual_context, video_context) if part),
+            )
+        except Exception:  # noqa: BLE001 - model outages must degrade safely
+            diagnosis = {
+                "label": "insufficient_evidence",
+                "current_step": None,
+                "deviation_type": None,
+                "next_action": "视觉诊断服务暂不可用，请稍后重试或补充清晰视频。",
+                "confidence": 0.0,
+                "evidence": [],
+                "safety_note": "模型失败已自动降级，不应据此继续高风险操作。",
+            }
+            model_info = {
+                "provider": "openai_compatible",
+                "model": os.getenv("USER_VIDEO_VLM_MODEL", ""),
+                "fallback": "model_unavailable_or_invalid_output",
+            }
         manager.update(
             job_id,
             status="completed",
