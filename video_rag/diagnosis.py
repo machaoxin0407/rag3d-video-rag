@@ -25,6 +25,16 @@ ALLOWED_CONTENT_TYPES = {
 }
 
 
+def ffmpeg_executable() -> str:
+    """Use system FFmpeg when present, otherwise the pinned user-space binary."""
+    executable = shutil.which("ffmpeg")
+    if executable:
+        return executable
+    import imageio_ffmpeg
+
+    return imageio_ffmpeg.get_ffmpeg_exe()
+
+
 class VideoJobManager:
     """Persist job state on disk so a single-worker restart is inspectable."""
 
@@ -121,8 +131,21 @@ class VideoJobManager:
 
 def probe_video(path: Path) -> dict[str, Any]:
     """Validate actual media using ffprobe, not the caller-supplied MIME type."""
+    ffprobe = shutil.which("ffprobe")
+    if ffprobe is None:
+        import imageio_ffmpeg
+
+        reader = imageio_ffmpeg.read_frames(str(path))
+        try:
+            payload = next(reader)
+        finally:
+            reader.close()
+        width, height = payload.get("size") or (0, 0)
+        duration = float(payload.get("duration") or 0)
+        codec = payload.get("codec")
+        return _validate_video_metadata(path, duration, int(width), int(height), codec)
     command = [
-        "ffprobe",
+        ffprobe,
         "-v",
         "error",
         "-show_streams",
@@ -140,6 +163,22 @@ def probe_video(path: Path) -> dict[str, Any]:
     duration = float(payload.get("format", {}).get("duration") or stream.get("duration") or 0)
     width = int(stream.get("width") or 0)
     height = int(stream.get("height") or 0)
+    return _validate_video_metadata(
+        path,
+        duration,
+        width,
+        height,
+        stream.get("codec_name"),
+    )
+
+
+def _validate_video_metadata(
+    path: Path,
+    duration: float,
+    width: int,
+    height: int,
+    codec: str | None,
+) -> dict[str, Any]:
     max_duration = float(os.getenv("USER_VIDEO_MAX_DURATION_S", "60"))
     max_pixels = int(os.getenv("USER_VIDEO_MAX_PIXELS", str(3840 * 2160)))
     if duration <= 0 or duration > max_duration:
@@ -150,7 +189,7 @@ def probe_video(path: Path) -> dict[str, Any]:
         "duration_seconds": round(duration, 3),
         "width": width,
         "height": height,
-        "codec": stream.get("codec_name"),
+        "codec": codec,
         "size_bytes": path.stat().st_size,
     }
 
@@ -165,7 +204,7 @@ def extract_keyframes(
     output_dir.mkdir(parents=True, exist_ok=True)
     pattern = output_dir / "frame_%02d.jpg"
     command = [
-        "ffmpeg",
+        ffmpeg_executable(),
         "-hide_banner",
         "-loglevel",
         "error",

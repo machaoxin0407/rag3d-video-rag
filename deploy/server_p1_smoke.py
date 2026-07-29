@@ -11,6 +11,7 @@ from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
+from video_rag.diagnosis import ffmpeg_executable
 
 
 def main() -> None:
@@ -36,7 +37,7 @@ def main() -> None:
         video_path = Path(temp_dir) / "smoke.mp4"
         subprocess.run(
             [
-                "ffmpeg",
+                ffmpeg_executable(),
                 "-hide_banner",
                 "-loglevel",
                 "error",
