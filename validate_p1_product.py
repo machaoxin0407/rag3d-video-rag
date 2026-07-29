@@ -20,6 +20,8 @@ REQUIRED = [
     "docs/P1_DEPLOYMENT_RUNBOOK.md",
     "deploy/nginx.p1.conf.example",
     "deploy/rotate_p1_access_token.py",
+    "deploy/import_authorized_model_config.py",
+    "deploy/probe_model_config.py",
     "deploy/server_p1_smoke.py",
 ]
 
