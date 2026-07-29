@@ -18,6 +18,9 @@ REQUIRED = [
     "video_rag/diagnosis.py",
     "web_demo/index.html",
     "docs/P1_DEPLOYMENT_RUNBOOK.md",
+    "deploy/nginx.p1.conf.example",
+    "deploy/rotate_p1_access_token.py",
+    "deploy/server_p1_smoke.py",
 ]
 
 
