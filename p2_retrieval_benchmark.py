@@ -43,7 +43,15 @@ def main() -> None:
     output = ROOT / "reports" / "p2" / "online"
     output.mkdir(parents=True, exist_ok=True)
     init_started = time.perf_counter()
-    retriever = VideoEvidenceRetriever(mode="tri_hybrid")
+    retriever = VideoEvidenceRetriever(
+        mode="tri_hybrid",
+        dense_endpoint=os.getenv(
+            "VIDEO_DENSE_ENDPOINT", "http://127.0.0.1:8091"
+        ),
+        visual_endpoint=os.getenv(
+            "VIDEO_VISUAL_DENSE_ENDPOINT", "http://127.0.0.1:8092"
+        ),
+    )
     init_ms = (time.perf_counter() - init_started) * 1000
     rows: list[dict[str, Any]] = []
     for mode in MODES:
