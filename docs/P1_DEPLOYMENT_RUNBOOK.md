@@ -27,6 +27,15 @@ HTTP 503，不再静默退化为 BM25。
   embedding 与 rerank 的密钥；
 - GPU0 固定运行 Dense 文本模型，GPU1 固定运行 Visual 模型。
 
+若经授权复用已有 OpenAI-compatible 工程的 `.env`，先复制为本项目的私有配置
+并收紧权限；`p1_stack.sh` 会把通用的 `API_*`/`OPENAI_*` 名称映射到本项目变量，
+显式的 P1 变量始终优先：
+
+```bash
+cp --no-clobber /authorized/project/.env ~/rag3d-video/.env
+chmod 600 ~/rag3d-video/.env
+```
+
 用户视频视觉诊断需要另外配置：
 
 ```bash

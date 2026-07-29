@@ -3,6 +3,27 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 mkdir -p logs
+if [[ -f .env ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  . ./.env
+  set +a
+fi
+
+# Compatibility mapping for an authorized OpenAI-compatible shared model account.
+# Explicit P1 variable names always take precedence.
+export SILICONFLOW_BASE_URL="${SILICONFLOW_BASE_URL:-${API_BASE_URL:-${OPENAI_BASE_URL:-}}}"
+export SILICONFLOW_API_KEY="${SILICONFLOW_API_KEY:-${API_KEY:-${OPENAI_API_KEY:-}}}"
+export SILICONFLOW_MODEL="${SILICONFLOW_MODEL:-${API_CHAT_MODEL:-${OPENAI_MODEL:-}}}"
+export EMBEDDING_BASE_URL="${EMBEDDING_BASE_URL:-${API_BASE_URL:-${OPENAI_BASE_URL:-}}}"
+export EMBEDDING_API_KEY="${EMBEDDING_API_KEY:-${API_KEY:-${OPENAI_API_KEY:-}}}"
+export EMBEDDING_MODEL="${EMBEDDING_MODEL:-${TEXT_EMBEDDING_MODEL:-}}"
+export RERANK_BASE_URL="${RERANK_BASE_URL:-${API_BASE_URL:-${OPENAI_BASE_URL:-}}}"
+export RERANK_API_KEY="${RERANK_API_KEY:-${API_KEY:-${OPENAI_API_KEY:-}}}"
+export RERANK_MODEL_ALIAS="${RERANK_MODEL_ALIAS:-${LLM_RERANK_MODEL:-}}"
+export USER_VIDEO_VLM_BASE_URL="${USER_VIDEO_VLM_BASE_URL:-${API_BASE_URL:-${OPENAI_BASE_URL:-}}}"
+export USER_VIDEO_VLM_API_KEY="${USER_VIDEO_VLM_API_KEY:-${API_KEY:-${OPENAI_API_KEY:-}}}"
+export USER_VIDEO_VLM_MODEL="${USER_VIDEO_VLM_MODEL:-${API_VLM_MODEL:-${OPENAI_MODEL:-}}}"
 api_pid_file="logs/p1_api.pid"
 worker_pid_file="logs/p1_worker.pid"
 api_log="logs/p1_api.log"
