@@ -168,6 +168,7 @@ P2 的可复现实验链路已经建立并实际运行：qrels v2、时间定位
 | 非幻觉 | {e2e['metrics']['judge_non_hallucination']:.3f} | AI 评审 |
 | 媒体有效率 | {e2e['metrics']['all_media_valid']:.3f} | 鉴权读取实测 |
 | 诊断 Macro-F1 | {diagnosis['macro_f1']:.3f} | 目标 ≥0.70 |
+| 诊断任务失败 | {diagnosis.get('failed_jobs', 0)} / {diagnosis['cases']} | 失败按错误预测计入，不从分母删除 |
 | 诊断定位 | {diagnosis['product_status']} | 受控代理集，不等于真实用户故障集 |
 | 检索 P95 | {float(tri_single['p95_ms']):.1f} ms | 目标 ≤1000 ms |
 | 完整回答 P95 | {performance['sequential_e2e_latency_seconds']['p95']:.2f} s | 目标尽量 ≤15 s |
@@ -177,6 +178,8 @@ P2 的可复现实验链路已经建立并实际运行：qrels v2、时间定位
 
 - qrels v2 不修改任何相关性等级。`yes` 泄漏项不进入主结果或敏感性结果；
   `uncertain` 不进入主结果但保留在敏感性口径。
+- v1 有 75 个 grade>=2 问题；排除一条 `uncertain` 的 grade=2 记录后，
+  v2 主口径有 74 个二值可评问题，端到端“无直接视频答案”口径因此为 26 个。
 - 权重选择只读取 60 个 development 问题；40 个 source-disjoint test 问题
   在配置冻结后只评一次。
 - 检索权重消融基于冻结 Top-20 pool，缺失名次按 21 右删失；它是池内消融，

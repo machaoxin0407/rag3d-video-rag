@@ -25,7 +25,7 @@ import requests
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from video_rag.diagnosis import ffmpeg_executable
+from video_rag.diagnosis import ffmpeg_executable, probe_video
 
 
 ROOT = Path(__file__).resolve().parent
@@ -402,15 +402,21 @@ def run_diagnosis(
             continue
         product = inventory[row["record_id"]]["product_class"]
         path = ROOT / row["media_path"]
-        if product in {
+        eligible_product = product in {
             "Air Fryer",
             "Espresso Machine",
             "Pressure Cooker",
             "Printer",
             "Vacuum",
             "Washing Machine",
-        } and product not in chosen and path.is_file():
-            chosen[product] = row
+        }
+        if eligible_product and product not in chosen and path.is_file():
+            try:
+                media = probe_video(path)
+            except (ValueError, RuntimeError, subprocess.SubprocessError):
+                continue
+            if 2.0 <= float(media["duration_seconds"]) <= 60.0:
+                chosen[product] = row
     if len(chosen) != 6:
         raise RuntimeError(f"diagnostic source coverage is {len(chosen)}/6 products")
     products = sorted(chosen)
@@ -506,6 +512,7 @@ def run_diagnosis(
         "labels_evaluated": labels,
         "macro_f1": mean(f1s),
         "accuracy": mean(row["correct"] for row in rows),
+        "failed_jobs": sum(row["job_status"] != "completed" for row in rows),
         "target_macro_f1": 0.70,
         "product_status": "validated_mvp" if mean(f1s) >= 0.70 else "experimental_only",
         "limitations": (
