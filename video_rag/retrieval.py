@@ -49,11 +49,12 @@ PRODUCT_ALIASES: dict[str, tuple[str, ...]] = {
     ),
 }
 _VIDEO_INTENT_RE = re.compile(
-    r"\b(how|what|should|step|use|set|install|clean|cook|load|press|button|start|stop|"
+    r"\b(how|what|where|located|check|should|step|use|set|install|clean|cook|load|press|button|start|stop|"
     r"troubleshoot|error|replace|wash|print|brew|extract|lock|unlock|attach|remove|"
     r"operate|operation|safe|safety|temperature|time)\b|"
-    r"(怎么|如何|怎样|步骤|设置|安装|清洁|使用|操作|故障|不能|无法|为什么|更换|"
-    r"放入|加入|清洗|打印|冲泡|萃取|烹饪|解锁|启动|停止|安全|温度|时间)",
+    r"(怎么|如何|怎样|哪里|何处|位置|部件|检查|避开|步骤|设置|安装|清洁|使用|操作|"
+    r"故障|不能|无法|为什么|更换|放入|加入|清洗|打印|冲泡|萃取|烹饪|解锁|启动|"
+    r"停止|安全|温度|时间)",
     re.IGNORECASE,
 )
 _NON_VIDEO_INTENT_RE = re.compile(
