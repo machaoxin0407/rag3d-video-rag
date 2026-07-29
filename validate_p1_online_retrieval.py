@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 from video_rag.retrieval import VideoEvidenceRetriever
 
@@ -15,6 +18,9 @@ REPORT_PATH = ROOT / "validation_outputs" / "p1_online_100_report.json"
 
 
 def main() -> None:
+    load_dotenv()
+    os.environ.setdefault("VIDEO_DENSE_ENDPOINT", "http://127.0.0.1:8091")
+    os.environ.setdefault("VIDEO_VISUAL_DENSE_ENDPOINT", "http://127.0.0.1:8092")
     with QUERY_PATH.open("r", encoding="utf-8-sig", newline="") as stream:
         queries = list(csv.DictReader(stream))
     if len(queries) != 100:
