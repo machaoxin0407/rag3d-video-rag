@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import os
 import re
+import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable
@@ -128,7 +129,7 @@ class VideoEvidenceRetriever:
         if not self.documents:
             raise ValueError(f"No video_scene evidence in {evidence_path}")
 
-        requested_mode = (mode or os.getenv("VIDEO_RETRIEVAL_MODE", "hybrid")).lower()
+        requested_mode = (mode or os.getenv("VIDEO_RETRIEVAL_MODE", "tri_hybrid")).lower()
         if requested_mode not in self.VALID_MODES:
             raise ValueError(f"Unsupported VIDEO_RETRIEVAL_MODE={requested_mode!r}")
         self.mode = requested_mode
@@ -159,6 +160,41 @@ class VideoEvidenceRetriever:
             evidence_digest,
             inventory_digest,
         )
+
+    def health_status(self, probe_endpoints: bool = False) -> dict[str, object]:
+        """Describe configured components without hiding a missing production modality."""
+        status: dict[str, object] = {
+            "requested_mode": self.mode,
+            "documents": len(self.documents),
+            "bm25_ready": True,
+            "dense_index_ready": self.dense_index is not None,
+            "visual_index_ready": self.visual_index is not None,
+            "dense_index_error": self.dense_index_error,
+            "visual_index_error": self.visual_index_error,
+            "dense_endpoint_configured": bool(self.dense_endpoint),
+            "visual_endpoint_configured": bool(self.visual_endpoint),
+        }
+        if probe_endpoints:
+            status["dense_service"] = self._probe_endpoint(self.dense_endpoint)
+            status["visual_service"] = self._probe_endpoint(self.visual_endpoint)
+        return status
+
+    @staticmethod
+    def _probe_endpoint(endpoint: str) -> dict[str, object]:
+        if not endpoint:
+            return {"ready": False, "error": "endpoint_not_configured"}
+        try:
+            import requests
+
+            started = time.monotonic()
+            response = requests.get(f"{endpoint.rstrip('/')}/health", timeout=1.0)
+            response.raise_for_status()
+            return {
+                "ready": True,
+                "latency_ms": round((time.monotonic() - started) * 1000, 1),
+            }
+        except Exception as exc:  # noqa: BLE001 - health must remain serializable
+            return {"ready": False, "error": str(exc)[:200]}
 
     @staticmethod
     def _load_valid_index(
@@ -230,6 +266,7 @@ class VideoEvidenceRetriever:
         query: str,
         top_k: int = 3,
         mode: str | None = None,
+        strict: bool = False,
     ) -> list[VideoSearchResult]:
         """Return top scene clips and degrade to BM25 if dense search is unavailable."""
         requested_mode = (mode or self.mode).lower()
@@ -280,6 +317,12 @@ class VideoEvidenceRetriever:
                 effective_mode = "bm25"
         else:
             effective_mode = "bm25"
+
+        if strict and effective_mode != requested_mode:
+            raise RuntimeError(
+                f"requested video retrieval mode {requested_mode!r} is unavailable; "
+                f"effective mode would be {effective_mode!r}"
+            )
 
         eligible: list[int] = []
         for index, row in enumerate(self.documents):

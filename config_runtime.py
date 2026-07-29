@@ -39,6 +39,13 @@ DEFAULT_ENV = {
 
     # chunk 命中后返回完整 parent section。
     "RETURN_PARENT_SECTION": "1",
+
+    # P1 video retrieval. Production deployment additionally sets exact mode to 1.
+    "VIDEO_RETRIEVAL_MODE": "tri_hybrid",
+    "VIDEO_REQUIRE_EXACT_MODE": "0",
+    "USER_VIDEO_MAX_BYTES": str(200 * 1024 * 1024),
+    "USER_VIDEO_MAX_DURATION_S": "60",
+    "USER_VIDEO_MAX_PIXELS": str(3840 * 2160),
 }
 
 

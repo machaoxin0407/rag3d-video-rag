@@ -1,0 +1,9 @@
+services:
+  api:
+    environment:
+      VIDEO_DENSE_ENDPOINT: http://host.docker.internal:8091
+      VIDEO_VISUAL_DENSE_ENDPOINT: http://host.docker.internal:8092
+  video-worker:
+    environment:
+      VIDEO_DENSE_ENDPOINT: http://host.docker.internal:8091
+      VIDEO_VISUAL_DENSE_ENDPOINT: http://host.docker.internal:8092
