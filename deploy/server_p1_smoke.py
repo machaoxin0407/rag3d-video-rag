@@ -5,13 +5,18 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 import tempfile
 import time
 from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
-from video_rag.diagnosis import ffmpeg_executable
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from video_rag.diagnosis import ffmpeg_executable  # noqa: E402
 
 
 def main() -> None:
