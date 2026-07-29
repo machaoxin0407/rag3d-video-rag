@@ -206,12 +206,22 @@ P2 的可复现实验链路已经建立并实际运行：qrels v2、时间定位
         *copies.values(),
         docs / "P2_EXECUTION_REPORT_2026-07-29.md",
     ]
+    worktree_head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
+    try:
+        implementation_commit = subprocess.check_output(
+            ["git", "rev-parse", "origin/agent/environment-baseline"],
+            cwd=ROOT,
+            text=True,
+        ).strip()
+    except subprocess.CalledProcessError:
+        implementation_commit = worktree_head
     artifacts = {
         "schema_version": "p2-artifacts-v1",
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "git_commit": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-        ).strip(),
+        "implementation_commit": implementation_commit,
+        "execution_worktree_head": worktree_head,
         "status": status,
         "checks": checks,
         "blockers": blockers,
