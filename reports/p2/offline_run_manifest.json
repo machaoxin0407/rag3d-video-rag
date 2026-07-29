@@ -1,0 +1,19 @@
+{
+  "schema_version": "p2-offline-protocol-v1",
+  "experiment_id": "P2-OFFLINE-20260729-001",
+  "created_at": "2026-07-29T08:20:40.086623+00:00",
+  "git_commit_before_run": "ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66",
+  "seed": 20260729,
+  "inputs": {
+    "qrels_v1_sha256": "463eeef7fabacb09f7b974cc34400e5e92b07afff2a412c76c837dc6d588d412",
+    "pool_sha256": "3faa9117bf0157d5ea00a523754e49c19f19a08f741d1883710fca8459a74421"
+  },
+  "outputs": {
+    "qrels_v2": "data_video\\manifests\\paper_qrels_v2\\paper_video_qrels_graded_v2.csv",
+    "qrels_v2_sha256": "3eebd1c4ea72730361ba5782d973db12f49f79a5c81ed8ba3bdcc61183b7adee",
+    "no_positive_queries": 25,
+    "temporal": "reports/p2/temporal_localization",
+    "retrieval_optimization": "reports/p2/retrieval_optimization"
+  },
+  "test_selection_policy": "development-only configuration selection; held-out test evaluated once"
+}

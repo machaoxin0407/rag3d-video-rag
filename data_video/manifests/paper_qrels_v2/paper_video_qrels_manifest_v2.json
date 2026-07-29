@@ -1,0 +1,20 @@
+{
+  "schema_version": "paper-video-qrels-v2",
+  "created_at": "2026-07-29T08:20:39.744516+00:00",
+  "v1_input": {
+    "path": "C:\\Users\\MAXS\\Desktop\\Project\\2607_Project\\RAG_3D\\V6_submit_code\\V6_submit_code\\data_video\\releases\\paper_video_retrieval_v1\\manifests\\paper_qrels_v1\\paper_video_qrels_graded_v1.csv",
+    "sha256": "463eeef7fabacb09f7b974cc34400e5e92b07afff2a412c76c837dc6d588d412"
+  },
+  "v2_output": {
+    "path": "C:\\Users\\MAXS\\Desktop\\Project\\2607_Project\\RAG_3D\\V6_submit_code\\V6_submit_code\\data_video\\manifests\\paper_qrels_v2\\paper_video_qrels_graded_v2.csv",
+    "sha256": "3eebd1c4ea72730361ba5782d973db12f49f79a5c81ed8ba3bdcc61183b7adee"
+  },
+  "row_count": 3775,
+  "query_count": 100,
+  "grade_changes": 0,
+  "source_leakage_decisions": 9,
+  "no_positive_queries": 25,
+  "primary_policy": "exclude all source_leakage=yes or uncertain pairs",
+  "sensitivity_policy": "include uncertain but exclude yes pairs",
+  "limitations": "v2 is a predeclared evaluation-policy view over completed human adjudications; it does not invent new relevance judgments."
+}

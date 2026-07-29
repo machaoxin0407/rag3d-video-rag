@@ -1,0 +1,22 @@
+{
+  "experiment_id": "RET-20260729-001",
+  "selected_on": "development",
+  "objective": "maximize Recall@5, break ties by nDCG@5",
+  "weights": {
+    "bm25": 0.3,
+    "dense": 0.35,
+    "visual": 0.35
+  },
+  "development_metrics": {
+    "recall": 0.51808,
+    "ndcg": 0.669002,
+    "mrr": 0.766026
+  },
+  "heldout_test_evaluations": 1,
+  "heldout_source_disjoint_test_metrics": {
+    "recall": 0.6318181818181818,
+    "ndcg": 0.584498909860852,
+    "mrr": 0.6568181818181819
+  },
+  "limitations": "Post-hoc pooled RRF uses frozen native Top-20 ranks; ranks outside Top-20 are right-censored at 21. It is an ablation, not a new full-corpus run."
+}
