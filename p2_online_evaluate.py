@@ -148,6 +148,7 @@ def judge_answer(
         model=model,
         temperature=0,
         response_format={"type": "json_object"},
+        extra_body={"enable_thinking": False},
         messages=[{"role": "user", "content": json.dumps(prompt, ensure_ascii=False)}],
     )
     raw = response.choices[0].message.content or "{}"
