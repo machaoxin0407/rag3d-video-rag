@@ -101,7 +101,15 @@ def retrieval_metrics(
         values["mrr"].append(
             next((1 / rank for rank, hit in enumerate(hits, 1) if hit), 0.0)
         )
-    return {name: mean(metric_values) for name, metric_values in values.items()}
+    metrics = {name: mean(metric_values) for name, metric_values in values.items()}
+    eligible = len(values["recall"])
+    metrics["eligible_queries"] = float(eligible)
+    metrics["total_queries"] = float(len(query_ids))
+    for name in ("recall", "ndcg", "mrr"):
+        metrics[f"{name}_all_queries"] = (
+            sum(values[name]) / len(query_ids) if query_ids else 0.0
+        )
+    return metrics
 
 
 def freeze_qrels_v2(
@@ -345,8 +353,12 @@ def temporal_evaluation(
                         for r in selected
                         if r[f"temporal_ap_{threshold}"] != ""
                     ]
+                    out[f"temporal_map_queries_{threshold}"] = len(aps)
                     out[f"temporal_map_{threshold}"] = (
                         f"{mean(aps):.6f}" if aps else ""
+                    )
+                    out[f"temporal_map_all_queries_{threshold}"] = (
+                        f"{mean(float(r[f'temporal_ap_{threshold}']) if r[f'temporal_ap_{threshold}'] != '' else 0.0 for r in selected):.6f}"
                     )
                 summary.append(out)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -362,15 +374,19 @@ def temporal_evaluation(
         "human relevant sub-interval. Metrics use only primary-eligible grade>=2 "
         "judgments and are therefore pool-relative.",
         "",
-        "| Mode | N | mean IoU | R@1 IoU=.3 | R@1 IoU=.5 | R@1 IoU=.7 | t-mAP .3 | t-mAP .5 | t-mAP .7 |",
+        "Conditional t-mAP excludes queries for which no frozen scene proposal can "
+        "reach the threshold; all-query t-mAP scores those queries as zero.",
+        "",
+        "| Mode | N | mean IoU | R@1 IoU=.3 | R@1 IoU=.5 | R@1 IoU=.7 | t-mAP(all) .3 | t-mAP(all) .5 | t-mAP(all) .7 |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in overall:
         lines.append(
             f"| {row['mode']} | {row['queries']} | {row['mean_iou']} | "
             f"{row['r1_iou_0.3']} | {row['r1_iou_0.5']} | {row['r1_iou_0.7']} | "
-            f"{row['temporal_map_0.3']} | {row['temporal_map_0.5']} | "
-            f"{row['temporal_map_0.7']} |"
+            f"{row['temporal_map_all_queries_0.3']} | "
+            f"{row['temporal_map_all_queries_0.5']} | "
+            f"{row['temporal_map_all_queries_0.7']} |"
         )
     (output_dir / "temporal_table.md").write_text(
         "\n".join(lines) + "\n", encoding="utf-8"
@@ -436,6 +452,11 @@ def optimize_and_generalize(
                 "recall_at_5": f"{metrics['recall']:.6f}",
                 "ndcg_at_5": f"{metrics['ndcg']:.6f}",
                 "mrr_at_5": f"{metrics['mrr']:.6f}",
+                "eligible_queries": int(metrics["eligible_queries"]),
+                "total_queries": int(metrics["total_queries"]),
+                "recall_at_5_all_queries": f"{metrics['recall_all_queries']:.6f}",
+                "ndcg_at_5_all_queries": f"{metrics['ndcg_all_queries']:.6f}",
+                "mrr_at_5_all_queries": f"{metrics['mrr_all_queries']:.6f}",
                 "test_results_viewed_during_selection": "no",
                 "rank_censoring": "missing native Top-20 rank assigned 21",
             }
@@ -457,6 +478,12 @@ def optimize_and_generalize(
         "weights": {"bm25": best[0], "dense": best[1], "visual": best[2]},
         "development_metrics": {
             key: float(best_row[f"{key}_at_5"])
+            for key in ("recall", "ndcg", "mrr")
+        },
+        "development_evaluable_queries": int(best_row["eligible_queries"]),
+        "development_total_queries": int(best_row["total_queries"]),
+        "development_coverage_adjusted_metrics": {
+            key: float(best_row[f"{key}_at_5_all_queries"])
             for key in ("recall", "ndcg", "mrr")
         },
         "heldout_test_evaluations": 1,
@@ -510,6 +537,10 @@ def optimize_and_generalize(
                 "recall_at_5": f"{metrics['recall']:.6f}",
                 "ndcg_at_5": f"{metrics['ndcg']:.6f}",
                 "mrr_at_5": f"{metrics['mrr']:.6f}",
+                "eligible_queries": int(metrics["eligible_queries"]),
+                "recall_at_5_all_queries": f"{metrics['recall_all_queries']:.6f}",
+                "ndcg_at_5_all_queries": f"{metrics['ndcg_all_queries']:.6f}",
+                "mrr_at_5_all_queries": f"{metrics['mrr_all_queries']:.6f}",
                 "external_dataset": "no",
                 "protocol": "leave-one-product-class-out",
             }

@@ -60,10 +60,23 @@ def main() -> None:
         online / "performance_summary.json",
         online / "retrieval_performance.json",
         online / "retrieval_latency.csv",
+        online / "chat_concurrency.csv",
+        online / "fault_injection.csv",
+        online / "online_run_manifest.json",
         temporal_path,
+        ROOT
+        / "reports"
+        / "p2"
+        / "temporal_localization"
+        / "temporal_metrics_per_query.csv",
         retrieval_path,
         loo_path,
         qrels_manifest_path,
+        qrels_manifest_path.parent / "paper_video_qrels_graded_v2.csv",
+        qrels_manifest_path.parent / "source_leakage_decisions_v2.csv",
+        qrels_manifest_path.parent / "no_positive_query_classification_v2.csv",
+        ROOT / "reports" / "p2" / "offline_run_manifest.json",
+        ROOT / "reports" / "p2" / "server_resource_release.json",
     ]
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
@@ -103,8 +116,8 @@ def main() -> None:
         "e2e_100_unique_queries": True,
         "all_media_valid": e2e["metrics"]["all_media_valid"] == 1.0,
         "retrieval_p95_under_1s": float(tri_single["p95_ms"]) <= 1000,
-        "complete_answer_p95_under_15s": performance[
-            "sequential_e2e_latency_seconds"
+        "formal_workload_answer_p95_under_15s": performance[
+            "formal_e2e_workload_latency_seconds"
         ]["p95"]
         <= 15,
         "fault_injection_passed": performance["faults_passed"]
@@ -159,9 +172,12 @@ P2 的可复现实验链路已经建立并实际运行：qrels v2、时间定位
 | qrels v2 | {qrels['row_count']} pairs / {qrels['grade_changes']} grade changes | 不覆盖 v1；9 条泄漏风险采用预声明策略 |
 | 无强正例问题 | {qrels['no_positive_queries']} | 归类为候选池缺少直接答案 |
 | Tri-Hybrid R@1 IoU=.5 | {float(tri_temporal['r1_iou_0.5']):.3f} | 目标 ≥0.50 |
-| Tri-Hybrid temporal mAP@.5 | {float(tri_temporal['temporal_map_0.5']):.3f} | pool-relative |
-| 开发集 Recall@5 | {retrieval['development_metrics']['recall']:.3f} | 目标 ≥0.80；未达时保留原权重 |
-| 一次性 source-disjoint test Recall@5 | {retrieval['heldout_source_disjoint_test_metrics']['recall']:.3f} | 未用于选型 |
+| Tri-Hybrid temporal mAP@.5 (all-query) | {float(tri_temporal['temporal_map_all_queries_0.5']):.3f} | 74 问宏平均，不可达 proposal 计 0 |
+| Tri-Hybrid temporal mAP@.5 (conditional) | {float(tri_temporal['temporal_map_0.5']):.3f} | 仅 {tri_temporal['temporal_map_queries_0.5']}/74 个可达问，不能作主口径 |
+| 开发集 Recall@5 | {retrieval['development_metrics']['recall']:.3f} | positive-query-only N={retrieval['development_evaluable_queries']}/{retrieval['development_total_queries']}；目标 ≥0.80 |
+| 开发集 coverage-adjusted Recall@5 | {retrieval['development_coverage_adjusted_metrics']['recall']:.3f} | 无主口径正例问计 0 |
+| 一次性 source-disjoint test Recall@5 | {retrieval['heldout_source_disjoint_test_metrics']['recall']:.3f} | positive-query-only N={int(retrieval['heldout_source_disjoint_test_metrics']['eligible_queries'])}/{int(retrieval['heldout_source_disjoint_test_metrics']['total_queries'])}；未用于选型 |
+| 测试集 coverage-adjusted Recall@5 | {retrieval['heldout_source_disjoint_test_metrics']['recall_all_queries']:.3f} | 无主口径正例问计 0 |
 | 端到端问题 | {e2e['queries']} | 100 个唯一 query_id |
 | AI judge correctness | {e2e['metrics']['judge_correctness']:.3f} | AI 评审，失败/高风险待一名人类复核 |
 | 证据支持 | {e2e['metrics']['judge_evidence_support']:.3f} | AI 评审 |
@@ -171,7 +187,9 @@ P2 的可复现实验链路已经建立并实际运行：qrels v2、时间定位
 | 诊断任务失败 | {diagnosis.get('failed_jobs', 0)} / {diagnosis['cases']} | 失败按错误预测计入，不从分母删除 |
 | 诊断定位 | {diagnosis['product_status']} | 受控代理集，不等于真实用户故障集 |
 | 检索 P95 | {float(tri_single['p95_ms']):.1f} ms | 目标 ≤1000 ms |
-| 完整回答 P95 | {performance['sequential_e2e_latency_seconds']['p95']:.2f} s | 目标尽量 ≤15 s |
+| 正式 100 问并发工作负载 P95 | {performance['formal_e2e_workload_latency_seconds']['p95']:.2f} s | 目标尽量 ≤15 s；未达标 |
+| 单用户重复请求 P95 | {performance['sequential_e2e_latency_seconds']['p95']:.2f} s | 5 次参考测量，不替代正式口径 |
+| 冷启动 | {performance['cold_start']['status']} | 正式批次前未单独测量，不以热服务请求冒充 |
 | 24 h 稳定性 | {performance['24_hour_soak']['status']} | 未完成不得宣称稳定性达标 |
 
 ## 方法学边界

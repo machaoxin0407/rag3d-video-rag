@@ -1,8 +1,8 @@
-﻿experiment_id,git_commit,dataset,selection_split,seed,bm25_weight,dense_weight,visual_weight,recall_at_5,ndcg_at_5,mrr_at_5,test_results_viewed_during_selection,rank_censoring
-RET-20260729-001,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.3,0.35,0.35,0.518080,0.669002,0.766026,no,missing native Top-20 rank assigned 21
-RET-20260729-002,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.4,0.3,0.3,0.498586,0.665320,0.746795,no,missing native Top-20 rank assigned 21
-RET-20260729-003,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.2,0.4,0.4,0.515276,0.655982,0.723397,no,missing native Top-20 rank assigned 21
-RET-20260729-004,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.2,0.5,0.3,0.512300,0.670988,0.750000,no,missing native Top-20 rank assigned 21
-RET-20260729-005,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.2,0.3,0.5,0.476885,0.631485,0.690705,no,missing native Top-20 rank assigned 21
-RET-20260729-006,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.45,0.35,0.2,0.481980,0.634544,0.723397,no,missing native Top-20 rank assigned 21
-RET-20260729-007,ddcbdf9f5ef4bc2453bc1c14b1dfce3c4dedda66,paper_video_qrels_v2,development,20260729,0.35,0.45,0.2,0.515628,0.665087,0.742628,no,missing native Top-20 rank assigned 21
+﻿experiment_id,git_commit,dataset,selection_split,seed,bm25_weight,dense_weight,visual_weight,recall_at_5,ndcg_at_5,mrr_at_5,eligible_queries,total_queries,recall_at_5_all_queries,ndcg_at_5_all_queries,mrr_at_5_all_queries,test_results_viewed_during_selection,rank_censoring
+RET-20260729-001,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.3,0.35,0.35,0.518080,0.669002,0.766026,52,60,0.449002,0.579802,0.663889,no,missing native Top-20 rank assigned 21
+RET-20260729-002,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.4,0.3,0.3,0.498586,0.665320,0.746795,52,60,0.432108,0.576611,0.647222,no,missing native Top-20 rank assigned 21
+RET-20260729-003,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.2,0.4,0.4,0.515276,0.655982,0.723397,52,60,0.446572,0.568518,0.626944,no,missing native Top-20 rank assigned 21
+RET-20260729-004,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.2,0.5,0.3,0.512300,0.670988,0.750000,52,60,0.443993,0.581523,0.650000,no,missing native Top-20 rank assigned 21
+RET-20260729-005,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.2,0.3,0.5,0.476885,0.631485,0.690705,52,60,0.413301,0.547287,0.598611,no,missing native Top-20 rank assigned 21
+RET-20260729-006,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.45,0.35,0.2,0.481980,0.634544,0.723397,52,60,0.417716,0.549938,0.626944,no,missing native Top-20 rank assigned 21
+RET-20260729-007,ccbd1cb66cce7d769482e51d29c20a36c9e880a9,paper_video_qrels_v2,development,20260729,0.35,0.45,0.2,0.515628,0.665087,0.742628,52,60,0.446878,0.576409,0.643611,no,missing native Top-20 rank assigned 21

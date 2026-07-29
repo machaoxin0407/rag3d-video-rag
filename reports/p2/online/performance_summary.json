@@ -26,8 +26,11 @@
   ],
   "faults_passed": 3,
   "faults_total": 3,
-  "cold_start": "captured by first sequential request",
-  "warm_latency": "captured by remaining sequential requests",
+  "cold_start": {
+    "status": "not_measured",
+    "reason": "services were already warm after the formal end-to-end run"
+  },
+  "warm_latency": "five repeated single-user requests plus concurrency 2/4/8",
   "24_hour_soak": {
     "status": "not_run",
     "reason": "A real 24-hour wall-clock run cannot be represented by an immediate P2 execution. The resumable command is documented separately."

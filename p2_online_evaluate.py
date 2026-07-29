@@ -25,7 +25,7 @@ import requests
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from video_rag.diagnosis import ffmpeg_executable, probe_video
+from video_rag.diagnosis import extract_keyframes, ffmpeg_executable, probe_video
 
 
 ROOT = Path(__file__).resolve().parent
@@ -413,7 +413,18 @@ def run_diagnosis(
         if eligible_product and product not in chosen and path.is_file():
             try:
                 media = probe_video(path)
-            except (ValueError, RuntimeError, subprocess.SubprocessError):
+                with tempfile.TemporaryDirectory() as validation_dir:
+                    extract_keyframes(
+                        path,
+                        Path(validation_dir),
+                        duration_seconds=float(media["duration_seconds"]),
+                    )
+            except (
+                OSError,
+                ValueError,
+                RuntimeError,
+                subprocess.SubprocessError,
+            ):
                 continue
             if 2.0 <= float(media["duration_seconds"]) <= 60.0:
                 chosen[product] = row
@@ -647,8 +658,11 @@ def run_performance_and_faults(
         "concurrency_levels": [1, 2, 4, 8],
         "faults_passed": sum(row["passed"] for row in faults),
         "faults_total": len(faults),
-        "cold_start": "captured by first sequential request",
-        "warm_latency": "captured by remaining sequential requests",
+        "cold_start": {
+            "status": "not_measured",
+            "reason": "services were already warm after the formal end-to-end run",
+        },
+        "warm_latency": "five repeated single-user requests plus concurrency 2/4/8",
         "24_hour_soak": {
             "status": "not_run",
             "reason": (

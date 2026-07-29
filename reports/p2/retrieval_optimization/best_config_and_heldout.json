@@ -12,11 +12,23 @@
     "ndcg": 0.669002,
     "mrr": 0.766026
   },
+  "development_evaluable_queries": 52,
+  "development_total_queries": 60,
+  "development_coverage_adjusted_metrics": {
+    "recall": 0.449002,
+    "ndcg": 0.579802,
+    "mrr": 0.663889
+  },
   "heldout_test_evaluations": 1,
   "heldout_source_disjoint_test_metrics": {
     "recall": 0.6318181818181818,
     "ndcg": 0.584498909860852,
-    "mrr": 0.6568181818181819
+    "mrr": 0.6568181818181819,
+    "eligible_queries": 22.0,
+    "total_queries": 40.0,
+    "recall_all_queries": 0.34750000000000003,
+    "ndcg_all_queries": 0.3214744004234686,
+    "mrr_all_queries": 0.36124999999999996
   },
   "limitations": "Post-hoc pooled RRF uses frozen native Top-20 ranks; ranks outside Top-20 are right-censored at 21. It is an ablation, not a new full-corpus run."
 }
