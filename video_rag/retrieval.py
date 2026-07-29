@@ -48,6 +48,24 @@ PRODUCT_ALIASES: dict[str, tuple[str, ...]] = {
         "脱水",
     ),
 }
+_VIDEO_INTENT_RE = re.compile(
+    r"\b(how|what|should|step|use|set|install|clean|cook|load|press|button|start|stop|"
+    r"troubleshoot|error|replace|wash|print|brew|extract|lock|unlock|attach|remove|"
+    r"operate|operation|safe|safety|temperature|time)\b|"
+    r"(怎么|如何|怎样|步骤|设置|安装|清洁|使用|操作|故障|不能|无法|为什么|更换|"
+    r"放入|加入|清洗|打印|冲泡|萃取|烹饪|解锁|启动|停止|安全|温度|时间)",
+    re.IGNORECASE,
+)
+_NON_VIDEO_INTENT_RE = re.compile(
+    r"\b(warranty|refund|return policy|order|shipping|price|phone number|joke)\b|"
+    r"(保修|退款|退货|订单|物流|价格|电话|笑话)",
+    re.IGNORECASE,
+)
+
+
+def has_video_intent(query: str) -> bool:
+    """Reject clearly non-operational product mentions before fixed top-k ranking."""
+    return bool(_VIDEO_INTENT_RE.search(query)) and not bool(_NON_VIDEO_INTENT_RE.search(query))
 
 
 @dataclass(frozen=True)
@@ -277,16 +295,6 @@ class VideoEvidenceRetriever:
             return []
 
         bm25_scores = np.asarray(self.bm25.get_scores(query_tokens), dtype=np.float64)
-        detected = self.detect_product_classes(query)
-        # Video retrieval is product-scoped. Generic service questions can share
-        # short Chinese n-grams with captions (for example, 什么/为什么), so a
-        # positive lexical score alone is not sufficient evidence of intent.
-        if not detected:
-            return []
-        for index, row in enumerate(self.documents):
-            if row["product_class"] in detected:
-                bm25_scores[index] += 3.0
-
         dense_scores: np.ndarray | None = None
         if requested_mode in {"dense", "hybrid", "tri_hybrid"}:
             try:
@@ -323,6 +331,15 @@ class VideoEvidenceRetriever:
                 f"requested video retrieval mode {requested_mode!r} is unavailable; "
                 f"effective mode would be {effective_mode!r}"
             )
+
+        detected = self.detect_product_classes(query)
+        # Product mention alone is insufficient: service, policy, and entertainment
+        # questions must not receive a fixed number of operation clips.
+        if not detected or not has_video_intent(query):
+            return []
+        for index, row in enumerate(self.documents):
+            if row["product_class"] in detected:
+                bm25_scores[index] += 3.0
 
         eligible: list[int] = []
         for index, row in enumerate(self.documents):

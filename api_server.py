@@ -64,6 +64,14 @@ MAX_CHAT_IMAGES = int(os.getenv("CHAT_MAX_IMAGES", "3"))
 MAX_CHAT_IMAGE_BYTES = int(os.getenv("CHAT_MAX_IMAGE_BYTES", str(5 * 1024 * 1024)))
 MAX_USER_VIDEO_BYTES = int(os.getenv("USER_VIDEO_MAX_BYTES", str(200 * 1024 * 1024)))
 VIDEO_REQUIRE_EXACT_MODE = os.getenv("VIDEO_REQUIRE_EXACT_MODE", "0") == "1"
+VIDEO_RUNTIME_PROFILE = os.getenv("VIDEO_RUNTIME_PROFILE", "development").lower()
+if VIDEO_RUNTIME_PROFILE not in {"development", "evaluation", "production"}:
+    raise RuntimeError(f"invalid VIDEO_RUNTIME_PROFILE={VIDEO_RUNTIME_PROFILE!r}")
+if VIDEO_RUNTIME_PROFILE == "production" and (
+    os.getenv("VIDEO_RETRIEVAL_MODE", "").lower() != "tri_hybrid"
+    or not VIDEO_REQUIRE_EXACT_MODE
+):
+    raise RuntimeError("production profile requires strict tri_hybrid video retrieval")
 _IMAGE_DATA_URL_RE = re.compile(
     r"^data:image/(?P<media_type>png|jpg|jpeg|webp);base64,(?P<data>[A-Za-z0-9+/=\r\n]+)$",
     re.IGNORECASE,
@@ -645,6 +653,7 @@ def _video_evidence_prompt(videos: list[VideoEvidenceItem]) -> str:
 
 
 def _structured_evidence(
+    answer: str,
     pics: list[str],
     videos: list[VideoEvidenceItem],
     trace: dict[str, Any],
@@ -672,18 +681,31 @@ def _structured_evidence(
             if key in seen:
                 continue
             seen.add(key)
-            citations.append(
-                CitationItem(
-                    citation_id=f"M{len(citations) + 1}",
-                    evidence_type="manual_section",
-                    title=f"{hit.get('product', '')} / {hit.get('heading', '')}".strip(" /"),
-                    source_id=source_id,
-                    excerpt=str(hit.get("text_preview") or hit.get("section_summary") or "")[:300],
-                    supports=["answer"],
-                )
+            excerpt = str(hit.get("text_preview") or hit.get("section_summary") or "")[:300]
+            supports = _supporting_sentence_ids(
+                answer,
+                f"{hit.get('heading', '')} {excerpt}",
             )
+            if supports:
+                citations.append(
+                    CitationItem(
+                        citation_id=f"M{len(citations) + 1}",
+                        evidence_type="manual_section",
+                        title=f"{hit.get('product', '')} / {hit.get('heading', '')}".strip(" /"),
+                        source_id=source_id,
+                        excerpt=excerpt,
+                        supports=supports,
+                    )
+                )
     video_count = 0
     for video in videos:
+        supports = [
+            f"sentence-{index}"
+            for index, sentence in enumerate(_answer_sentences(answer), start=1)
+            if f"[VID:{video.scene_id}]" in sentence
+        ]
+        if not supports:
+            continue
         video_count += 1
         citations.append(
             CitationItem(
@@ -692,7 +714,7 @@ def _structured_evidence(
                 title=f"{video.product_class} {video.start_seconds:.1f}-{video.end_seconds:.1f}s",
                 source_id=video.scene_id,
                 excerpt=video.evidence_text[:300],
-                supports=[f"VID:{video.scene_id}"],
+                supports=supports,
             )
         )
     manual_images = [
@@ -706,6 +728,30 @@ def _structured_evidence(
         for pic in dict.fromkeys(pics)
     ]
     return citations, manual_images
+
+
+def _answer_sentences(answer: str) -> list[str]:
+    return [
+        sentence.strip()
+        for sentence in re.split(r"(?<=[。！？.!?])\s*|\n+", answer)
+        if sentence.strip()
+    ]
+
+
+def _supporting_sentence_ids(answer: str, evidence: str) -> list[str]:
+    evidence_tokens = set(
+        re.findall(r"[a-z0-9]{3,}|[\u4e00-\u9fff]{2,}", evidence.casefold())
+    )
+    if not evidence_tokens:
+        return []
+    supported: list[str] = []
+    for index, sentence in enumerate(_answer_sentences(answer), start=1):
+        sentence_tokens = set(
+            re.findall(r"[a-z0-9]{3,}|[\u4e00-\u9fff]{2,}", sentence.casefold())
+        )
+        if len(evidence_tokens & sentence_tokens) >= 2:
+            supported.append(f"sentence-{index}")
+    return supported[:8]
 
 
 def _run_agent_sync(
@@ -752,7 +798,10 @@ def _run_agent_sync(
     agent_trace["video_evidence_ids"] = [item.scene_id for item in videos]
     agent_trace["video_retrieval"] = retrieval_status.model_dump()
     citations, manual_images = _structured_evidence(
-        list(result.pics or []), videos, agent_trace
+        result.answer or "",
+        list(result.pics or []),
+        videos,
+        agent_trace,
     )
     return (
         result.answer or "",
@@ -844,7 +893,7 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"agent error: {exc}",
+            detail="answer generation failed; retry later",
         ) from exc
 
     formatted = _format_answer(answer, pics, route)
@@ -936,7 +985,8 @@ async def create_video_job(
             product_class,
         )
     except ValueError as exc:
-        raise HTTPException(status_code=415, detail=str(exc)) from exc
+        code = 429 if "queue is full" in str(exc) else 415
+        raise HTTPException(status_code=code, detail=str(exc)) from exc
     total = 0
     try:
         with target.open("wb") as stream:
@@ -955,7 +1005,13 @@ async def create_video_job(
         await video.close()
     manager.update(job_id, status="queued", uploaded_bytes=total)
     if os.getenv("USER_VIDEO_ASYNC_MODE", "inline") == "inline":
-        background_tasks.add_task(run_diagnosis_job, manager, job_id, _get_video_retriever())
+        background_tasks.add_task(
+            run_diagnosis_job,
+            manager,
+            job_id,
+            _get_video_retriever(),
+            _engine,
+        )
     return {
         "job_id": job_id,
         "status": "queued",
@@ -988,6 +1044,8 @@ async def get_video_job_result(job_id: str) -> dict[str, Any]:
 async def delete_video_job(job_id: str) -> None:
     try:
         _get_video_jobs().delete(job_id)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
     except KeyError as exc:
         raise HTTPException(status_code=404, detail="job not found") from exc
 
@@ -1041,6 +1099,7 @@ async def health() -> dict[str, Any]:
         "classifier_model": CLASSIFIER_MODEL,
         "video_retrieval": {
             **video_status,
+            "profile": VIDEO_RUNTIME_PROFILE,
             "exact_required": VIDEO_REQUIRE_EXACT_MODE,
             "exact_ready": exact_ready,
         },

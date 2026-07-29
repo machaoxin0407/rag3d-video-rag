@@ -24,6 +24,7 @@
     .tag{display:inline-block;padding:3px 8px;border-radius:99px;background:var(--lime);font-size:12px;font-weight:800}
     .error{color:var(--red)}.section{margin-top:24px}.loader{display:none;margin:14px 0;color:var(--green);font-weight:700}.loader.on{display:block}
     code{background:#ece8dd;padding:2px 5px;border-radius:4px}
+    dialog{border:0;border-radius:16px;padding:12px;max-width:min(94vw,1100px);background:var(--card)}dialog::backdrop{background:#111b}dialog img{display:block;max-width:90vw;max-height:82vh}
     @media(max-width:850px){main{grid-template-columns:1fr}header{align-items:start;flex-direction:column}.row{grid-template-columns:1fr}}
   </style>
 </head>
@@ -70,6 +71,7 @@
       </div>
     </section>
   </main>
+  <dialog id="lightbox"><button id="closeLightbox" aria-label="关闭大图" style="float:right">关闭</button><img id="largeImage" alt=""></dialog>
   <script>
     const $=id=>document.getElementById(id), token=$("token");
     token.value=localStorage.getItem("rag_token")||"";
@@ -86,8 +88,8 @@
         const d=body.data;$("empty").hidden=true;$("output").hidden=false;$("answer").textContent=d.answer;
         $("retrieval").textContent=`路由：${d.route} · 请求模式：${d.retrieval?.requested_mode||"-"} · 实际模式：${d.retrieval?.effective_mode||"-"}${d.retrieval?.fallback?" · 已降级":""}`;
         $("citations").innerHTML="";for(const c of d.citations){const el=document.createElement("div");el.className="evidence";el.innerHTML=`<span class="tag">${c.citation_id}</span><strong> ${c.title}</strong><p class="meta"></p>`;el.querySelector("p").textContent=c.excerpt||`来源 ${c.source_id}`;$("citations").append(el)}
-        $("images").innerHTML="";for(const x of d.manual_images){const el=document.createElement("div");el.className="evidence";const img=document.createElement("img");img.alt=x.caption;img.src=await blobUrl(x.url);el.append(img,document.createTextNode(x.caption));$("images").append(el)}
-        $("videos").innerHTML="";for(const v of d.videos){const el=document.createElement("div");el.className="evidence";const vid=document.createElement("video");vid.controls=true;vid.preload="metadata";vid.src=await blobUrl(v.clip_url);vid.addEventListener("loadedmetadata",()=>{vid.currentTime=Math.min(v.start_seconds,vid.duration||v.start_seconds)});const p=document.createElement("p");p.textContent=`${v.product_class} · ${v.start_seconds.toFixed(1)}–${v.end_seconds.toFixed(1)}s · ${v.retrieval_mode}`;el.append(vid,p);$("videos").append(el)}
+        $("images").innerHTML="";for(const x of d.manual_images){const el=document.createElement("div");el.className="evidence";const img=document.createElement("img");img.alt=x.caption;img.src=await blobUrl(x.url);img.tabIndex=0;img.title="点击放大";img.onclick=()=>showLarge(img.src,img.alt);img.onkeydown=e=>{if(e.key==="Enter")showLarge(img.src,img.alt)};el.append(img,document.createTextNode(x.caption));$("images").append(el)}
+        $("videos").innerHTML="";for(const v of d.videos){const el=document.createElement("div");el.className="evidence";const vid=document.createElement("video");vid.controls=true;vid.preload="metadata";vid.src=await blobUrl(v.clip_url);vid.addEventListener("loadedmetadata",()=>{vid.currentTime=0});const p=document.createElement("p");p.textContent=`原视频时间 ${v.start_seconds.toFixed(1)}–${v.end_seconds.toFixed(1)}s · 当前播放器为已裁剪片段 · ${v.retrieval_mode}`;el.append(vid,p);$("videos").append(el)}
       }catch(e){$("empty").hidden=false;$("empty").textContent=e.message;$("empty").classList.add("error")}finally{btn.disabled=false;$("loading").classList.remove("on")}
     };
     $("diagnose").onclick=async()=>{
@@ -96,6 +98,7 @@
       try{const j=await api("/v2/video-jobs",{method:"POST",body:fd});$("job").textContent=`任务 ${j.job_id} 已排队`;poll(j.job_id)}catch(e){$("job").textContent=e.message;$("job").className="meta error"}
     };
     async function poll(id){for(let i=0;i<180;i++){await new Promise(r=>setTimeout(r,1500));const s=await api(`/v2/video-jobs/${id}`);$("job").textContent=`任务 ${id}：${s.status}`;if(s.status==="completed"||s.status==="failed"){const result=await api(`/v2/video-jobs/${id}/result`);$("empty").hidden=true;$("output").hidden=false;$("diagnosis").textContent=JSON.stringify(result.result?.diagnosis||{error:result.error},null,2);return}}$("job").textContent="轮询超时，请稍后用任务 ID 查询"}
+    function showLarge(src,alt){$("largeImage").src=src;$("largeImage").alt=alt;$("lightbox").showModal()}$("closeLightbox").onclick=()=>$("lightbox").close();$("lightbox").onclick=e=>{if(e.target===$("lightbox"))$("lightbox").close()};
     $("check").click();
   </script>
 </body>

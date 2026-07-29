@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import json
 import os
 import shutil
@@ -44,6 +45,16 @@ class VideoJobManager:
         self._lock = threading.Lock()
 
     def create(self, filename: str, content_type: str, question: str, product_class: str) -> tuple[str, Path]:
+        active = 0
+        for state_path in self.root.glob("vjob_*/state.json"):
+            try:
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if state.get("status") not in {"completed", "failed"}:
+                active += 1
+        if active >= int(os.getenv("USER_VIDEO_MAX_ACTIVE_JOBS", "20")):
+            raise ValueError("video job queue is full")
         suffix = Path(filename or "").suffix.lower()
         if suffix not in ALLOWED_EXTENSIONS:
             raise ValueError(f"unsupported video extension: {suffix or '(none)'}")
@@ -76,39 +87,46 @@ class VideoJobManager:
         return json.loads(state_path.read_text(encoding="utf-8"))
 
     def update(self, job_id: str, **changes: Any) -> dict[str, Any]:
-        with self._lock:
+        with self._lock, self._job_lock(job_id):
             state = self.get(job_id)
             state.update(changes)
             state["updated_at"] = int(time.time())
-            self._state_path(job_id).write_text(
-                json.dumps(state, ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
+            self._atomic_write(self._state_path(job_id), state)
         return state
 
     def delete(self, job_id: str) -> None:
         job_dir = self._job_dir(job_id)
-        if not (job_dir / "state.json").is_file():
-            raise KeyError(job_id)
+        with self._job_lock(job_id):
+            state_path = job_dir / "state.json"
+            if not state_path.is_file():
+                raise KeyError(job_id)
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            if state.get("status") not in {"completed", "failed"}:
+                raise RuntimeError("active video job cannot be deleted")
         shutil.rmtree(job_dir)
 
     def claim_next(self) -> str | None:
         """Atomically claim one queued job for a separate worker process."""
         with self._lock:
             for state_path in sorted(self.root.glob("vjob_*/state.json")):
+                job_id = state_path.parent.name
                 try:
-                    state = json.loads(state_path.read_text(encoding="utf-8"))
-                except (OSError, json.JSONDecodeError):
+                    with self._job_lock(job_id, wait_seconds=0):
+                        state = json.loads(state_path.read_text(encoding="utf-8"))
+                        lease_age = time.time() - float(state.get("updated_at") or time.time())
+                        stale_claim = (
+                            state.get("status") in {"claimed", "validating", "analyzing"}
+                            and lease_age > float(os.getenv("USER_VIDEO_JOB_LEASE_S", "600"))
+                        )
+                        if state.get("status") != "queued" and not stale_claim:
+                            continue
+                        state["status"] = "claimed"
+                        state["claimed_at"] = int(time.time())
+                        state["updated_at"] = int(time.time())
+                        self._atomic_write(state_path, state)
+                        return str(state["job_id"])
+                except (FileExistsError, OSError, json.JSONDecodeError):
                     continue
-                if state.get("status") != "queued":
-                    continue
-                state["status"] = "claimed"
-                state["updated_at"] = int(time.time())
-                state_path.write_text(
-                    json.dumps(state, ensure_ascii=False, indent=2),
-                    encoding="utf-8",
-                )
-                return str(state["job_id"])
         return None
 
     def _job_dir(self, job_id: str) -> Path:
@@ -123,10 +141,34 @@ class VideoJobManager:
         return self._job_dir(job_id) / "state.json"
 
     def _write_state(self, job_id: str, state: dict[str, Any]) -> None:
-        self._state_path(job_id).write_text(
+        self._atomic_write(self._state_path(job_id), state)
+
+    @staticmethod
+    def _atomic_write(path: Path, state: dict[str, Any]) -> None:
+        temporary = path.with_suffix(".json.tmp")
+        temporary.write_text(
             json.dumps(state, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
+        temporary.replace(path)
+
+    @contextlib.contextmanager
+    def _job_lock(self, job_id: str, wait_seconds: float = 2.0):
+        lock_path = self._job_dir(job_id) / ".state.lock"
+        deadline = time.monotonic() + wait_seconds
+        descriptor: int | None = None
+        while descriptor is None:
+            try:
+                descriptor = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+            except FileExistsError:
+                if time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.02)
+        try:
+            yield
+        finally:
+            os.close(descriptor)
+            lock_path.unlink(missing_ok=True)
 
 
 def probe_video(path: Path) -> dict[str, Any]:
@@ -208,6 +250,7 @@ def extract_keyframes(
         "-hide_banner",
         "-loglevel",
         "error",
+        "-y",
         "-i",
         str(path),
         "-vf",
@@ -230,6 +273,7 @@ def _vision_diagnosis(
     *,
     question: str,
     product_class: str,
+    standard_context: str,
 ) -> tuple[dict[str, Any], dict[str, str]]:
     base_url = os.getenv("USER_VIDEO_VLM_BASE_URL", "").strip()
     api_key = os.getenv("USER_VIDEO_VLM_API_KEY", "").strip()
@@ -260,10 +304,12 @@ def _vision_diagnosis(
                 "current_step、deviation_type、next_action、confidence(0-1)、"
                 "evidence(数组，每项含 frame 与 observation)、safety_note。"
                 f"\n用户问题：{question or '未提供'}\n产品类别：{product_class or '未知'}"
+                f"\n可用于对齐的标准证据：\n{standard_context or '未检索到标准证据'}"
             ),
         }
     ]
-    for frame in frames:
+    for index, frame in enumerate(frames, start=1):
+        content.append({"type": "text", "text": f"Frame {index}"})
         encoded = base64.b64encode(frame.read_bytes()).decode("ascii")
         content.append(
             {
@@ -293,10 +339,58 @@ def _vision_diagnosis(
         "out_of_scope",
     }:
         raise ValueError("vision model returned an invalid label")
+    confidence = float(result["confidence"])
+    if not 0.0 <= confidence <= 1.0:
+        raise ValueError("vision model returned confidence outside [0, 1]")
+    result["confidence"] = confidence
+    if confidence < float(os.getenv("USER_VIDEO_MIN_CONFIDENCE", "0.55")):
+        result.update(
+            {
+                "label": "insufficient_evidence",
+                "deviation_type": None,
+                "next_action": "证据或置信度不足，请补充更清晰且覆盖完整操作过程的视频。",
+                "safety_note": "低置信度结果已自动降级，不应据此继续高风险操作。",
+            }
+        )
+    elif result["label"] == "unsafe_action":
+        result["next_action"] = (
+            "立即停止当前操作并断开设备电源（仅在安全可行时）；"
+            "查阅对应手册安全章节或联系合格维修人员。"
+        )
+        result["safety_note"] = "高风险判断采用确定性停止操作模板。"
     return result, {"provider": "openai_compatible", "model": model}
 
 
-def run_diagnosis_job(manager: VideoJobManager, job_id: str, retriever: Any | None = None) -> None:
+def _manual_standard_evidence(manual_engine: Any | None, query: str) -> tuple[list[dict[str, Any]], str]:
+    if manual_engine is None or not query:
+        return [], ""
+    try:
+        doc_ids = manual_engine._sparse_recall(query, top_n=4)
+        results = manual_engine._build_results(doc_ids)
+    except Exception:  # noqa: BLE001 - diagnosis can still use standard video
+        return [], ""
+    structured = [
+        {
+            "product": result.product,
+            "heading": result.heading,
+            "chunk_id": result.chunk_id,
+            "excerpt": result.text[:500],
+        }
+        for result in results
+    ]
+    context = "\n".join(
+        f"[MANUAL:{item['chunk_id']}] {item['product']} / {item['heading']}: {item['excerpt']}"
+        for item in structured
+    )
+    return structured, context
+
+
+def run_diagnosis_job(
+    manager: VideoJobManager,
+    job_id: str,
+    retriever: Any | None = None,
+    manual_engine: Any | None = None,
+) -> None:
     """Execute a job in a background worker and always persist terminal state."""
     try:
         state = manager.update(job_id, status="validating")
@@ -308,11 +402,6 @@ def run_diagnosis_job(manager: VideoJobManager, job_id: str, retriever: Any | No
             manager._job_dir(job_id) / "frames",
             duration_seconds=metadata["duration_seconds"],
         )
-        diagnosis, model_info = _vision_diagnosis(
-            frames,
-            question=state.get("question", ""),
-            product_class=state.get("product_class", ""),
-        )
         query = " ".join(
             part for part in (state.get("product_class", ""), state.get("question", "")) if part
         )
@@ -320,6 +409,17 @@ def run_diagnosis_job(manager: VideoJobManager, job_id: str, retriever: Any | No
         if retriever is not None and query:
             for item in retriever.search(query, top_k=3):
                 standards.append(item.to_dict())
+        manual_standards, manual_context = _manual_standard_evidence(manual_engine, query)
+        video_context = "\n".join(
+            f"[VIDEO:{item['scene_id']}] {item['start_seconds']}-{item['end_seconds']}s: {item['text'][:500]}"
+            for item in standards
+        )
+        diagnosis, model_info = _vision_diagnosis(
+            frames,
+            question=state.get("question", ""),
+            product_class=state.get("product_class", ""),
+            standard_context="\n".join(part for part in (manual_context, video_context) if part),
+        )
         manager.update(
             job_id,
             status="completed",
@@ -328,8 +428,10 @@ def run_diagnosis_job(manager: VideoJobManager, job_id: str, retriever: Any | No
                 "media": metadata,
                 "sampled_frames": [f"frames/{path.name}" for path in frames],
                 "matched_standard_scenes": standards,
+                "matched_manual_sections": manual_standards,
                 "model": model_info,
             },
         )
     except Exception as exc:  # noqa: BLE001 - background failures must be queryable
-        manager.update(job_id, status="failed", error=str(exc)[:1000])
+        category = "invalid_video" if isinstance(exc, ValueError) else "analysis_failed"
+        manager.update(job_id, status="failed", error=category)

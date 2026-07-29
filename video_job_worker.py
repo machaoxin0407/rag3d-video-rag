@@ -7,6 +7,7 @@ import time
 
 from video_rag.diagnosis import VideoJobManager, run_diagnosis_job
 from video_rag.retrieval import VideoEvidenceRetriever
+from retrieval_engine import RetrievalEngine
 
 
 running = True
@@ -22,10 +23,12 @@ def main() -> None:
     signal.signal(signal.SIGTERM, stop_worker)
     manager = VideoJobManager()
     retriever = VideoEvidenceRetriever()
+    manual_engine = RetrievalEngine(rerank_enabled=False)
+    manual_engine.ensure_index()
     while running:
         job_id = manager.claim_next()
         if job_id:
-            run_diagnosis_job(manager, job_id, retriever)
+            run_diagnosis_job(manager, job_id, retriever, manual_engine)
         else:
             time.sleep(1.0)
 

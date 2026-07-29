@@ -23,6 +23,7 @@ REQUIRED = [
     "deploy/import_authorized_model_config.py",
     "deploy/probe_model_config.py",
     "deploy/server_p1_smoke.py",
+    "validate_p1_online_retrieval.py",
 ]
 
 

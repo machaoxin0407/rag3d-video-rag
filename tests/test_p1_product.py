@@ -55,6 +55,9 @@ class P1ProductTests(unittest.TestCase):
             self.assertEqual(manager.get(job_id)["status"], "uploading")
             manager.update(job_id, status="queued")
             self.assertEqual(manager.claim_next(), job_id)
+            with self.assertRaisesRegex(RuntimeError, "active video job"):
+                manager.delete(job_id)
+            manager.update(job_id, status="completed")
             manager.delete(job_id)
             self.assertFalse(target.parent.exists())
 
@@ -74,6 +77,45 @@ class P1ProductTests(unittest.TestCase):
         prompt = api_server._video_evidence_prompt([item])
         self.assertIn("[VID:scene-1]", prompt)
         self.assertIn("2.0-8.0s", prompt)
+
+    def test_non_operational_product_mentions_return_no_video(self) -> None:
+        retriever = VideoEvidenceRetriever(mode="bm25")
+        self.assertEqual(
+            retriever.search("Tell me a joke about an air fryer", top_k=3),
+            [],
+        )
+        self.assertEqual(
+            retriever.search("air fryer warranty refund phone number", top_k=3),
+            [],
+        )
+
+    def test_video_citation_requires_answer_tag(self) -> None:
+        item = api_server.VideoEvidenceItem(
+            scene_id="scene-1",
+            record_id="record-1",
+            product_class="Air Fryer",
+            start_seconds=2.0,
+            end_seconds=8.0,
+            clip_url="/video-media/processed/a.mp4",
+            thumbnail_url="/video-media/keyframes/a.jpg",
+            score=1.0,
+            evidence_text="Press the temperature button.",
+            retrieval_mode="tri_hybrid",
+        )
+        citations, _images = api_server._structured_evidence(
+            "Press the button.",
+            [],
+            [item],
+            {"events": []},
+        )
+        self.assertEqual(citations, [])
+        citations, _images = api_server._structured_evidence(
+            "Press the button. [VID:scene-1]",
+            [],
+            [item],
+            {"events": []},
+        )
+        self.assertEqual([citation.source_id for citation in citations], ["scene-1"])
 
 
 if __name__ == "__main__":

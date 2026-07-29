@@ -37,6 +37,23 @@ def main() -> None:
     )
     response.raise_for_status()
     chat = response.json()["data"]
+    if health.get("status") != "ok" or not health["video_retrieval"].get("exact_ready"):
+        raise RuntimeError("strict Tri-Hybrid health gate failed")
+    if chat["retrieval"].get("effective_mode") != "tri_hybrid":
+        raise RuntimeError("chat did not use tri_hybrid")
+    if not chat["videos"] or not chat["citations"] or not chat["answer"].strip():
+        raise RuntimeError("chat response is missing grounded evidence")
+    media_checks = 0
+    for media_url in (
+        chat["videos"][0]["clip_url"],
+        chat["videos"][0]["thumbnail_url"],
+        *([chat["manual_images"][0]["url"]] if chat["manual_images"] else []),
+    ):
+        media_response = requests.get(f"{base}{media_url}", headers=headers, timeout=30)
+        media_response.raise_for_status()
+        if not media_response.content:
+            raise RuntimeError("authenticated media response is empty")
+        media_checks += 1
 
     with tempfile.TemporaryDirectory() as temp_dir:
         video_path = Path(temp_dir) / "smoke.mp4"
@@ -91,6 +108,8 @@ def main() -> None:
         )
         result_response.raise_for_status()
         job_result = result_response.json()
+        if job_result["status"] != "completed":
+            raise RuntimeError(f"video job failed with {job_result.get('error')}")
         requests.delete(
             f"{base}/v2/video-jobs/{job_id}",
             headers=headers,
@@ -110,6 +129,7 @@ def main() -> None:
                     "videos": len(chat["videos"]),
                     "citations": len(chat["citations"]),
                     "answer_chars": len(chat["answer"]),
+                    "authenticated_media": media_checks,
                 },
                 "video_job": {
                     "status": job_result["status"],
