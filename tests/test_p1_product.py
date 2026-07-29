@@ -117,6 +117,12 @@ class P1ProductTests(unittest.TestCase):
         )
         self.assertEqual([citation.source_id for citation in citations], ["scene-1"])
 
+    def test_manual_image_id_resolves_to_existing_authenticated_asset(self) -> None:
+        filename = api_server._manual_image_filename("Manual08_0")
+        self.assertEqual(filename, "Manual08_0.jpg")
+        root = Path(api_server.__file__).resolve().parent / "手册" / "插图"
+        self.assertTrue((root / filename).is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

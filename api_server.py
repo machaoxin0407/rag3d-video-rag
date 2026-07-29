@@ -23,6 +23,7 @@ import threading
 import time
 import uuid
 from contextlib import asynccontextmanager
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
 
@@ -717,17 +718,43 @@ def _structured_evidence(
                 supports=supports,
             )
         )
-    manual_images = [
-        ManualImageItem(
-            image_id=Path(pic).name,
-            url=f"/manual-media/{quote(Path(pic).name)}",
-            caption=f"手册插图 {Path(pic).stem}",
-            manual_id=image_context.get(Path(pic).name, (None, None))[0],
-            section=image_context.get(Path(pic).name, (None, None))[1],
+    manual_images: list[ManualImageItem] = []
+    captions = _manual_image_captions()
+    for pic in dict.fromkeys(pics):
+        image_id = Path(pic).stem
+        filename = _manual_image_filename(image_id)
+        if filename is None:
+            continue
+        manual_id, section = image_context.get(Path(pic).name, (None, None))
+        caption = captions.get(f"{manual_id}|{image_id}", {}).get("short_caption")
+        manual_images.append(
+            ManualImageItem(
+                image_id=image_id,
+                url=f"/manual-media/{quote(filename)}",
+                caption=str(caption or f"手册插图 {image_id}"),
+                manual_id=manual_id,
+                section=section,
+            )
         )
-        for pic in dict.fromkeys(pics)
-    ]
     return citations, manual_images
+
+
+def _manual_image_filename(image_id: str) -> str | None:
+    root = Path(__file__).resolve().parent / "手册" / "插图"
+    for candidate in sorted(root.glob(f"{Path(image_id).name}.*")):
+        if candidate.is_file() and candidate.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
+            return candidate.name
+    return None
+
+
+@lru_cache(maxsize=1)
+def _manual_image_captions() -> dict[str, dict[str, Any]]:
+    path = Path(__file__).resolve().parent / "data" / "image_captions_v4_final.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        return payload if isinstance(payload, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
 
 
 def _answer_sentences(answer: str) -> list[str]:
