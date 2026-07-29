@@ -1,0 +1,21 @@
+{
+  "experiment_id": "FAULT-LLM-20260729-001",
+  "created_at": "2026-07-29T09:31:27.568581+00:00",
+  "isolation": "in-process controlled mock; no deployment mutation",
+  "results": [
+    {
+      "fault": "diagnosis_vlm_unconfigured",
+      "passed": true,
+      "observed": "insufficient_evidence",
+      "expected": "insufficient_evidence safe degradation"
+    },
+    {
+      "fault": "answer_llm_provider_outage",
+      "passed": true,
+      "observed": 500,
+      "expected": "HTTP 500 without provider detail or fabricated answer"
+    }
+  ],
+  "passed": true,
+  "limitation": "The answer path fails closed with an explicit generic 500 rather than returning a degraded grounded answer; product retry UX remains future work."
+}

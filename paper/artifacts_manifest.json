@@ -1,8 +1,8 @@
 {
   "schema_version": "p2-artifacts-v1",
-  "created_at": "2026-07-29T09:06:58.155097+00:00",
-  "implementation_commit": "cd3f31817d74f7a6048255a1f5dc1369433566aa",
-  "execution_worktree_head": "cd3f31817d74f7a6048255a1f5dc1369433566aa",
+  "created_at": "2026-07-29T09:33:17.874389+00:00",
+  "implementation_commit": "b56e6c22811294e1090b442f1b76e5d6359604ee",
+  "execution_worktree_head": "b56e6c22811294e1090b442f1b76e5d6359604ee",
   "status": "P2_CONDITIONAL_NO_GO",
   "checks": {
     "qrels_v1_not_overwritten_and_no_grade_changes": true,
@@ -14,7 +14,7 @@
     "e2e_100_unique_queries": true,
     "all_media_valid": true,
     "retrieval_p95_under_1s": true,
-    "complete_answer_p95_under_15s": true,
+    "formal_workload_answer_p95_under_15s": false,
     "fault_injection_passed": true,
     "leave_one_product_generalization_complete": true,
     "24_hour_soak_complete": false,
@@ -23,24 +23,40 @@
   "blockers": [
     "retrieval_recall_at_5_target",
     "diagnosis_macro_f1_target",
+    "formal_workload_answer_p95_under_15s",
     "24_hour_soak_complete",
     "human_review_queue_cleared"
   ],
   "artifacts": [
     {
+      "path": "data_video/manifests/paper_qrels_v2/no_positive_query_classification_v2.csv",
+      "sha256": "7893ad33dd357bf8869934af1c30c88c2028d46f90955637eb489b1c2b7206da",
+      "bytes": 10114
+    },
+    {
+      "path": "data_video/manifests/paper_qrels_v2/paper_video_qrels_graded_v2.csv",
+      "sha256": "3eebd1c4ea72730361ba5782d973db12f49f79a5c81ed8ba3bdcc61183b7adee",
+      "bytes": 1464582
+    },
+    {
       "path": "data_video/manifests/paper_qrels_v2/paper_video_qrels_manifest_v2.json",
-      "sha256": "8e4730d13f37989d0ca6c7d44d2e94303297121a3de8e55cef5185df09714630",
+      "sha256": "4a3cc3fea1e9386cc15e8f743913401c37f312e4431d09242941fb6bf9ccc837",
       "bytes": 1120
     },
     {
+      "path": "data_video/manifests/paper_qrels_v2/source_leakage_decisions_v2.csv",
+      "sha256": "517e8e8e23c172cfc1678da97abfe8b45ce9d63dc71ca325cf81dc6718b87bbc",
+      "bytes": 4438
+    },
+    {
       "path": "docs/P2_EXECUTION_REPORT_2026-07-29.md",
-      "sha256": "f294c95620e16b8e7822e10845d01ede57d8713cf57d489e706ea323abe32a23",
-      "bytes": 3008
+      "sha256": "47c6cc1c5fc0fdf225cf2fbe103feee37116c9555082369fc56e8158b57c7ee4",
+      "bytes": 4022
     },
     {
       "path": "paper/supplementary/p2_diagnosis_per_case.csv",
-      "sha256": "34d7713b0e3c8e52ae38597d11c511a19c0c825f1f7646a1c6d13f0b883d2d5a",
-      "bytes": 2452
+      "sha256": "bbfe8fb0afe5bdbcf0544b9543e0ef66558bb73f6aee1b4cd77a4b9f81a43d35",
+      "bytes": 2559
     },
     {
       "path": "paper/supplementary/p2_end_to_end_per_query.csv",
@@ -49,23 +65,28 @@
     },
     {
       "path": "paper/tables/p2_latency.csv",
-      "sha256": "f571643cfbb7f1a53d8d7794eaec41393f4764ad87feb59b3c0ad5efb0938fed",
-      "bytes": 585
+      "sha256": "5f1e8148cc25e636a7d403fe4903411769874f684cd74bb2c84db965aba3a4bb",
+      "bytes": 588
     },
     {
       "path": "paper/tables/p2_leave_one_product_out.csv",
-      "sha256": "3afdb9ae561df96f5fab7e9b90e0518e1cbb86fc30193d5cebc40714f3eed196",
-      "bytes": 697
+      "sha256": "f37cc9bd186e59d96e389fa3ec84e3be7b858a2a839832b6ad1dcb0b54d2a8ad",
+      "bytes": 960
     },
     {
       "path": "paper/tables/p2_retrieval_ablation.csv",
-      "sha256": "e3729da369883e7fd8b51a5fc834c1f60b362344f66933dce16a2f9f5fc637a7",
-      "bytes": 1452
+      "sha256": "e05bfeb1d88cd6bfecefbdabc89dede2663a6df6f881da75d07cfab989febbb9",
+      "bytes": 1781
     },
     {
       "path": "paper/tables/p2_temporal_localization.csv",
-      "sha256": "58719529a4869c954497762b2c5cee8227f8b776733eda288232b897b0116328",
-      "bytes": 7310
+      "sha256": "4b4e647684359fe49e1b201f64cca45d1a5f847604dc4202271a2eb9ee2ffb1f",
+      "bytes": 10127
+    },
+    {
+      "path": "reports/p2/offline_run_manifest.json",
+      "sha256": "109710f380be1b8f376007d943d33c341d77638b81bacb5f5b9869cd93dbc257",
+      "bytes": 904
     },
     {
       "path": "reports/p2/online/answer_judge_raw.jsonl",
@@ -73,14 +94,19 @@
       "bytes": 705450
     },
     {
+      "path": "reports/p2/online/chat_concurrency.csv",
+      "sha256": "fdcce6e82ed7c1b5ea996fba5b00a049fa6a7ae8106968189969fbb88de28b96",
+      "bytes": 258
+    },
+    {
       "path": "reports/p2/online/diagnosis_per_case.csv",
-      "sha256": "34d7713b0e3c8e52ae38597d11c511a19c0c825f1f7646a1c6d13f0b883d2d5a",
-      "bytes": 2452
+      "sha256": "bbfe8fb0afe5bdbcf0544b9543e0ef66558bb73f6aee1b4cd77a4b9f81a43d35",
+      "bytes": 2559
     },
     {
       "path": "reports/p2/online/diagnosis_summary.json",
-      "sha256": "5a06e35e703fa83ea96ff37d68040416e594daa7a0d875573e3b0acb18c9c2f5",
-      "bytes": 544
+      "sha256": "23ab8db83efc3af0fa781eca067786919622e38891b2bf72109eec62f1fab89e",
+      "bytes": 796
     },
     {
       "path": "reports/p2/online/end_to_end_per_query.csv",
@@ -93,14 +119,29 @@
       "bytes": 1046
     },
     {
+      "path": "reports/p2/online/fault_injection.csv",
+      "sha256": "d8639624947cb5d5a18d3ea447ccd4bc21777094970b782446d4ea66c73150e2",
+      "bytes": 141
+    },
+    {
+      "path": "reports/p2/online/llm_fault_injection.json",
+      "sha256": "6e99dfc1e78176e564c087f7f5c3e7f52e8b49e5b719e7375fb8d7d05c1caaa4",
+      "bytes": 751
+    },
+    {
+      "path": "reports/p2/online/online_run_manifest.json",
+      "sha256": "bbe008a7a9dd8de44a6448c1c6266e42a43c765fb17a62be7f1004c408ff6229",
+      "bytes": 283
+    },
+    {
       "path": "reports/p2/online/performance_summary.json",
-      "sha256": "a69bde2b011639e892350e072b36adb528c06de9448f9f8e8dbcbf208a6dc0ea",
-      "bytes": 1011
+      "sha256": "e68aea2f99c546c7a8bac7d5d317b5b976af8a1f80412a9d79799dda1b383423",
+      "bytes": 1099
     },
     {
       "path": "reports/p2/online/retrieval_latency.csv",
-      "sha256": "f571643cfbb7f1a53d8d7794eaec41393f4764ad87feb59b3c0ad5efb0938fed",
-      "bytes": 585
+      "sha256": "5f1e8148cc25e636a7d403fe4903411769874f684cd74bb2c84db965aba3a4bb",
+      "bytes": 588
     },
     {
       "path": "reports/p2/online/retrieval_performance.json",
@@ -109,18 +150,28 @@
     },
     {
       "path": "reports/p2/retrieval_optimization/best_config_and_heldout.json",
-      "sha256": "ebeb5d5cf07dd43fe7d0158b79e91a08a2e0d176961965b0183f41e7bec89a7f",
-      "bytes": 669
+      "sha256": "3cae1e595f7b1cbcd622ef265bfe0787e847b44a55136fb63a940a5ff1153d01",
+      "bytes": 1063
     },
     {
       "path": "reports/p2/retrieval_optimization/leave_one_product_out.csv",
-      "sha256": "3afdb9ae561df96f5fab7e9b90e0518e1cbb86fc30193d5cebc40714f3eed196",
-      "bytes": 697
+      "sha256": "f37cc9bd186e59d96e389fa3ec84e3be7b858a2a839832b6ad1dcb0b54d2a8ad",
+      "bytes": 960
+    },
+    {
+      "path": "reports/p2/server_resource_release.json",
+      "sha256": "0c8e9542f0de2efb0ce0bc03126b367a638cd9cb6fe2f4f80e5e899981a0f177",
+      "bytes": 667
+    },
+    {
+      "path": "reports/p2/temporal_localization/temporal_metrics_per_query.csv",
+      "sha256": "b3589549ee02ad82647d476f1457e07acdfeed19157eed432d1b0ea6ad78fec8",
+      "bytes": 33922
     },
     {
       "path": "reports/p2/temporal_localization/temporal_metrics_summary.csv",
-      "sha256": "58719529a4869c954497762b2c5cee8227f8b776733eda288232b897b0116328",
-      "bytes": 7310
+      "sha256": "4b4e647684359fe49e1b201f64cca45d1a5f847604dc4202271a2eb9ee2ffb1f",
+      "bytes": 10127
     }
   ]
 }

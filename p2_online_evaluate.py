@@ -524,6 +524,21 @@ def run_diagnosis(
         "macro_f1": mean(f1s),
         "accuracy": mean(row["correct"] for row in rows),
         "failed_jobs": sum(row["job_status"] != "completed" for row in rows),
+        "latency_seconds": {
+            "p50": percentile(
+                [float(row["latency_seconds"]) for row in rows], 0.50
+            ),
+            "p95": percentile(
+                [float(row["latency_seconds"]) for row in rows], 0.95
+            ),
+            "p99": percentile(
+                [float(row["latency_seconds"]) for row in rows], 0.99
+            ),
+        },
+        "sixty_second_input": {
+            "status": "not_measured",
+            "reason": "controlled proxy clips are scene-length, not 60-second uploads",
+        },
         "target_macro_f1": 0.70,
         "product_status": "validated_mvp" if mean(f1s) >= 0.70 else "experimental_only",
         "limitations": (

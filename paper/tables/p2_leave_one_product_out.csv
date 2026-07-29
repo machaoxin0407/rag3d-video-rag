@@ -1,7 +1,7 @@
-﻿heldout_product,train_development_queries,heldout_queries,bm25_weight,dense_weight,visual_weight,recall_at_5,ndcg_at_5,mrr_at_5,external_dataset,protocol
-Air Fryer,50,17,0.3,0.35,0.35,0.278081,0.600477,0.888889,no,leave-one-product-class-out
-Espresso Machine,50,17,0.3,0.35,0.35,0.628904,0.704002,0.863636,no,leave-one-product-class-out
-Pressure Cooker,50,17,0.3,0.35,0.35,0.406277,0.612120,0.517857,no,leave-one-product-class-out
-Printer,50,17,0.2,0.5,0.3,0.712245,0.687069,0.696429,no,leave-one-product-class-out
-Vacuum,50,16,0.35,0.45,0.2,0.494048,0.625128,0.642857,no,leave-one-product-class-out
-Washing Machine,50,16,0.3,0.35,0.35,0.702564,0.609978,0.707692,no,leave-one-product-class-out
+﻿heldout_product,train_development_queries,heldout_queries,bm25_weight,dense_weight,visual_weight,recall_at_5,ndcg_at_5,mrr_at_5,eligible_queries,recall_at_5_all_queries,ndcg_at_5_all_queries,mrr_at_5_all_queries,external_dataset,protocol
+Air Fryer,50,17,0.3,0.35,0.35,0.278081,0.600477,0.888889,15,0.245366,0.529833,0.784314,no,leave-one-product-class-out
+Espresso Machine,50,17,0.3,0.35,0.35,0.628904,0.704002,0.863636,11,0.406938,0.455531,0.558824,no,leave-one-product-class-out
+Pressure Cooker,50,17,0.3,0.35,0.35,0.406277,0.612120,0.517857,14,0.334581,0.504099,0.426471,no,leave-one-product-class-out
+Printer,50,17,0.2,0.5,0.3,0.712245,0.687069,0.696429,14,0.586555,0.565821,0.573529,no,leave-one-product-class-out
+Vacuum,50,16,0.35,0.45,0.2,0.494048,0.625128,0.642857,7,0.216146,0.273494,0.281250,no,leave-one-product-class-out
+Washing Machine,50,16,0.3,0.35,0.35,0.702564,0.609978,0.707692,13,0.570833,0.495607,0.575000,no,leave-one-product-class-out

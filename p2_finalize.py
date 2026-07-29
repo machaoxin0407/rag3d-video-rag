@@ -63,6 +63,7 @@ def main() -> None:
         online / "chat_concurrency.csv",
         online / "fault_injection.csv",
         online / "online_run_manifest.json",
+        online / "llm_fault_injection.json",
         temporal_path,
         ROOT
         / "reports"
@@ -86,6 +87,7 @@ def main() -> None:
     diagnosis = load_json(online / "diagnosis_summary.json")
     performance = load_json(online / "performance_summary.json")
     retrieval_perf = load_json(online / "retrieval_performance.json")
+    llm_faults = load_json(online / "llm_fault_injection.json")
     retrieval = load_json(retrieval_path)
     qrels = load_json(qrels_manifest_path)
     temporal = read_csv(temporal_path)
@@ -122,7 +124,8 @@ def main() -> None:
         <= 15,
         "fault_injection_passed": performance["faults_passed"]
         == performance["faults_total"]
-        and all(item["passed"] for item in retrieval_perf["isolated_fault_injection"]),
+        and all(item["passed"] for item in retrieval_perf["isolated_fault_injection"])
+        and llm_faults["passed"],
         "leave_one_product_generalization_complete": len(read_csv(loo_path)) == 6,
         "24_hour_soak_complete": performance["24_hour_soak"]["status"] == "completed",
         "human_review_queue_cleared": e2e["human_review_queue"] == 0,
@@ -185,6 +188,8 @@ P2 的可复现实验链路已经建立并实际运行：qrels v2、时间定位
 | 媒体有效率 | {e2e['metrics']['all_media_valid']:.3f} | 鉴权读取实测 |
 | 诊断 Macro-F1 | {diagnosis['macro_f1']:.3f} | 目标 ≥0.70 |
 | 诊断任务失败 | {diagnosis.get('failed_jobs', 0)} / {diagnosis['cases']} | 失败按错误预测计入，不从分母删除 |
+| 代理诊断任务 P95 | {diagnosis['latency_seconds']['p95']:.2f} s | 场景长度代理片段 |
+| 60 秒用户视频时延 | {diagnosis['sixty_second_input']['status']} | 未测量，不宣称达到 30–60 s 目标 |
 | 诊断定位 | {diagnosis['product_status']} | 受控代理集，不等于真实用户故障集 |
 | 检索 P95 | {float(tri_single['p95_ms']):.1f} ms | 目标 ≤1000 ms |
 | 正式 100 问并发工作负载 P95 | {performance['formal_e2e_workload_latency_seconds']['p95']:.2f} s | 目标尽量 ≤15 s；未达标 |
