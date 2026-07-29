@@ -1,8 +1,8 @@
 {
   "schema_version": "p2-artifacts-v1",
-  "created_at": "2026-07-29T09:33:17.874389+00:00",
-  "implementation_commit": "b56e6c22811294e1090b442f1b76e5d6359604ee",
-  "execution_worktree_head": "b56e6c22811294e1090b442f1b76e5d6359604ee",
+  "created_at": "2026-07-29T09:34:29.932135+00:00",
+  "implementation_commit": "17738b520cb4c6f3cf99f33cc1f3b83736aa51e4",
+  "execution_worktree_head": "17738b520cb4c6f3cf99f33cc1f3b83736aa51e4",
   "status": "P2_CONDITIONAL_NO_GO",
   "checks": {
     "qrels_v1_not_overwritten_and_no_grade_changes": true,
@@ -50,7 +50,7 @@
     },
     {
       "path": "docs/P2_EXECUTION_REPORT_2026-07-29.md",
-      "sha256": "47c6cc1c5fc0fdf225cf2fbe103feee37116c9555082369fc56e8158b57c7ee4",
+      "sha256": "776c983d0921a5dbb181f420f00dfc2458533f61334d690a81b1193c74d59ccd",
       "bytes": 4022
     },
     {
