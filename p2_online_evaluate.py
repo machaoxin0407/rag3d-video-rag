@@ -176,9 +176,13 @@ def run_end_to_end(
     headers: dict[str, str],
     output: Path,
     limit: int,
+    offset: int = 0,
 ) -> tuple[list[dict[str, Any]], list[float]]:
     release = ROOT / "data_video" / "releases" / "paper_video_retrieval_v1"
-    queries = read_csv(release / "manifests" / "paper_video_queries_v1.csv")[:limit]
+    all_queries = read_csv(
+        release / "manifests" / "paper_video_queries_v1.csv"
+    )
+    queries = all_queries[offset : offset + limit]
     qrels = read_csv(
         ROOT
         / "data_video"
@@ -644,8 +648,10 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
     parser.add_argument("--limit", type=int, default=100)
+    parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--output-dir", type=Path, default=ROOT / "reports" / "p2" / "online")
     parser.add_argument("--skip-diagnosis", action="store_true")
+    parser.add_argument("--skip-performance", action="store_true")
     args = parser.parse_args()
     load_dotenv(ROOT / ".env")
     token = os.environ["KAFU_API_TOKEN"]
@@ -658,15 +664,21 @@ def main() -> None:
         raise RuntimeError("strict Tri-Hybrid is not ready")
     output = args.output_dir.resolve()
     rows, latencies = run_end_to_end(
-        args.base_url, headers, output, min(100, max(1, args.limit))
+        args.base_url,
+        headers,
+        output,
+        min(100, max(1, args.limit)),
+        max(0, args.offset),
     )
     if not args.skip_diagnosis:
         run_diagnosis(args.base_url, headers, output)
-    run_performance_and_faults(args.base_url, headers, output, latencies)
+    if not args.skip_performance:
+        run_performance_and_faults(args.base_url, headers, output, latencies)
     manifest = {
         "schema_version": "p2-online-evaluation-v1",
         "created_at": utc_now(),
         "queries_completed": len(rows),
+        "query_offset": max(0, args.offset),
         "strict_tri_hybrid_ready": True,
         "credentials_persisted": False,
         "output_dir": str(output),
