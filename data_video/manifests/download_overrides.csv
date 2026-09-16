@@ -1,0 +1,8 @@
+record_id,download_url,variant_reason
+pressure-001,https://upload.wikimedia.org/wikipedia/commons/transcoded/d/d7/Panela_de_press%C3%A3o.webm/Panela_de_press%C3%A3o.webm.480p.vp9.webm,Wikimedia original-file CDN returned HTTP 429
+washing-001,https://upload.wikimedia.org/wikipedia/commons/transcoded/9/94/Video_of_Laundry_machines.webm/Video_of_Laundry_machines.webm.480p.vp9.webm,Wikimedia original-file CDN returned HTTP 429
+washing-003,https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b4/Washing_machine_120fps.webm/Washing_machine_120fps.webm.480p.vp9.webm,Wikimedia original-file CDN returned HTTP 429
+vacuum-001,https://upload.wikimedia.org/wikipedia/commons/transcoded/7/7e/Industrial_vacuum_cleaner_in_operation.webm/Industrial_vacuum_cleaner_in_operation.webm.360p.vp9.webm,Wikimedia original-file CDN returned HTTP 429
+vacuum-002,https://upload.wikimedia.org/wikipedia/commons/transcoded/7/78/A_vacuum_cleaner_manufactured_by_Miele%2C_purchased_2013.webm/A_vacuum_cleaner_manufactured_by_Miele%2C_purchased_2013.webm.480p.vp9.webm,Wikimedia original-file CDN returned HTTP 429
+printer-001,https://upload.wikimedia.org/wikipedia/commons/transcoded/6/6d/Printer.ogv/Printer.ogv.360p.webm,Wikimedia original-file CDN returned HTTP 429
+camera-001,https://upload.wikimedia.org/wikipedia/commons/transcoded/3/35/CCD_-_The_heart_of_a_digital_camera_%28how_a_charge-coupled_device_works%29.webm/CCD_-_The_heart_of_a_digital_camera_%28how_a_charge-coupled_device_works%29.webm.480p.vp9.webm,Wikimedia original-file CDN returned HTTP 429

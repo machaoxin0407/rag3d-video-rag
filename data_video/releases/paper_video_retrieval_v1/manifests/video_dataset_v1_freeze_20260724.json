@@ -1,0 +1,59 @@
+{
+  "dataset_id": "rag3d_video_v1_20260724",
+  "frozen_at": "2026-07-23T17:07:31.885021+00:00",
+  "target_classes": [
+    "Air Fryer",
+    "Espresso Machine",
+    "Pressure Cooker",
+    "Printer",
+    "Vacuum",
+    "Washing Machine"
+  ],
+  "video_count": 78,
+  "class_counts": {
+    "Air Fryer": 13,
+    "Espresso Machine": 13,
+    "Pressure Cooker": 13,
+    "Printer": 13,
+    "Vacuum": 13,
+    "Washing Machine": 13
+  },
+  "split_counts": {
+    "development": 65,
+    "source_disjoint_test": 13
+  },
+  "legacy_records_normalized": [
+    "espresso-001",
+    "espresso-002",
+    "espresso-003",
+    "pressure-001",
+    "printer-001",
+    "vacuum-001",
+    "vacuum-002",
+    "washing-001",
+    "washing-002",
+    "washing-003"
+  ],
+  "split_overrides": [
+    {
+      "record_id": "airfryer-011",
+      "original_split": "source_disjoint_test",
+      "normalized_split": "development",
+      "reason": "Creator City of Monterey CA also appears in development; move all creator-linked records out of the source-disjoint test set"
+    },
+    {
+      "record_id": "airfryer-017",
+      "original_split": "development",
+      "normalized_split": "source_disjoint_test",
+      "reason": "Unique creator replacement preserves Air Fryer test coverage and the frozen test-set size"
+    }
+  ],
+  "source_url_unique": true,
+  "creator_split_leakage": false,
+  "source_hashes_verified": true,
+  "manifest_sha256": {
+    "video_source_inventory.csv": "0c749a48974072ab772f771f6d9819dc9e96528ef18a289aff0abc9beb263643",
+    "download_receipts.csv": "8f7e46e0fe9258259b4f5283bf0160b5ee15946f4b656f232a42706d0a29e5a3",
+    "review_assignments.csv": "9caac7ad04f7fa66837b25458b9264a8c4eea6bf796c4180bbb4d93acc6d9a5d"
+  }
+}

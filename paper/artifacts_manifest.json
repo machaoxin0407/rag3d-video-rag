@@ -1,0 +1,177 @@
+{
+  "schema_version": "p2-artifacts-v1",
+  "created_at": "2026-07-29T09:34:29.932135+00:00",
+  "implementation_commit": "17738b520cb4c6f3cf99f33cc1f3b83736aa51e4",
+  "execution_worktree_head": "17738b520cb4c6f3cf99f33cc1f3b83736aa51e4",
+  "status": "P2_CONDITIONAL_NO_GO",
+  "checks": {
+    "qrels_v1_not_overwritten_and_no_grade_changes": true,
+    "leakage_policy_explicit": true,
+    "no_positive_queries_classified": true,
+    "temporal_r1_iou_05_target": true,
+    "retrieval_recall_at_5_target": false,
+    "diagnosis_macro_f1_target": false,
+    "e2e_100_unique_queries": true,
+    "all_media_valid": true,
+    "retrieval_p95_under_1s": true,
+    "formal_workload_answer_p95_under_15s": false,
+    "fault_injection_passed": true,
+    "leave_one_product_generalization_complete": true,
+    "24_hour_soak_complete": false,
+    "human_review_queue_cleared": false
+  },
+  "blockers": [
+    "retrieval_recall_at_5_target",
+    "diagnosis_macro_f1_target",
+    "formal_workload_answer_p95_under_15s",
+    "24_hour_soak_complete",
+    "human_review_queue_cleared"
+  ],
+  "artifacts": [
+    {
+      "path": "data_video/manifests/paper_qrels_v2/no_positive_query_classification_v2.csv",
+      "sha256": "7893ad33dd357bf8869934af1c30c88c2028d46f90955637eb489b1c2b7206da",
+      "bytes": 10114
+    },
+    {
+      "path": "data_video/manifests/paper_qrels_v2/paper_video_qrels_graded_v2.csv",
+      "sha256": "3eebd1c4ea72730361ba5782d973db12f49f79a5c81ed8ba3bdcc61183b7adee",
+      "bytes": 1464582
+    },
+    {
+      "path": "data_video/manifests/paper_qrels_v2/paper_video_qrels_manifest_v2.json",
+      "sha256": "4a3cc3fea1e9386cc15e8f743913401c37f312e4431d09242941fb6bf9ccc837",
+      "bytes": 1120
+    },
+    {
+      "path": "data_video/manifests/paper_qrels_v2/source_leakage_decisions_v2.csv",
+      "sha256": "517e8e8e23c172cfc1678da97abfe8b45ce9d63dc71ca325cf81dc6718b87bbc",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/P2_EXECUTION_REPORT_2026-07-29.md",
+      "sha256": "776c983d0921a5dbb181f420f00dfc2458533f61334d690a81b1193c74d59ccd",
+      "bytes": 4022
+    },
+    {
+      "path": "paper/supplementary/p2_diagnosis_per_case.csv",
+      "sha256": "bbfe8fb0afe5bdbcf0544b9543e0ef66558bb73f6aee1b4cd77a4b9f81a43d35",
+      "bytes": 2559
+    },
+    {
+      "path": "paper/supplementary/p2_end_to_end_per_query.csv",
+      "sha256": "15d413fd0c6c04d984f3a41966485e3d9b6751a0f4b5a639ee949cf2da3163ac",
+      "bytes": 51914
+    },
+    {
+      "path": "paper/tables/p2_latency.csv",
+      "sha256": "5f1e8148cc25e636a7d403fe4903411769874f684cd74bb2c84db965aba3a4bb",
+      "bytes": 588
+    },
+    {
+      "path": "paper/tables/p2_leave_one_product_out.csv",
+      "sha256": "f37cc9bd186e59d96e389fa3ec84e3be7b858a2a839832b6ad1dcb0b54d2a8ad",
+      "bytes": 960
+    },
+    {
+      "path": "paper/tables/p2_retrieval_ablation.csv",
+      "sha256": "e05bfeb1d88cd6bfecefbdabc89dede2663a6df6f881da75d07cfab989febbb9",
+      "bytes": 1781
+    },
+    {
+      "path": "paper/tables/p2_temporal_localization.csv",
+      "sha256": "4b4e647684359fe49e1b201f64cca45d1a5f847604dc4202271a2eb9ee2ffb1f",
+      "bytes": 10127
+    },
+    {
+      "path": "reports/p2/offline_run_manifest.json",
+      "sha256": "109710f380be1b8f376007d943d33c341d77638b81bacb5f5b9869cd93dbc257",
+      "bytes": 904
+    },
+    {
+      "path": "reports/p2/online/answer_judge_raw.jsonl",
+      "sha256": "61607bb73f46ac8a0e5855e4d86aa4548aa86376d6c2e402f78b08a5f3440b2d",
+      "bytes": 705450
+    },
+    {
+      "path": "reports/p2/online/chat_concurrency.csv",
+      "sha256": "fdcce6e82ed7c1b5ea996fba5b00a049fa6a7ae8106968189969fbb88de28b96",
+      "bytes": 258
+    },
+    {
+      "path": "reports/p2/online/diagnosis_per_case.csv",
+      "sha256": "bbfe8fb0afe5bdbcf0544b9543e0ef66558bb73f6aee1b4cd77a4b9f81a43d35",
+      "bytes": 2559
+    },
+    {
+      "path": "reports/p2/online/diagnosis_summary.json",
+      "sha256": "23ab8db83efc3af0fa781eca067786919622e38891b2bf72109eec62f1fab89e",
+      "bytes": 796
+    },
+    {
+      "path": "reports/p2/online/end_to_end_per_query.csv",
+      "sha256": "15d413fd0c6c04d984f3a41966485e3d9b6751a0f4b5a639ee949cf2da3163ac",
+      "bytes": 51914
+    },
+    {
+      "path": "reports/p2/online/end_to_end_summary.json",
+      "sha256": "36e3c0aa590a246686df4c26b378838e3aa264b69884f0e49acab8f247d82a33",
+      "bytes": 1046
+    },
+    {
+      "path": "reports/p2/online/fault_injection.csv",
+      "sha256": "d8639624947cb5d5a18d3ea447ccd4bc21777094970b782446d4ea66c73150e2",
+      "bytes": 141
+    },
+    {
+      "path": "reports/p2/online/llm_fault_injection.json",
+      "sha256": "6e99dfc1e78176e564c087f7f5c3e7f52e8b49e5b719e7375fb8d7d05c1caaa4",
+      "bytes": 751
+    },
+    {
+      "path": "reports/p2/online/online_run_manifest.json",
+      "sha256": "bbe008a7a9dd8de44a6448c1c6266e42a43c765fb17a62be7f1004c408ff6229",
+      "bytes": 283
+    },
+    {
+      "path": "reports/p2/online/performance_summary.json",
+      "sha256": "e68aea2f99c546c7a8bac7d5d317b5b976af8a1f80412a9d79799dda1b383423",
+      "bytes": 1099
+    },
+    {
+      "path": "reports/p2/online/retrieval_latency.csv",
+      "sha256": "5f1e8148cc25e636a7d403fe4903411769874f684cd74bb2c84db965aba3a4bb",
+      "bytes": 588
+    },
+    {
+      "path": "reports/p2/online/retrieval_performance.json",
+      "sha256": "84f33a9bdfdc3c4b945cf1a7e83f444c9a5ef4c2623b685543e9c5b19bfb4603",
+      "bytes": 1063
+    },
+    {
+      "path": "reports/p2/retrieval_optimization/best_config_and_heldout.json",
+      "sha256": "3cae1e595f7b1cbcd622ef265bfe0787e847b44a55136fb63a940a5ff1153d01",
+      "bytes": 1063
+    },
+    {
+      "path": "reports/p2/retrieval_optimization/leave_one_product_out.csv",
+      "sha256": "f37cc9bd186e59d96e389fa3ec84e3be7b858a2a839832b6ad1dcb0b54d2a8ad",
+      "bytes": 960
+    },
+    {
+      "path": "reports/p2/server_resource_release.json",
+      "sha256": "0c8e9542f0de2efb0ce0bc03126b367a638cd9cb6fe2f4f80e5e899981a0f177",
+      "bytes": 667
+    },
+    {
+      "path": "reports/p2/temporal_localization/temporal_metrics_per_query.csv",
+      "sha256": "b3589549ee02ad82647d476f1457e07acdfeed19157eed432d1b0ea6ad78fec8",
+      "bytes": 33922
+    },
+    {
+      "path": "reports/p2/temporal_localization/temporal_metrics_summary.csv",
+      "sha256": "4b4e647684359fe49e1b201f64cca45d1a5f847604dc4202271a2eb9ee2ffb1f",
+      "bytes": 10127
+    }
+  ]
+}

@@ -14,6 +14,22 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+IGNORED_WALK_DIRS = {
+    ".git",
+    ".venv",
+    ".venv-asr",
+    ".venv-ocr",
+    ".venv-vlm",
+    ".venv-embedding",
+    ".venv-visual-embedding",
+    "venv",
+    "models",
+    "checkpoints",
+    "outputs",
+    "logs",
+    "traces",
+    "__pycache__",
+}
 
 REQUIRED_FILES = [
     "README.md",
@@ -24,6 +40,8 @@ REQUIRED_FILES = [
     "config_runtime.py",
     "run_api.sh",
     "smoke_test.sh",
+    "caption_video_scenes.py",
+    "requirements-vlm.txt",
     "api_server.py",
     "agent.py",
     "llm_router.py",
@@ -70,6 +88,12 @@ REQUIRED_DIRS = [
 EXECUTABLE_FILES = [
     "run_api.sh",
     "smoke_test.sh",
+    "run_video_analysis_stage.sh",
+    "setup_video_vlm_environment.sh",
+    "setup_video_embedding_environment.sh",
+    "video_embedding_service.sh",
+    "setup_video_visual_embedding_environment.sh",
+    "video_visual_embedding_service.sh",
 ]
 
 FORBIDDEN_SUFFIXES = (
@@ -123,6 +147,8 @@ def check_executable(errors: list[str]) -> None:
 
 def check_no_generated_artifacts(errors: list[str]) -> None:
     for path in ROOT.rglob("*"):
+        if any(part in IGNORED_WALK_DIRS - {"__pycache__"} for part in path.parts):
+            continue
         if "__pycache__" in path.parts:
             fail(errors, f"包含 Python 缓存目录/文件: {rel(path)}")
             continue
@@ -180,6 +206,8 @@ def check_comment_coverage(errors: list[str], warnings: list[str]) -> None:
 
 
 def is_scanned_text_file(path: Path) -> bool:
+    if any(part in IGNORED_WALK_DIRS for part in path.parts):
+        return False
     if any(part in {"data", "手册", "手册_v4", "submissions"} for part in path.parts):
         return False
     if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".faiss", ".pkl", ".pdf"}:

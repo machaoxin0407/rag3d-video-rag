@@ -1,0 +1,13 @@
+record_id,license_evidence_present,creator_present,commercial_use_allowed,modification_allowed,share_alike_required,privacy_review_required,scope_review_required,first_review_decision,second_reviewer,second_review_date,final_decision,attribution_text
+espresso-001,yes,yes,yes,yes,yes,no,no,provisional_accept,A+B+C,2026-07-17,accept,"Espresso video by Rosatrieu; CC BY-SA 3.0; source: Wikimedia Commons"
+espresso-002,yes,yes,yes,yes,no,no,no,provisional_accept,A+B+C,2026-07-17,accept,"Nespresso machine by Kjetil Ree; CC0 1.0; source: Wikimedia Commons"
+espresso-003,yes,yes,yes,yes,no,no,yes,scope_review,A+B+C,2026-07-17,accept,"Moccamaster coffee maker by Sounds of Changes; CC BY 3.0; source: Wikimedia Commons"
+pressure-001,yes,yes,yes,yes,yes,no,yes,scope_review,A+B+C,2026-07-17,accept,"Panela de pressão by Mateus S. Figueiredo; CC BY-SA 3.0; source: Wikimedia Commons"
+washing-001,yes,yes,yes,yes,yes,yes,yes,scope_review,A+B+C,2026-07-17,accept,"Video of Laundry machines by Joanna Poe; CC BY-SA 2.0; source: Wikimedia Commons"
+washing-002,yes,yes,yes,yes,yes,yes,yes,scope_review,A+B+C,2026-07-17,accept,"The washing machine that is being operated by Fitrah 9131; CC BY-SA 3.0; source: Wikimedia Commons"
+washing-003,yes,yes,yes,yes,yes,no,no,provisional_accept,A+B+C,2026-07-17,accept,"Washing machine 120fps by Golha; CC BY-SA 4.0; source: Wikimedia Commons"
+vacuum-001,yes,yes,yes,yes,yes,yes,no,hold_privacy,A+B+C,2026-07-17,accept,"Industrial vacuum cleaner in operation by JJMr19; CC BY-SA 4.0; source: Wikimedia Commons"
+vacuum-002,yes,yes,yes,yes,no,yes,no,provisional_accept,A+B+C,2026-07-17,accept,"Vacuum Cleaner by Sounds of Changes; CC BY 3.0; source: Wikimedia Commons"
+printer-001,yes,yes,yes,yes,yes,no,no,provisional_accept,A+B+C,2026-07-17,accept,"Printer.ogv by Matrobriva; CC BY-SA 3.0; source: Wikimedia Commons"
+camera-001,yes,yes,yes,yes,no,yes,yes,scope_review,A+B+C,2026-07-17,accept,"CCD - The heart of a digital camera by Bill Hammack; CC BY 3.0; source: Wikimedia Commons"
+drill-001,yes,yes,yes,yes,no,no,yes,reject_scope,A+B+C,2026-07-17,reject_scope,"Drilling a gear wheel on a turning machine by Musicaloris; CC0 1.0; source: Wikimedia Commons"

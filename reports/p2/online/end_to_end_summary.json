@@ -1,0 +1,35 @@
+{
+  "experiment_id": "ANS-20260729-001",
+  "created_at": "2026-07-29T08:53:19.296689+00:00",
+  "queries": 100,
+  "judge": {
+    "model": "qwen3.7-plus",
+    "prompt_version": "p2-answer-judge-v1"
+  },
+  "metrics": {
+    "answer_nonempty": 1.0,
+    "all_media_valid": 1.0,
+    "video_intervals_valid": 1.0,
+    "video_citations_resolve": 1.0,
+    "judge_correctness": 0.596,
+    "judge_evidence_support": 0.5025,
+    "judge_video_support": 0.505,
+    "judge_non_hallucination": 0.659,
+    "judge_safety_handling": 0.907,
+    "judge_no_answer_handling": 0.665
+  },
+  "human_review_queue": 71,
+  "latency_seconds": {
+    "p50": 7.557457,
+    "p95": 36.623527,
+    "p99": 38.611969
+  },
+  "shards": [
+    "reports/p2/online_shard_0",
+    "reports/p2/online_shard_25",
+    "reports/p2/online_shard_50",
+    "reports/p2/online_shard_75"
+  ],
+  "merge_validation": "100 unique query IDs; no duplicates",
+  "limitations": "AI judge scores are provisional. One human must review the generated failure/high-risk queue before paper claims are finalized."
+}

@@ -1,0 +1,371 @@
+﻿query_id,product_class,query_type,split,mode,top1_iou,r1_iou_0.3,temporal_ap_0.3,r1_iou_0.5,temporal_ap_0.5,r1_iou_0.7,temporal_ap_0.7
+VQ-001,Air Fryer,operation,development,bm25,0.996960,1,0.337179,1,0.365278,1,0.398485
+VQ-002,Air Fryer,operation,development,bm25,1.000000,1,0.307407,1,0.345833,1,0.395238
+VQ-003,Air Fryer,operation,development,bm25,0.000000,0,0.152778,0,0.152778,0,0.152778
+VQ-004,Air Fryer,state,development,bm25,0.000000,0,0.009259,0,0.009259,0,0.009259
+VQ-005,Air Fryer,state,development,bm25,1.000000,1,0.090909,1,0.105263,1,0.111111
+VQ-006,Air Fryer,state,development,bm25,0.987691,1,0.107143,1,0.116883,1,0.116883
+VQ-007,Air Fryer,component,development,bm25,1.000000,1,0.299786,1,0.258681,1,0.269928
+VQ-008,Air Fryer,component,development,bm25,0.000000,0,0.020513,0,0.020513,0,0.009091
+VQ-009,Air Fryer,component,development,bm25,1.000000,1,0.243860,1,0.257407,1,0.257407
+VQ-010,Air Fryer,maintenance,development,bm25,1.000000,1,0.390714,1,0.337302,1,0.337302
+VQ-011,Air Fryer,maintenance,source_disjoint_test,bm25,0.000000,0,0.101852,0,0.114583,0,0.087302
+VQ-012,Air Fryer,maintenance,source_disjoint_test,bm25,0.000000,0,0.092172,0,0.100551,0,0.100551
+VQ-013,Air Fryer,troubleshooting,source_disjoint_test,bm25,0.000000,0,0.083333,0,0.083333,0,0.083333
+VQ-014,Air Fryer,troubleshooting,source_disjoint_test,bm25,0.000000,0,0.000000,0,,0,
+VQ-016,Air Fryer,safety,source_disjoint_test,bm25,0.990777,1,0.295455,1,0.295455,1,0.337662
+VQ-018,Espresso Machine,operation,development,bm25,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-019,Espresso Machine,operation,development,bm25,1.000000,1,0.729524,1,0.729524,1,0.729524
+VQ-020,Espresso Machine,operation,development,bm25,0.995370,1,0.750000,1,0.750000,1,0.750000
+VQ-021,Espresso Machine,state,development,bm25,0.996791,1,0.437500,1,0.437500,1,0.437500
+VQ-022,Espresso Machine,state,development,bm25,0.599606,1,0.347350,1,0.347350,0,0.158996
+VQ-023,Espresso Machine,state,development,bm25,0.000000,0,0.130952,0,0.130952,0,0.130952
+VQ-024,Espresso Machine,component,development,bm25,0.808427,1,0.454666,1,0.454666,1,0.410328
+VQ-026,Espresso Machine,component,development,bm25,1.000000,1,0.638889,1,0.709877,1,0.709877
+VQ-027,Espresso Machine,maintenance,development,bm25,0.000000,0,0.277778,0,0.277778,0,0.277778
+VQ-029,Espresso Machine,maintenance,source_disjoint_test,bm25,0.000000,0,0.090909,0,0.090909,0,
+VQ-030,Espresso Machine,troubleshooting,source_disjoint_test,bm25,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-035,Pressure Cooker,operation,development,bm25,0.990228,1,0.194773,1,0.176789,1,0.173967
+VQ-036,Pressure Cooker,operation,development,bm25,0.422676,1,0.361111,0,0.166667,0,0.222222
+VQ-037,Pressure Cooker,operation,development,bm25,1.000000,1,0.363636,1,0.400000,1,0.444444
+VQ-038,Pressure Cooker,state,development,bm25,0.000000,0,0.042857,0,0.042857,0,0.050000
+VQ-039,Pressure Cooker,state,development,bm25,1.000000,1,0.380952,1,0.380952,1,0.380952
+VQ-040,Pressure Cooker,state,development,bm25,0.000000,0,0.016667,0,0.022222,0,0.022222
+VQ-041,Pressure Cooker,component,development,bm25,0.000000,0,0.000000,0,0.000000,0,
+VQ-042,Pressure Cooker,component,development,bm25,0.000000,0,0.047619,0,0.047619,0,0.047619
+VQ-043,Pressure Cooker,component,development,bm25,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-044,Pressure Cooker,maintenance,development,bm25,0.000000,0,0.166667,0,0.166667,0,0.166667
+VQ-046,Pressure Cooker,maintenance,source_disjoint_test,bm25,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-047,Pressure Cooker,troubleshooting,source_disjoint_test,bm25,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-049,Pressure Cooker,troubleshooting,source_disjoint_test,bm25,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-050,Pressure Cooker,safety,source_disjoint_test,bm25,0.000000,0,0.071429,0,0.071429,0,0.071429
+VQ-052,Printer,operation,development,bm25,0.000000,0,0.250000,0,,0,
+VQ-053,Printer,operation,development,bm25,0.000000,0,0.583333,0,0.583333,0,0.583333
+VQ-054,Printer,operation,development,bm25,0.979228,1,1.000000,1,1.000000,1,1.000000
+VQ-055,Printer,state,development,bm25,0.000000,0,0.200000,0,0.200000,0,0.200000
+VQ-056,Printer,state,development,bm25,0.000000,0,0.468254,0,0.468254,0,0.321429
+VQ-057,Printer,state,development,bm25,0.000000,0,0.250000,0,0.250000,0,0.250000
+VQ-058,Printer,component,development,bm25,0.000000,0,0.450000,0,,0,
+VQ-059,Printer,component,development,bm25,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-061,Printer,maintenance,development,bm25,0.000000,0,0.166667,0,0.166667,0,0.166667
+VQ-063,Printer,maintenance,source_disjoint_test,bm25,0.000000,0,0.291667,0,0.291667,0,0.291667
+VQ-065,Printer,troubleshooting,source_disjoint_test,bm25,0.000000,0,0.071429,0,0.071429,0,0.071429
+VQ-066,Printer,troubleshooting,source_disjoint_test,bm25,1.000000,1,0.833333,1,0.833333,1,0.833333
+VQ-067,Printer,safety,source_disjoint_test,bm25,0.000000,0,0.058824,0,0.058824,0,0.058824
+VQ-068,Printer,safety,source_disjoint_test,bm25,0.000000,0,,0,,0,
+VQ-070,Vacuum,operation,development,bm25,1.000000,1,0.451852,1,0.451852,1,0.555556
+VQ-072,Vacuum,state,development,bm25,0.000000,0,0.127841,0,0.170455,0,0.170455
+VQ-073,Vacuum,state,development,bm25,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-074,Vacuum,state,development,bm25,0.000000,0,0.138095,0,0.066667,0,0.066667
+VQ-075,Vacuum,component,development,bm25,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-078,Vacuum,maintenance,development,bm25,0.000000,0,0.500000,0,0.500000,0,
+VQ-083,Vacuum,safety,source_disjoint_test,bm25,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-086,Washing Machine,operation,development,bm25,0.400657,1,0.750000,0,0.166667,0,0.166667
+VQ-087,Washing Machine,operation,development,bm25,1.000000,1,0.435294,1,0.435294,1,0.435294
+VQ-088,Washing Machine,state,development,bm25,0.000000,0,0.168670,0,0.168670,0,0.143875
+VQ-090,Washing Machine,state,development,bm25,0.000000,0,,0,,0,
+VQ-091,Washing Machine,component,development,bm25,0.996638,1,0.750000,1,1.000000,1,1.000000
+VQ-092,Washing Machine,component,development,bm25,0.191516,0,0.500000,0,0.500000,0,0.500000
+VQ-093,Washing Machine,component,development,bm25,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-094,Washing Machine,maintenance,development,bm25,0.996425,1,1.000000,1,1.000000,1,1.000000
+VQ-095,Washing Machine,maintenance,source_disjoint_test,bm25,0.000000,0,,0,,0,
+VQ-096,Washing Machine,maintenance,source_disjoint_test,bm25,0.000000,0,0.361111,0,0.361111,0,0.361111
+VQ-097,Washing Machine,troubleshooting,source_disjoint_test,bm25,1.000000,1,0.500000,1,0.500000,1,0.500000
+VQ-098,Washing Machine,troubleshooting,source_disjoint_test,bm25,0.600288,1,1.000000,1,1.000000,0,
+VQ-099,Washing Machine,safety,source_disjoint_test,bm25,0.000000,0,0.142857,0,0.142857,0,0.142857
+VQ-001,Air Fryer,operation,development,dense,1.000000,1,0.684615,1,0.548512,1,0.598377
+VQ-002,Air Fryer,operation,development,dense,1.000000,1,0.433221,1,0.487374,1,0.492063
+VQ-003,Air Fryer,operation,development,dense,0.000000,0,0.177350,0,0.177350,0,0.177350
+VQ-004,Air Fryer,state,development,dense,1.000000,1,0.420370,1,0.420370,1,0.420370
+VQ-005,Air Fryer,state,development,dense,1.000000,1,0.281313,1,0.296491,1,0.312963
+VQ-006,Air Fryer,state,development,dense,1.000000,1,0.638095,1,0.595455,1,0.595455
+VQ-007,Air Fryer,component,development,dense,0.000000,0,0.321165,0,0.305795,0,0.261284
+VQ-008,Air Fryer,component,development,dense,0.000000,0,0.320238,0,0.320238,0,0.280375
+VQ-009,Air Fryer,component,development,dense,0.989000,1,0.254386,1,0.268519,1,0.268519
+VQ-010,Air Fryer,maintenance,development,dense,1.000000,1,0.537879,1,0.494949,1,0.494949
+VQ-011,Air Fryer,maintenance,source_disjoint_test,dense,1.000000,1,0.638889,1,0.521875,1,0.596429
+VQ-012,Air Fryer,maintenance,source_disjoint_test,dense,0.990000,1,0.500000,1,0.398485,1,0.398485
+VQ-013,Air Fryer,troubleshooting,source_disjoint_test,dense,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-014,Air Fryer,troubleshooting,source_disjoint_test,dense,0.000000,0,0.090909,0,,0,
+VQ-016,Air Fryer,safety,source_disjoint_test,dense,0.990777,1,0.293750,1,0.293750,1,0.241071
+VQ-018,Espresso Machine,operation,development,dense,0.000000,0,0.200000,0,0.200000,0,0.200000
+VQ-019,Espresso Machine,operation,development,dense,0.989881,1,0.926667,1,0.926667,1,0.926667
+VQ-020,Espresso Machine,operation,development,dense,0.995370,1,0.500000,1,0.500000,1,0.500000
+VQ-021,Espresso Machine,state,development,dense,0.000000,0,0.117330,0,0.117330,0,0.117330
+VQ-022,Espresso Machine,state,development,dense,0.580511,1,0.655464,1,0.655464,0,0.415873
+VQ-023,Espresso Machine,state,development,dense,0.000000,0,0.271368,0,0.271368,0,0.271368
+VQ-024,Espresso Machine,component,development,dense,1.000000,1,0.494470,1,0.494470,1,0.549411
+VQ-026,Espresso Machine,component,development,dense,1.000000,1,0.736219,1,0.721501,1,0.721501
+VQ-027,Espresso Machine,maintenance,development,dense,0.000000,0,0.291667,0,0.291667,0,0.291667
+VQ-029,Espresso Machine,maintenance,source_disjoint_test,dense,0.000000,0,0.500000,0,0.500000,0,
+VQ-030,Espresso Machine,troubleshooting,source_disjoint_test,dense,0.795625,1,1.000000,1,1.000000,1,1.000000
+VQ-035,Pressure Cooker,operation,development,dense,0.603205,1,0.371682,1,0.337793,0,0.167647
+VQ-036,Pressure Cooker,operation,development,dense,0.000000,0,0.404329,0,0.189610,0,0.127273
+VQ-037,Pressure Cooker,operation,development,dense,0.804350,1,0.495238,1,0.544762,1,0.605291
+VQ-038,Pressure Cooker,state,development,dense,0.594328,1,0.489796,1,0.489796,0,0.290179
+VQ-039,Pressure Cooker,state,development,dense,0.000000,0,0.166667,0,0.166667,0,0.166667
+VQ-040,Pressure Cooker,state,development,dense,0.000000,0,0.145089,0,0.130952,0,0.130952
+VQ-041,Pressure Cooker,component,development,dense,0.000000,0,0.500000,0,0.500000,0,
+VQ-042,Pressure Cooker,component,development,dense,0.000000,0,0.277778,0,0.277778,0,0.277778
+VQ-043,Pressure Cooker,component,development,dense,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-044,Pressure Cooker,maintenance,development,dense,0.000000,0,0.250000,0,0.250000,0,0.250000
+VQ-046,Pressure Cooker,maintenance,source_disjoint_test,dense,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-047,Pressure Cooker,troubleshooting,source_disjoint_test,dense,0.998909,1,1.000000,1,1.000000,1,1.000000
+VQ-049,Pressure Cooker,troubleshooting,source_disjoint_test,dense,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-050,Pressure Cooker,safety,source_disjoint_test,dense,0.000000,0,0.050000,0,0.050000,0,0.050000
+VQ-052,Printer,operation,development,dense,0.000000,0,0.111111,0,,0,
+VQ-053,Printer,operation,development,dense,0.800661,1,0.500000,1,0.500000,1,0.500000
+VQ-054,Printer,operation,development,dense,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-055,Printer,state,development,dense,0.000000,0,0.250000,0,0.250000,0,0.250000
+VQ-056,Printer,state,development,dense,0.000000,0,0.431694,0,0.431694,0,0.381526
+VQ-057,Printer,state,development,dense,0.000000,0,0.392857,0,0.392857,0,0.392857
+VQ-058,Printer,component,development,dense,0.000000,0,0.333333,0,,0,
+VQ-059,Printer,component,development,dense,0.000000,0,0.250000,0,0.250000,0,0.250000
+VQ-061,Printer,maintenance,development,dense,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-063,Printer,maintenance,source_disjoint_test,dense,0.000000,0,0.196429,0,0.196429,0,0.196429
+VQ-065,Printer,troubleshooting,source_disjoint_test,dense,0.000000,0,0.125000,0,0.125000,0,0.125000
+VQ-066,Printer,troubleshooting,source_disjoint_test,dense,0.000000,0,0.083333,0,0.083333,0,0.083333
+VQ-067,Printer,safety,source_disjoint_test,dense,0.200000,0,0.142857,0,0.142857,0,0.142857
+VQ-068,Printer,safety,source_disjoint_test,dense,0.200000,0,,0,,0,
+VQ-070,Vacuum,operation,development,dense,0.982318,1,0.687831,1,0.687831,1,0.777778
+VQ-072,Vacuum,state,development,dense,1.000000,1,0.504121,1,0.583333,1,0.583333
+VQ-073,Vacuum,state,development,dense,0.990909,1,0.407407,1,0.500000,1,0.500000
+VQ-074,Vacuum,state,development,dense,0.000000,0,0.035714,0,0.000000,0,0.000000
+VQ-075,Vacuum,component,development,dense,0.000000,0,0.250000,0,0.250000,0,0.250000
+VQ-078,Vacuum,maintenance,development,dense,0.000000,0,0.200000,0,0.200000,0,
+VQ-083,Vacuum,safety,source_disjoint_test,dense,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-086,Washing Machine,operation,development,dense,0.996638,1,0.854167,1,0.666667,1,0.666667
+VQ-087,Washing Machine,operation,development,dense,0.970149,1,0.520000,1,0.520000,1,0.520000
+VQ-088,Washing Machine,state,development,dense,0.000000,0,0.420833,0,0.420833,0,0.279167
+VQ-090,Washing Machine,state,development,dense,0.000000,0,,0,,0,
+VQ-091,Washing Machine,component,development,dense,0.996638,1,0.750000,1,1.000000,1,1.000000
+VQ-092,Washing Machine,component,development,dense,0.191516,0,0.500000,0,0.500000,0,0.500000
+VQ-093,Washing Machine,component,development,dense,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-094,Washing Machine,maintenance,development,dense,0.996425,1,1.000000,1,1.000000,1,1.000000
+VQ-095,Washing Machine,maintenance,source_disjoint_test,dense,0.000000,0,,0,,0,
+VQ-096,Washing Machine,maintenance,source_disjoint_test,dense,1.000000,1,0.590909,1,0.590909,1,0.590909
+VQ-097,Washing Machine,troubleshooting,source_disjoint_test,dense,0.191516,0,0.250000,0,0.250000,0,0.250000
+VQ-098,Washing Machine,troubleshooting,source_disjoint_test,dense,0.600288,1,1.000000,1,1.000000,0,
+VQ-099,Washing Machine,safety,source_disjoint_test,dense,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-001,Air Fryer,operation,development,visual,0.980799,1,0.418182,1,0.354482,1,0.306474
+VQ-002,Air Fryer,operation,development,visual,0.000000,0,0.363075,0,0.263415,0,0.218615
+VQ-003,Air Fryer,operation,development,visual,0.000000,0,0.159921,0,0.159921,0,0.159921
+VQ-004,Air Fryer,state,development,visual,0.000000,0,0.137745,0,0.137745,0,0.137745
+VQ-005,Air Fryer,state,development,visual,0.393391,1,0.341128,0,0.178506,0,0.149136
+VQ-006,Air Fryer,state,development,visual,0.000000,0,0.111928,0,0.040998,0,0.040998
+VQ-007,Air Fryer,component,development,visual,0.000000,0,0.187342,0,0.161351,0,0.168366
+VQ-008,Air Fryer,component,development,visual,0.980799,1,0.615385,1,0.615385,1,0.612013
+VQ-009,Air Fryer,component,development,visual,1.000000,1,0.279079,1,0.236649,1,0.236649
+VQ-010,Air Fryer,maintenance,development,visual,1.000000,1,0.241667,1,0.268519,1,0.268519
+VQ-011,Air Fryer,maintenance,source_disjoint_test,visual,1.000000,1,0.481481,1,0.500000,1,0.571429
+VQ-012,Air Fryer,maintenance,source_disjoint_test,visual,1.000000,1,0.280303,1,0.305785,1,0.305785
+VQ-013,Air Fryer,troubleshooting,source_disjoint_test,visual,0.000000,0,0.022222,0,0.022222,0,0.022222
+VQ-014,Air Fryer,troubleshooting,source_disjoint_test,visual,0.405588,1,1.000000,0,,0,
+VQ-016,Air Fryer,safety,source_disjoint_test,visual,0.000000,0,0.020833,0,0.020833,0,0.023810
+VQ-018,Espresso Machine,operation,development,visual,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-019,Espresso Machine,operation,development,visual,1.000000,1,0.844444,1,0.844444,1,0.844444
+VQ-020,Espresso Machine,operation,development,visual,0.000000,0,0.366667,0,0.366667,0,0.366667
+VQ-021,Espresso Machine,state,development,visual,0.000000,0,0.061189,0,0.061189,0,0.061189
+VQ-022,Espresso Machine,state,development,visual,0.599606,1,0.805260,1,0.805260,0,0.648115
+VQ-023,Espresso Machine,state,development,visual,1.000000,1,0.611111,1,0.611111,1,0.611111
+VQ-024,Espresso Machine,component,development,visual,1.000000,1,0.675000,1,0.675000,1,0.750000
+VQ-026,Espresso Machine,component,development,visual,0.795625,1,0.616429,1,0.684921,1,0.684921
+VQ-027,Espresso Machine,maintenance,development,visual,0.795625,1,1.000000,1,1.000000,1,1.000000
+VQ-029,Espresso Machine,maintenance,source_disjoint_test,visual,0.000000,0,0.500000,0,0.500000,0,
+VQ-030,Espresso Machine,troubleshooting,source_disjoint_test,visual,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-035,Pressure Cooker,operation,development,visual,0.990228,1,0.400624,1,0.397253,1,0.469481
+VQ-036,Pressure Cooker,operation,development,visual,0.000000,0,0.237037,0,0.291667,0,0.333333
+VQ-037,Pressure Cooker,operation,development,visual,0.804350,1,0.854545,1,0.890000,1,0.852778
+VQ-038,Pressure Cooker,state,development,visual,0.599254,1,0.405442,1,0.405442,0,0.290476
+VQ-039,Pressure Cooker,state,development,visual,1.000000,1,0.625000,1,0.625000,1,0.625000
+VQ-040,Pressure Cooker,state,development,visual,0.000000,0,0.025000,0,0.033333,0,0.033333
+VQ-041,Pressure Cooker,component,development,visual,0.000000,0,0.000000,0,0.000000,0,
+VQ-042,Pressure Cooker,component,development,visual,0.000000,0,0.037037,0,0.037037,0,0.037037
+VQ-043,Pressure Cooker,component,development,visual,0.000000,0,0.250000,0,0.250000,0,0.250000
+VQ-044,Pressure Cooker,maintenance,development,visual,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-046,Pressure Cooker,maintenance,source_disjoint_test,visual,0.990228,1,1.000000,1,1.000000,1,1.000000
+VQ-047,Pressure Cooker,troubleshooting,source_disjoint_test,visual,0.999498,1,0.428571,1,0.428571,1,0.428571
+VQ-049,Pressure Cooker,troubleshooting,source_disjoint_test,visual,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-050,Pressure Cooker,safety,source_disjoint_test,visual,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-052,Printer,operation,development,visual,0.399678,1,1.000000,0,,0,
+VQ-053,Printer,operation,development,visual,0.800661,1,1.000000,1,1.000000,1,1.000000
+VQ-054,Printer,operation,development,visual,1.000000,1,0.666667,1,0.666667,1,0.666667
+VQ-055,Printer,state,development,visual,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-056,Printer,state,development,visual,1.000000,1,0.685745,1,0.685745,1,0.616061
+VQ-057,Printer,state,development,visual,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-058,Printer,component,development,visual,0.000000,0,0.071429,0,,0,
+VQ-059,Printer,component,development,visual,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-061,Printer,maintenance,development,visual,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-063,Printer,maintenance,source_disjoint_test,visual,0.000000,0,0.291667,0,0.291667,0,0.291667
+VQ-065,Printer,troubleshooting,source_disjoint_test,visual,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-066,Printer,troubleshooting,source_disjoint_test,visual,0.800661,1,0.700000,1,0.700000,1,0.700000
+VQ-067,Printer,safety,source_disjoint_test,visual,0.000000,0,0.100000,0,0.100000,0,0.100000
+VQ-068,Printer,safety,source_disjoint_test,visual,0.000000,0,,0,,0,
+VQ-070,Vacuum,operation,development,visual,1.000000,1,0.477273,1,0.477273,1,0.666667
+VQ-072,Vacuum,state,development,visual,0.000000,0,0.187500,0,0.166667,0,0.166667
+VQ-073,Vacuum,state,development,visual,0.990909,1,0.833333,1,1.000000,1,1.000000
+VQ-074,Vacuum,state,development,visual,0.981132,1,0.500000,1,1.000000,1,1.000000
+VQ-075,Vacuum,component,development,visual,0.000000,0,0.100000,0,0.100000,0,0.100000
+VQ-078,Vacuum,maintenance,development,visual,0.000000,0,0.071429,0,0.071429,0,
+VQ-083,Vacuum,safety,source_disjoint_test,visual,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-086,Washing Machine,operation,development,visual,0.996638,1,0.875000,1,0.625000,1,0.625000
+VQ-087,Washing Machine,operation,development,visual,0.000000,0,0.233333,0,0.233333,0,0.233333
+VQ-088,Washing Machine,state,development,visual,0.000000,0,0.234722,0,0.234722,0,0.207407
+VQ-090,Washing Machine,state,development,visual,0.000000,0,,0,,0,
+VQ-091,Washing Machine,component,development,visual,0.996638,1,1.000000,1,1.000000,1,1.000000
+VQ-092,Washing Machine,component,development,visual,0.996425,1,1.000000,1,1.000000,1,1.000000
+VQ-093,Washing Machine,component,development,visual,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-094,Washing Machine,maintenance,development,visual,0.996425,1,1.000000,1,1.000000,1,1.000000
+VQ-095,Washing Machine,maintenance,source_disjoint_test,visual,0.000000,0,,0,,0,
+VQ-096,Washing Machine,maintenance,source_disjoint_test,visual,1.000000,1,0.583333,1,0.583333,1,0.583333
+VQ-097,Washing Machine,troubleshooting,source_disjoint_test,visual,0.996425,1,0.500000,1,0.500000,1,0.500000
+VQ-098,Washing Machine,troubleshooting,source_disjoint_test,visual,0.000000,0,0.333333,0,0.333333,0,
+VQ-099,Washing Machine,safety,source_disjoint_test,visual,0.000000,0,0.166667,0,0.166667,0,0.166667
+VQ-001,Air Fryer,operation,development,hybrid,0.996960,1,0.629021,1,0.608586,1,0.663912
+VQ-002,Air Fryer,operation,development,hybrid,1.000000,1,0.547619,1,0.616071,1,0.642857
+VQ-003,Air Fryer,operation,development,hybrid,1.000000,1,0.505952,1,0.505952,1,0.505952
+VQ-004,Air Fryer,state,development,hybrid,0.000000,0,0.071970,0,0.071970,0,0.071970
+VQ-005,Air Fryer,state,development,hybrid,1.000000,1,0.189078,1,0.194591,1,0.205401
+VQ-006,Air Fryer,state,development,hybrid,1.000000,1,0.599678,1,0.570813,1,0.570813
+VQ-007,Air Fryer,component,development,hybrid,0.997807,1,0.406827,1,0.405387,1,0.345796
+VQ-008,Air Fryer,component,development,hybrid,0.000000,0,0.202486,0,0.202486,0,0.149725
+VQ-009,Air Fryer,component,development,hybrid,1.000000,1,0.315789,1,0.333333,1,0.333333
+VQ-010,Air Fryer,maintenance,development,hybrid,1.000000,1,0.538095,1,0.458554,1,0.458554
+VQ-011,Air Fryer,maintenance,source_disjoint_test,hybrid,0.997184,1,0.333333,1,0.312500,1,0.190476
+VQ-012,Air Fryer,maintenance,source_disjoint_test,hybrid,0.989793,1,0.208333,1,0.227273,1,0.227273
+VQ-013,Air Fryer,troubleshooting,source_disjoint_test,hybrid,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-014,Air Fryer,troubleshooting,source_disjoint_test,hybrid,0.000000,0,0.058824,0,,0,
+VQ-016,Air Fryer,safety,source_disjoint_test,hybrid,0.990777,1,0.281548,1,0.281548,1,0.321769
+VQ-018,Espresso Machine,operation,development,hybrid,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-019,Espresso Machine,operation,development,hybrid,0.989881,1,0.810000,1,0.810000,1,0.810000
+VQ-020,Espresso Machine,operation,development,hybrid,0.995370,1,0.833333,1,0.833333,1,0.833333
+VQ-021,Espresso Machine,state,development,hybrid,0.000000,0,0.433333,0,0.433333,0,0.433333
+VQ-022,Espresso Machine,state,development,hybrid,0.580511,1,0.529720,1,0.529720,0,0.285985
+VQ-023,Espresso Machine,state,development,hybrid,0.000000,0,0.240741,0,0.240741,0,0.240741
+VQ-024,Espresso Machine,component,development,hybrid,0.808427,1,0.585275,1,0.585275,1,0.650305
+VQ-026,Espresso Machine,component,development,hybrid,1.000000,1,0.754167,1,0.731481,1,0.731481
+VQ-027,Espresso Machine,maintenance,development,hybrid,0.000000,0,0.450000,0,0.450000,0,0.450000
+VQ-029,Espresso Machine,maintenance,source_disjoint_test,hybrid,0.000000,0,0.200000,0,0.200000,0,
+VQ-030,Espresso Machine,troubleshooting,source_disjoint_test,hybrid,0.795625,1,1.000000,1,1.000000,1,1.000000
+VQ-035,Pressure Cooker,operation,development,hybrid,0.990228,1,0.584091,1,0.561772,1,0.557163
+VQ-036,Pressure Cooker,operation,development,hybrid,0.000000,0,0.389683,0,0.332143,0,0.300000
+VQ-037,Pressure Cooker,operation,development,hybrid,0.804350,1,0.568182,1,0.625000,1,0.694444
+VQ-038,Pressure Cooker,state,development,hybrid,0.000000,0,0.314626,0,0.314626,0,0.250000
+VQ-039,Pressure Cooker,state,development,hybrid,0.000000,0,0.201754,0,0.201754,0,0.201754
+VQ-040,Pressure Cooker,state,development,hybrid,0.000000,0,0.211932,0,0.156439,0,0.156439
+VQ-041,Pressure Cooker,component,development,hybrid,0.000000,0,0.000000,0,0.000000,0,
+VQ-042,Pressure Cooker,component,development,hybrid,0.000000,0,0.388889,0,0.388889,0,0.388889
+VQ-043,Pressure Cooker,component,development,hybrid,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-044,Pressure Cooker,maintenance,development,hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-046,Pressure Cooker,maintenance,source_disjoint_test,hybrid,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-047,Pressure Cooker,troubleshooting,source_disjoint_test,hybrid,0.000000,0,0.041667,0,0.041667,0,0.041667
+VQ-049,Pressure Cooker,troubleshooting,source_disjoint_test,hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-050,Pressure Cooker,safety,source_disjoint_test,hybrid,0.000000,0,0.058824,0,0.058824,0,0.058824
+VQ-052,Printer,operation,development,hybrid,0.000000,0,0.200000,0,,0,
+VQ-053,Printer,operation,development,hybrid,0.800661,1,0.700000,1,0.700000,1,0.700000
+VQ-054,Printer,operation,development,hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-055,Printer,state,development,hybrid,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-056,Printer,state,development,hybrid,0.599946,1,0.711395,1,0.711395,0,0.387698
+VQ-057,Printer,state,development,hybrid,0.790788,1,0.642857,1,0.642857,1,0.642857
+VQ-058,Printer,component,development,hybrid,0.000000,0,0.416667,0,,0,
+VQ-059,Printer,component,development,hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-061,Printer,maintenance,development,hybrid,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-063,Printer,maintenance,source_disjoint_test,hybrid,1.000000,1,0.416667,1,0.416667,1,0.416667
+VQ-065,Printer,troubleshooting,source_disjoint_test,hybrid,0.000000,0,0.125000,0,0.125000,0,0.125000
+VQ-066,Printer,troubleshooting,source_disjoint_test,hybrid,0.000000,0,0.166667,0,0.166667,0,0.166667
+VQ-067,Printer,safety,source_disjoint_test,hybrid,0.000000,0,0.100000,0,0.100000,0,0.100000
+VQ-068,Printer,safety,source_disjoint_test,hybrid,0.200000,0,,0,,0,
+VQ-070,Vacuum,operation,development,hybrid,1.000000,1,0.833333,1,0.833333,1,0.805556
+VQ-072,Vacuum,state,development,hybrid,1.000000,1,0.456944,1,0.500000,1,0.500000
+VQ-073,Vacuum,state,development,hybrid,0.990909,1,0.400000,1,0.500000,1,0.500000
+VQ-074,Vacuum,state,development,hybrid,0.000000,0,0.050000,0,0.000000,0,0.000000
+VQ-075,Vacuum,component,development,hybrid,0.995370,1,1.000000,1,1.000000,1,1.000000
+VQ-078,Vacuum,maintenance,development,hybrid,0.000000,0,0.500000,0,0.500000,0,
+VQ-083,Vacuum,safety,source_disjoint_test,hybrid,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-086,Washing Machine,operation,development,hybrid,0.996638,1,0.821429,1,0.571429,1,0.571429
+VQ-087,Washing Machine,operation,development,hybrid,0.882353,1,0.450000,1,0.450000,1,0.450000
+VQ-088,Washing Machine,state,development,hybrid,0.000000,0,0.315476,0,0.315476,0,0.241071
+VQ-090,Washing Machine,state,development,hybrid,0.000000,0,,0,,0,
+VQ-091,Washing Machine,component,development,hybrid,0.996638,1,0.750000,1,1.000000,1,1.000000
+VQ-092,Washing Machine,component,development,hybrid,0.191516,0,0.500000,0,0.500000,0,0.500000
+VQ-093,Washing Machine,component,development,hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-094,Washing Machine,maintenance,development,hybrid,0.996425,1,1.000000,1,1.000000,1,1.000000
+VQ-095,Washing Machine,maintenance,source_disjoint_test,hybrid,0.000000,0,,0,,0,
+VQ-096,Washing Machine,maintenance,source_disjoint_test,hybrid,1.000000,1,0.642857,1,0.642857,1,0.642857
+VQ-097,Washing Machine,troubleshooting,source_disjoint_test,hybrid,0.191516,0,0.250000,0,0.250000,0,0.250000
+VQ-098,Washing Machine,troubleshooting,source_disjoint_test,hybrid,0.600288,1,1.000000,1,1.000000,0,
+VQ-099,Washing Machine,safety,source_disjoint_test,hybrid,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-001,Air Fryer,operation,development,tri_hybrid,1.000000,1,0.584790,1,0.553030,1,0.603306
+VQ-002,Air Fryer,operation,development,tri_hybrid,0.801998,1,0.452517,1,0.451389,1,0.456349
+VQ-003,Air Fryer,operation,development,tri_hybrid,0.987467,1,0.642857,1,0.642857,1,0.642857
+VQ-004,Air Fryer,state,development,tri_hybrid,0.000000,0,0.166040,0,0.166040,0,0.166040
+VQ-005,Air Fryer,state,development,tri_hybrid,1.000000,1,0.270525,1,0.276517,1,0.291879
+VQ-006,Air Fryer,state,development,tri_hybrid,0.000000,0,0.430784,0,0.332290,0,0.332290
+VQ-007,Air Fryer,component,development,tri_hybrid,0.985000,1,0.491913,1,0.407296,1,0.322245
+VQ-008,Air Fryer,component,development,tri_hybrid,0.611765,1,0.408700,1,0.408700,0,0.191378
+VQ-009,Air Fryer,component,development,tri_hybrid,0.797000,1,0.377352,1,0.368687,1,0.368687
+VQ-010,Air Fryer,maintenance,development,tri_hybrid,1.000000,1,0.658333,1,0.611111,1,0.611111
+VQ-011,Air Fryer,maintenance,source_disjoint_test,tri_hybrid,0.997184,1,0.345960,1,0.343750,1,0.392857
+VQ-012,Air Fryer,maintenance,source_disjoint_test,tri_hybrid,1.000000,1,0.250000,1,0.272727,1,0.272727
+VQ-013,Air Fryer,troubleshooting,source_disjoint_test,tri_hybrid,0.000000,0,0.097222,0,0.097222,0,0.097222
+VQ-014,Air Fryer,troubleshooting,source_disjoint_test,tri_hybrid,0.000000,0,0.500000,0,,0,
+VQ-016,Air Fryer,safety,source_disjoint_test,tri_hybrid,0.990777,1,0.431818,1,0.431818,1,0.493506
+VQ-018,Espresso Machine,operation,development,tri_hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-019,Espresso Machine,operation,development,tri_hybrid,0.989881,1,0.926667,1,0.926667,1,0.926667
+VQ-020,Espresso Machine,operation,development,tri_hybrid,0.995370,1,1.000000,1,1.000000,1,1.000000
+VQ-021,Espresso Machine,state,development,tri_hybrid,0.000000,0,0.350694,0,0.350694,0,0.350694
+VQ-022,Espresso Machine,state,development,tri_hybrid,0.599606,1,0.732249,1,0.732249,0,0.512843
+VQ-023,Espresso Machine,state,development,tri_hybrid,1.000000,1,0.539683,1,0.539683,1,0.539683
+VQ-024,Espresso Machine,component,development,tri_hybrid,0.808427,1,0.677143,1,0.677143,1,0.752381
+VQ-026,Espresso Machine,component,development,tri_hybrid,1.000000,1,0.700000,1,0.777778,1,0.777778
+VQ-027,Espresso Machine,maintenance,development,tri_hybrid,0.795625,1,0.750000,1,0.750000,1,0.750000
+VQ-029,Espresso Machine,maintenance,source_disjoint_test,tri_hybrid,0.000000,0,0.500000,0,0.500000,0,
+VQ-030,Espresso Machine,troubleshooting,source_disjoint_test,tri_hybrid,0.795625,1,1.000000,1,1.000000,1,1.000000
+VQ-035,Pressure Cooker,operation,development,tri_hybrid,0.990228,1,0.537376,1,0.521513,1,0.523951
+VQ-036,Pressure Cooker,operation,development,tri_hybrid,0.801187,1,0.518939,1,0.551515,1,0.622222
+VQ-037,Pressure Cooker,operation,development,tri_hybrid,0.804350,1,0.796166,1,0.820227,1,0.844697
+VQ-038,Pressure Cooker,state,development,tri_hybrid,1.000000,1,0.714286,1,0.714286,1,1.000000
+VQ-039,Pressure Cooker,state,development,tri_hybrid,1.000000,1,0.384615,1,0.384615,1,0.384615
+VQ-040,Pressure Cooker,state,development,tri_hybrid,0.000000,0,0.031250,0,0.041667,0,0.041667
+VQ-041,Pressure Cooker,component,development,tri_hybrid,0.000000,0,0.000000,0,0.000000,0,
+VQ-042,Pressure Cooker,component,development,tri_hybrid,0.999502,1,0.866667,1,0.866667,1,0.866667
+VQ-043,Pressure Cooker,component,development,tri_hybrid,0.000000,0,0.076923,0,0.076923,0,0.076923
+VQ-044,Pressure Cooker,maintenance,development,tri_hybrid,1.000000,1,0.500000,1,0.500000,1,0.500000
+VQ-046,Pressure Cooker,maintenance,source_disjoint_test,tri_hybrid,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-047,Pressure Cooker,troubleshooting,source_disjoint_test,tri_hybrid,0.000000,0,0.066667,0,0.066667,0,0.066667
+VQ-049,Pressure Cooker,troubleshooting,source_disjoint_test,tri_hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-050,Pressure Cooker,safety,source_disjoint_test,tri_hybrid,0.000000,0,0.050000,0,0.050000,0,0.050000
+VQ-052,Printer,operation,development,tri_hybrid,0.000000,0,0.500000,0,,0,
+VQ-053,Printer,operation,development,tri_hybrid,0.800661,1,0.833333,1,0.833333,1,0.833333
+VQ-054,Printer,operation,development,tri_hybrid,1.000000,1,0.833333,1,0.833333,1,0.833333
+VQ-055,Printer,state,development,tri_hybrid,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-056,Printer,state,development,tri_hybrid,0.000000,0,0.729592,0,0.729592,0,0.460952
+VQ-057,Printer,state,development,tri_hybrid,0.790788,1,0.590909,1,0.590909,1,0.590909
+VQ-058,Printer,component,development,tri_hybrid,0.000000,0,0.416667,0,,0,
+VQ-059,Printer,component,development,tri_hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-061,Printer,maintenance,development,tri_hybrid,0.000000,0,0.000000,0,0.000000,0,0.000000
+VQ-063,Printer,maintenance,source_disjoint_test,tri_hybrid,1.000000,1,0.750000,1,0.750000,1,0.750000
+VQ-065,Printer,troubleshooting,source_disjoint_test,tri_hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-066,Printer,troubleshooting,source_disjoint_test,tri_hybrid,0.800661,1,0.750000,1,0.750000,1,0.750000
+VQ-067,Printer,safety,source_disjoint_test,tri_hybrid,0.000000,0,0.142857,0,0.142857,0,0.142857
+VQ-068,Printer,safety,source_disjoint_test,tri_hybrid,0.000000,0,,0,,0,
+VQ-070,Vacuum,operation,development,tri_hybrid,1.000000,1,0.833333,1,0.833333,1,1.000000
+VQ-072,Vacuum,state,development,tri_hybrid,0.000000,0,0.617045,0,0.647854,0,0.647854
+VQ-073,Vacuum,state,development,tri_hybrid,0.990909,1,0.333333,1,0.500000,1,0.500000
+VQ-074,Vacuum,state,development,tri_hybrid,0.000000,0,0.140909,0,0.090909,0,0.090909
+VQ-075,Vacuum,component,development,tri_hybrid,0.000000,0,0.333333,0,0.333333,0,0.333333
+VQ-078,Vacuum,maintenance,development,tri_hybrid,0.000000,0,0.200000,0,0.200000,0,
+VQ-083,Vacuum,safety,source_disjoint_test,tri_hybrid,0.000000,0,0.500000,0,0.500000,0,0.500000
+VQ-086,Washing Machine,operation,development,tri_hybrid,0.996638,1,0.840909,1,0.590909,1,0.590909
+VQ-087,Washing Machine,operation,development,tri_hybrid,0.970149,1,0.520000,1,0.520000,1,0.520000
+VQ-088,Washing Machine,state,development,tri_hybrid,0.000000,0,0.375000,0,0.375000,0,0.311111
+VQ-090,Washing Machine,state,development,tri_hybrid,0.000000,0,,0,,0,
+VQ-091,Washing Machine,component,development,tri_hybrid,0.996638,1,0.833333,1,1.000000,1,1.000000
+VQ-092,Washing Machine,component,development,tri_hybrid,0.191516,0,0.500000,0,0.500000,0,0.500000
+VQ-093,Washing Machine,component,development,tri_hybrid,1.000000,1,1.000000,1,1.000000,1,1.000000
+VQ-094,Washing Machine,maintenance,development,tri_hybrid,0.996425,1,1.000000,1,1.000000,1,1.000000
+VQ-095,Washing Machine,maintenance,source_disjoint_test,tri_hybrid,0.000000,0,,0,,0,
+VQ-096,Washing Machine,maintenance,source_disjoint_test,tri_hybrid,1.000000,1,0.611111,1,0.611111,1,0.611111
+VQ-097,Washing Machine,troubleshooting,source_disjoint_test,tri_hybrid,0.191516,0,0.250000,0,0.250000,0,0.250000
+VQ-098,Washing Machine,troubleshooting,source_disjoint_test,tri_hybrid,0.000000,0,0.500000,0,0.500000,0,
+VQ-099,Washing Machine,safety,source_disjoint_test,tri_hybrid,0.000000,0,0.500000,0,0.500000,0,0.500000

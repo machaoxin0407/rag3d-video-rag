@@ -671,7 +671,13 @@ class RetrievalEngine:
     def _dense_recall(self, query: str, top_n: int, allowed_doc_ids: list[int] | None = None) -> list[int]:
         assert self.dense_index is not None
         assert self.dense_vectors is not None
-        query_vector = self.client.embed_texts([query], self.embedding_model)[0]
+        if os.getenv("MANUAL_DENSE_ENABLED", "1").lower() not in {"1", "true", "yes", "on"}:
+            return []
+        try:
+            query_vector = self.client.embed_texts([query], self.embedding_model)[0]
+        except Exception as exc:  # noqa: BLE001 - sparse manual recall remains valid
+            print(f"manual dense retrieval unavailable; using BM25 candidates: {exc}")
+            return []
         query_array = self._l2_normalize(np.asarray([query_vector], dtype=np.float32))
         if allowed_doc_ids is not None:
             if not allowed_doc_ids:

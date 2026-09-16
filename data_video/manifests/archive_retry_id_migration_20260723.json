@@ -1,0 +1,22 @@
+{
+  "schema_version": "archive-retry-id-migration-v1",
+  "mapping": {
+    "airfryer-001": "airfryer-029",
+    "airfryer-003": "airfryer-030",
+    "airfryer-007": "airfryer-031",
+    "airfryer-009": "airfryer-032",
+    "airfryer-012": "airfryer-033",
+    "airfryer-013": "airfryer-034",
+    "airfryer-014": "airfryer-035",
+    "pressure-002": "pressure-032",
+    "pressure-003": "pressure-033",
+    "pressure-005": "pressure-034",
+    "pressure-007": "pressure-035",
+    "pressure-008": "pressure-036",
+    "pressure-014": "pressure-037",
+    "pressure-015": "pressure-038",
+    "pressure-018": "pressure-039",
+    "pressure-019": "pressure-040"
+  },
+  "reason": "legacy Archive seed IDs collided with earlier Wikimedia candidate IDs"
+}

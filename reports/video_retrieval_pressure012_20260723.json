@@ -1,0 +1,506 @@
+{
+  "label_status": "provisional_seed_queries_not_human_ground_truth",
+  "top_k": 3,
+  "modes": [
+    {
+      "requested_mode": "bm25",
+      "effective_modes": [
+        "bm25"
+      ],
+      "seed_query_count": 9,
+      "hit_at_1": 0.5555555555555556,
+      "hit_at_3": 0.7777777777777778,
+      "mrr_at_k": 0.6666666666666666,
+      "cases": [
+        {
+          "query": "数码相机内部哪一段能看到橙色柔性排线和紫色芯片？",
+          "expected_scene_id": "camera-001-scene-0006",
+          "returned_scene_ids": [
+            "camera-001-scene-0006",
+            "camera-001-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the camera scene with two cameras placed on a blue table.",
+          "expected_scene_id": "camera-001-scene-0003",
+          "returned_scene_ids": [
+            "camera-001-scene-0005",
+            "camera-001-scene-0003"
+          ],
+          "rank": 2
+        },
+        {
+          "query": "咖啡机压实手柄中咖啡粉的画面",
+          "expected_scene_id": "espresso-001-scene-0007",
+          "returned_scene_ids": [
+            "espresso-004-scene-0004",
+            "espresso-004-scene-0006",
+            "espresso-015-scene-0001"
+          ],
+          "rank": null
+        },
+        {
+          "query": "Which espresso-machine clip shows coffee flowing into a blue mug?",
+          "expected_scene_id": "espresso-002-scene-0001",
+          "returned_scene_ids": [
+            "espresso-009-scene-0001",
+            "espresso-002-scene-0001",
+            "espresso-008-scene-0001"
+          ],
+          "rank": 2
+        },
+        {
+          "query": "意式咖啡机旁边放着一杯已完成的浓缩咖啡",
+          "expected_scene_id": "espresso-001-scene-0002",
+          "returned_scene_ids": [
+            "espresso-015-scene-0003",
+            "espresso-001-scene-0001",
+            "espresso-004-scene-0001"
+          ],
+          "rank": null
+        },
+        {
+          "query": "压力锅阀门持续冒蒸汽的状态",
+          "expected_scene_id": "pressure-001-scene-0001",
+          "returned_scene_ids": [
+            "pressure-001-scene-0001",
+            "pressure-012-scene-0023",
+            "pressure-012-scene-0021"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the printer while paper and the finished image emerge.",
+          "expected_scene_id": "printer-001-scene-0001",
+          "returned_scene_ids": [
+            "printer-001-scene-0001",
+            "printer-006-scene-0024",
+            "printer-003-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "吸尘器软管和附件放在图案地毯上",
+          "expected_scene_id": "vacuum-002-scene-0001",
+          "returned_scene_ids": [
+            "vacuum-002-scene-0001",
+            "vacuum-009-scene-0001",
+            "vacuum-008-scene-0002"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Which washing-machine scene has a digital countdown display?",
+          "expected_scene_id": "washing-003-scene-0001",
+          "returned_scene_ids": [
+            "washing-003-scene-0001",
+            "washing-007-scene-0001",
+            "washing-002-scene-0001"
+          ],
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "requested_mode": "dense",
+      "effective_modes": [
+        "dense"
+      ],
+      "seed_query_count": 9,
+      "hit_at_1": 0.6666666666666666,
+      "hit_at_3": 0.7777777777777778,
+      "mrr_at_k": 0.7222222222222222,
+      "cases": [
+        {
+          "query": "数码相机内部哪一段能看到橙色柔性排线和紫色芯片？",
+          "expected_scene_id": "camera-001-scene-0006",
+          "returned_scene_ids": [
+            "camera-001-scene-0006",
+            "camera-001-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the camera scene with two cameras placed on a blue table.",
+          "expected_scene_id": "camera-001-scene-0003",
+          "returned_scene_ids": [
+            "camera-001-scene-0005",
+            "camera-001-scene-0003"
+          ],
+          "rank": 2
+        },
+        {
+          "query": "咖啡机压实手柄中咖啡粉的画面",
+          "expected_scene_id": "espresso-001-scene-0007",
+          "returned_scene_ids": [
+            "espresso-004-scene-0005",
+            "espresso-016-scene-0003",
+            "espresso-004-scene-0007"
+          ],
+          "rank": null
+        },
+        {
+          "query": "Which espresso-machine clip shows coffee flowing into a blue mug?",
+          "expected_scene_id": "espresso-002-scene-0001",
+          "returned_scene_ids": [
+            "espresso-002-scene-0001",
+            "espresso-004-scene-0011",
+            "espresso-004-scene-0010"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "意式咖啡机旁边放着一杯已完成的浓缩咖啡",
+          "expected_scene_id": "espresso-001-scene-0002",
+          "returned_scene_ids": [
+            "espresso-005-scene-0001",
+            "espresso-015-scene-0003",
+            "espresso-015-scene-0002"
+          ],
+          "rank": null
+        },
+        {
+          "query": "压力锅阀门持续冒蒸汽的状态",
+          "expected_scene_id": "pressure-001-scene-0001",
+          "returned_scene_ids": [
+            "pressure-001-scene-0001",
+            "pressure-011-scene-0024",
+            "pressure-011-scene-0017"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the printer while paper and the finished image emerge.",
+          "expected_scene_id": "printer-001-scene-0001",
+          "returned_scene_ids": [
+            "printer-001-scene-0001",
+            "printer-006-scene-0024",
+            "printer-006-scene-0020"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "吸尘器软管和附件放在图案地毯上",
+          "expected_scene_id": "vacuum-002-scene-0001",
+          "returned_scene_ids": [
+            "vacuum-002-scene-0001",
+            "vacuum-009-scene-0001",
+            "vacuum-003-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Which washing-machine scene has a digital countdown display?",
+          "expected_scene_id": "washing-003-scene-0001",
+          "returned_scene_ids": [
+            "washing-003-scene-0001",
+            "washing-001-scene-0001",
+            "washing-002-scene-0001"
+          ],
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "requested_mode": "visual",
+      "effective_modes": [
+        "visual"
+      ],
+      "seed_query_count": 9,
+      "hit_at_1": 0.8888888888888888,
+      "hit_at_3": 1.0,
+      "mrr_at_k": 0.9444444444444444,
+      "cases": [
+        {
+          "query": "数码相机内部哪一段能看到橙色柔性排线和紫色芯片？",
+          "expected_scene_id": "camera-001-scene-0006",
+          "returned_scene_ids": [
+            "camera-001-scene-0006",
+            "camera-001-scene-0002"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the camera scene with two cameras placed on a blue table.",
+          "expected_scene_id": "camera-001-scene-0003",
+          "returned_scene_ids": [
+            "camera-001-scene-0003",
+            "camera-001-scene-0005"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "咖啡机压实手柄中咖啡粉的画面",
+          "expected_scene_id": "espresso-001-scene-0007",
+          "returned_scene_ids": [
+            "espresso-001-scene-0007",
+            "espresso-004-scene-0005",
+            "espresso-016-scene-0003"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Which espresso-machine clip shows coffee flowing into a blue mug?",
+          "expected_scene_id": "espresso-002-scene-0001",
+          "returned_scene_ids": [
+            "espresso-002-scene-0001",
+            "espresso-001-scene-0008",
+            "espresso-004-scene-0010"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "意式咖啡机旁边放着一杯已完成的浓缩咖啡",
+          "expected_scene_id": "espresso-001-scene-0002",
+          "returned_scene_ids": [
+            "espresso-001-scene-0002",
+            "espresso-001-scene-0008",
+            "espresso-015-scene-0003"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "压力锅阀门持续冒蒸汽的状态",
+          "expected_scene_id": "pressure-001-scene-0001",
+          "returned_scene_ids": [
+            "pressure-001-scene-0001",
+            "pressure-012-scene-0018",
+            "pressure-011-scene-0017"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the printer while paper and the finished image emerge.",
+          "expected_scene_id": "printer-001-scene-0001",
+          "returned_scene_ids": [
+            "printer-006-scene-0024",
+            "printer-001-scene-0001",
+            "printer-006-scene-0006"
+          ],
+          "rank": 2
+        },
+        {
+          "query": "吸尘器软管和附件放在图案地毯上",
+          "expected_scene_id": "vacuum-002-scene-0001",
+          "returned_scene_ids": [
+            "vacuum-002-scene-0001",
+            "vacuum-008-scene-0001",
+            "vacuum-001-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Which washing-machine scene has a digital countdown display?",
+          "expected_scene_id": "washing-003-scene-0001",
+          "returned_scene_ids": [
+            "washing-003-scene-0001",
+            "washing-011-scene-0002",
+            "washing-001-scene-0001"
+          ],
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "requested_mode": "hybrid",
+      "effective_modes": [
+        "hybrid"
+      ],
+      "seed_query_count": 9,
+      "hit_at_1": 0.6666666666666666,
+      "hit_at_3": 0.7777777777777778,
+      "mrr_at_k": 0.7222222222222222,
+      "cases": [
+        {
+          "query": "数码相机内部哪一段能看到橙色柔性排线和紫色芯片？",
+          "expected_scene_id": "camera-001-scene-0006",
+          "returned_scene_ids": [
+            "camera-001-scene-0006",
+            "camera-001-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the camera scene with two cameras placed on a blue table.",
+          "expected_scene_id": "camera-001-scene-0003",
+          "returned_scene_ids": [
+            "camera-001-scene-0005",
+            "camera-001-scene-0003"
+          ],
+          "rank": 2
+        },
+        {
+          "query": "咖啡机压实手柄中咖啡粉的画面",
+          "expected_scene_id": "espresso-001-scene-0007",
+          "returned_scene_ids": [
+            "espresso-004-scene-0007",
+            "espresso-004-scene-0004",
+            "espresso-016-scene-0003"
+          ],
+          "rank": null
+        },
+        {
+          "query": "Which espresso-machine clip shows coffee flowing into a blue mug?",
+          "expected_scene_id": "espresso-002-scene-0001",
+          "returned_scene_ids": [
+            "espresso-002-scene-0001",
+            "espresso-008-scene-0001",
+            "espresso-005-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "意式咖啡机旁边放着一杯已完成的浓缩咖啡",
+          "expected_scene_id": "espresso-001-scene-0002",
+          "returned_scene_ids": [
+            "espresso-015-scene-0003",
+            "espresso-004-scene-0001",
+            "espresso-004-scene-0005"
+          ],
+          "rank": null
+        },
+        {
+          "query": "压力锅阀门持续冒蒸汽的状态",
+          "expected_scene_id": "pressure-001-scene-0001",
+          "returned_scene_ids": [
+            "pressure-001-scene-0001",
+            "pressure-012-scene-0021",
+            "pressure-012-scene-0023"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the printer while paper and the finished image emerge.",
+          "expected_scene_id": "printer-001-scene-0001",
+          "returned_scene_ids": [
+            "printer-001-scene-0001",
+            "printer-006-scene-0024",
+            "printer-006-scene-0020"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "吸尘器软管和附件放在图案地毯上",
+          "expected_scene_id": "vacuum-002-scene-0001",
+          "returned_scene_ids": [
+            "vacuum-002-scene-0001",
+            "vacuum-009-scene-0001",
+            "vacuum-003-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Which washing-machine scene has a digital countdown display?",
+          "expected_scene_id": "washing-003-scene-0001",
+          "returned_scene_ids": [
+            "washing-003-scene-0001",
+            "washing-002-scene-0001",
+            "washing-007-scene-0001"
+          ],
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "requested_mode": "tri_hybrid",
+      "effective_modes": [
+        "tri_hybrid"
+      ],
+      "seed_query_count": 9,
+      "hit_at_1": 0.6666666666666666,
+      "hit_at_3": 0.8888888888888888,
+      "mrr_at_k": 0.7592592592592592,
+      "cases": [
+        {
+          "query": "数码相机内部哪一段能看到橙色柔性排线和紫色芯片？",
+          "expected_scene_id": "camera-001-scene-0006",
+          "returned_scene_ids": [
+            "camera-001-scene-0006",
+            "camera-001-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the camera scene with two cameras placed on a blue table.",
+          "expected_scene_id": "camera-001-scene-0003",
+          "returned_scene_ids": [
+            "camera-001-scene-0005",
+            "camera-001-scene-0003"
+          ],
+          "rank": 2
+        },
+        {
+          "query": "咖啡机压实手柄中咖啡粉的画面",
+          "expected_scene_id": "espresso-001-scene-0007",
+          "returned_scene_ids": [
+            "espresso-004-scene-0005",
+            "espresso-004-scene-0004",
+            "espresso-001-scene-0007"
+          ],
+          "rank": 3
+        },
+        {
+          "query": "Which espresso-machine clip shows coffee flowing into a blue mug?",
+          "expected_scene_id": "espresso-002-scene-0001",
+          "returned_scene_ids": [
+            "espresso-002-scene-0001",
+            "espresso-009-scene-0001",
+            "espresso-005-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "意式咖啡机旁边放着一杯已完成的浓缩咖啡",
+          "expected_scene_id": "espresso-001-scene-0002",
+          "returned_scene_ids": [
+            "espresso-015-scene-0003",
+            "espresso-005-scene-0001",
+            "espresso-015-scene-0002"
+          ],
+          "rank": null
+        },
+        {
+          "query": "压力锅阀门持续冒蒸汽的状态",
+          "expected_scene_id": "pressure-001-scene-0001",
+          "returned_scene_ids": [
+            "pressure-001-scene-0001",
+            "pressure-012-scene-0018",
+            "pressure-012-scene-0021"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Show the printer while paper and the finished image emerge.",
+          "expected_scene_id": "printer-001-scene-0001",
+          "returned_scene_ids": [
+            "printer-001-scene-0001",
+            "printer-006-scene-0024",
+            "printer-003-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "吸尘器软管和附件放在图案地毯上",
+          "expected_scene_id": "vacuum-002-scene-0001",
+          "returned_scene_ids": [
+            "vacuum-002-scene-0001",
+            "vacuum-009-scene-0001",
+            "vacuum-010-scene-0001"
+          ],
+          "rank": 1
+        },
+        {
+          "query": "Which washing-machine scene has a digital countdown display?",
+          "expected_scene_id": "washing-003-scene-0001",
+          "returned_scene_ids": [
+            "washing-003-scene-0001",
+            "washing-001-scene-0001",
+            "washing-002-scene-0001"
+          ],
+          "rank": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+﻿fault,observed_status,expected_status,passed
+missing_auth,401,401,1
+invalid_auth,401,401,1
+invalid_video,202,4xx or asynchronous failed,1

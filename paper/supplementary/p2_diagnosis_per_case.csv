@@ -1,0 +1,19 @@
+﻿case_id,gold_label,predicted_label,correct,product_class,synthetic,transformation,latency_seconds,confidence,job_status,model
+DIAG-01-A,correct_step,out_of_scope,0,Air Fryer,0,natural accepted standard scene; proxy positive,8.091100,1.0,completed,qwen3.7-plus
+DIAG-01-B,insufficient_evidence,insufficient_evidence,1,Air Fryer,1,synthetic full occlusion,8.043986,1.0,completed,qwen3.7-plus
+DIAG-01-C,out_of_scope,out_of_scope,1,Air Fryer,1,cross-product substitution from Espresso Machine,8.058024,1.0,completed,qwen3.7-plus
+DIAG-02-A,correct_step,out_of_scope,0,Espresso Machine,0,natural accepted standard scene; proxy positive,10.074177,1.0,completed,qwen3.7-plus
+DIAG-02-B,insufficient_evidence,insufficient_evidence,1,Espresso Machine,1,synthetic full occlusion,8.057131,1.0,completed,qwen3.7-plus
+DIAG-02-C,out_of_scope,out_of_scope,1,Espresso Machine,1,cross-product substitution from Pressure Cooker,7.052243,1.0,completed,qwen3.7-plus
+DIAG-03-A,correct_step,insufficient_evidence,0,Pressure Cooker,0,natural accepted standard scene; proxy positive,8.060314,0.95,completed,qwen3.7-plus
+DIAG-03-B,insufficient_evidence,insufficient_evidence,1,Pressure Cooker,1,synthetic full occlusion,10.062324,1.0,completed,qwen3.7-plus
+DIAG-03-C,out_of_scope,out_of_scope,1,Pressure Cooker,1,cross-product substitution from Printer,7.064995,1.0,completed,qwen3.7-plus
+DIAG-04-A,correct_step,correct_step,1,Printer,0,natural accepted standard scene; proxy positive,9.073760,0.95,completed,qwen3.7-plus
+DIAG-04-B,insufficient_evidence,insufficient_evidence,1,Printer,1,synthetic full occlusion,8.056781,1.0,completed,qwen3.7-plus
+DIAG-04-C,out_of_scope,out_of_scope,1,Printer,1,cross-product substitution from Vacuum,12.099627,1.0,completed,qwen3.7-plus
+DIAG-05-A,correct_step,insufficient_evidence,0,Vacuum,0,natural accepted standard scene; proxy positive,13.109092,0.1,completed,qwen3.7-plus
+DIAG-05-B,insufficient_evidence,insufficient_evidence,1,Vacuum,1,synthetic full occlusion,8.057514,1.0,completed,qwen3.7-plus
+DIAG-05-C,out_of_scope,out_of_scope,1,Vacuum,1,cross-product substitution from Washing Machine,7.058812,1.0,completed,qwen3.7-plus
+DIAG-06-A,correct_step,wrong_component,0,Washing Machine,0,natural accepted standard scene; proxy positive,11.077663,1.0,completed,qwen3.7-plus
+DIAG-06-B,insufficient_evidence,insufficient_evidence,1,Washing Machine,1,synthetic full occlusion,7.048066,1.0,completed,qwen3.7-plus
+DIAG-06-C,out_of_scope,out_of_scope,1,Washing Machine,1,cross-product substitution from Air Fryer,9.062777,1.0,completed,qwen3.7-plus

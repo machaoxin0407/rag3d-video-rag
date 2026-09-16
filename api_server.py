@@ -23,11 +23,13 @@ import threading
 import time
 import uuid
 from contextlib import asynccontextmanager
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, Request, UploadFile, status
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field, field_validator
 
@@ -61,6 +63,16 @@ API_RAW_PATH = Path(os.getenv("CHAT_API_RAW_PATH")) if os.getenv("CHAT_API_RAW_P
 API_TRACE_PATH = Path(os.getenv("CHAT_API_TRACE_PATH", "/tmp/kbrag_chat_api_server.trace.jsonl"))
 MAX_CHAT_IMAGES = int(os.getenv("CHAT_MAX_IMAGES", "3"))
 MAX_CHAT_IMAGE_BYTES = int(os.getenv("CHAT_MAX_IMAGE_BYTES", str(5 * 1024 * 1024)))
+MAX_USER_VIDEO_BYTES = int(os.getenv("USER_VIDEO_MAX_BYTES", str(200 * 1024 * 1024)))
+VIDEO_REQUIRE_EXACT_MODE = os.getenv("VIDEO_REQUIRE_EXACT_MODE", "0") == "1"
+VIDEO_RUNTIME_PROFILE = os.getenv("VIDEO_RUNTIME_PROFILE", "development").lower()
+if VIDEO_RUNTIME_PROFILE not in {"development", "evaluation", "production"}:
+    raise RuntimeError(f"invalid VIDEO_RUNTIME_PROFILE={VIDEO_RUNTIME_PROFILE!r}")
+if VIDEO_RUNTIME_PROFILE == "production" and (
+    os.getenv("VIDEO_RETRIEVAL_MODE", "").lower() != "tri_hybrid"
+    or not VIDEO_REQUIRE_EXACT_MODE
+):
+    raise RuntimeError("production profile requires strict tri_hybrid video retrieval")
 _IMAGE_DATA_URL_RE = re.compile(
     r"^data:image/(?P<media_type>png|jpg|jpeg|webp);base64,(?P<data>[A-Za-z0-9+/=\r\n]+)$",
     re.IGNORECASE,
@@ -75,6 +87,9 @@ _API_OUTPUT_LOCK = threading.Lock()
 
 _engine = None
 _engine_lock = asyncio.Lock()
+_video_retriever = None
+_video_retriever_lock = threading.Lock()
+_video_jobs = None
 
 
 async def get_engine():
@@ -188,11 +203,58 @@ class ChatRequest(BaseModel):
         return images
 
 
+class VideoEvidenceItem(BaseModel):
+    """One authenticated video scene returned beside the text/manual answer."""
+
+    scene_id: str
+    record_id: str
+    product_class: str
+    start_seconds: float
+    end_seconds: float
+    clip_url: str
+    thumbnail_url: str
+    score: float
+    evidence_text: str
+    retrieval_mode: str = "bm25"
+    supports: list[str] = Field(default_factory=list)
+
+
+class CitationItem(BaseModel):
+    citation_id: str
+    evidence_type: str
+    title: str
+    source_id: str
+    excerpt: str = ""
+    supports: list[str] = Field(default_factory=list)
+
+
+class ManualImageItem(BaseModel):
+    image_id: str
+    url: str
+    caption: str = ""
+    manual_id: Optional[str] = None
+    section: Optional[str] = None
+    page: Optional[int] = None
+
+
+class RetrievalStatusItem(BaseModel):
+    requested_mode: str
+    effective_mode: Optional[str] = None
+    exact_required: bool = False
+    fallback: bool = False
+    error: Optional[str] = None
+
+
 class ChatResponseData(BaseModel):
     """成功响应 data 字段，与官方接口定义保持一致。"""
     answer: str
     session_id: str
     timestamp: int
+    videos: list[VideoEvidenceItem] = Field(default_factory=list)
+    citations: list[CitationItem] = Field(default_factory=list)
+    manual_images: list[ManualImageItem] = Field(default_factory=list)
+    retrieval: Optional[RetrievalStatusItem] = None
+    route: str = ""
 
 
 class ChatResponse(BaseModel):
@@ -518,7 +580,227 @@ def _write_api_error_trace(
     _append_jsonl(API_TRACE_PATH, {**record, "kind": "chat_api_error"})
 
 
-def _run_agent_sync(question: str, session_id: str, images: list[str]) -> tuple[str, list[str], str, dict[str, Any]]:
+def _get_video_retriever():
+    """Lazily construct the small local scene index without blocking startup."""
+    global _video_retriever
+    if _video_retriever is not None:
+        return _video_retriever
+    with _video_retriever_lock:
+        if _video_retriever is None:
+            from video_rag.retrieval import VideoEvidenceRetriever
+
+            _video_retriever = VideoEvidenceRetriever()
+    return _video_retriever
+
+
+def _retrieve_video_evidence(
+    question: str, route: str
+) -> tuple[list[VideoEvidenceItem], RetrievalStatusItem]:
+    """Retrieve before generation and expose the effective production mode."""
+    requested = os.getenv("VIDEO_RETRIEVAL_MODE", "tri_hybrid").lower()
+    retrieval = RetrievalStatusItem(
+        requested_mode=requested,
+        exact_required=VIDEO_REQUIRE_EXACT_MODE,
+    )
+    if route != "tech":
+        return [], retrieval
+    try:
+        from urllib.parse import quote
+
+        results = _get_video_retriever().search(
+            question,
+            top_k=3,
+            strict=VIDEO_REQUIRE_EXACT_MODE,
+        )
+        effective = results[0].retrieval_mode if results else requested
+        retrieval.effective_mode = effective
+        retrieval.fallback = effective != requested
+        return [
+            VideoEvidenceItem(
+                scene_id=row.scene_id,
+                record_id=row.record_id,
+                product_class=row.product_class,
+                start_seconds=row.start_seconds,
+                end_seconds=row.end_seconds,
+                clip_url=f"/video-media/{quote(row.clip_path.removeprefix('data_video/'), safe='/')}",
+                thumbnail_url=f"/video-media/{quote(row.thumbnail_path.removeprefix('data_video/'), safe='/')}",
+                score=row.score,
+                evidence_text=row.text[:1000],
+                retrieval_mode=row.retrieval_mode,
+            )
+            for row in results
+        ], retrieval
+    except Exception as exc:  # noqa: BLE001
+        retrieval.error = str(exc)[:300]
+        if VIDEO_REQUIRE_EXACT_MODE:
+            raise
+        log.exception("视频证据检索失败，本轮显式标记为降级")
+        return [], retrieval
+
+
+def _video_evidence_prompt(videos: list[VideoEvidenceItem]) -> str:
+    if not videos:
+        return ""
+    lines = [
+        "以下是系统在回答前检索到的视频片段证据。仅可使用证据中明确出现的内容；"
+        "若使用，请在对应句末标注 [VID:scene_id]，不得扩写不可见步骤。"
+    ]
+    for item in videos:
+        lines.append(
+            f"[VID:{item.scene_id}] {item.product_class} "
+            f"{item.start_seconds:.1f}-{item.end_seconds:.1f}s：{item.evidence_text}"
+        )
+    return "\n".join(lines)
+
+
+def _structured_evidence(
+    answer: str,
+    pics: list[str],
+    videos: list[VideoEvidenceItem],
+    trace: dict[str, Any],
+) -> tuple[list[CitationItem], list[ManualImageItem]]:
+    from urllib.parse import quote
+
+    citations: list[CitationItem] = []
+    seen: set[str] = set()
+    image_context: dict[str, tuple[str, str]] = {}
+    for event in trace.get("events", []):
+        if event.get("kind") == "pre_retrieval":
+            hits = event.get("sections", [])
+        elif event.get("kind") == "tool_call":
+            hits = event.get("retrieval_hits", [])
+        else:
+            continue
+        for hit in hits or []:
+            for pic in hit.get("pics", []) or []:
+                image_context[Path(pic).name] = (
+                    str(hit.get("product") or ""),
+                    str(hit.get("heading") or ""),
+                )
+            source_id = str(hit.get("chunk_id") or hit.get("parent_section_id") or "")
+            key = f"manual:{hit.get('product')}:{source_id}:{hit.get('heading')}"
+            if key in seen:
+                continue
+            seen.add(key)
+            excerpt = str(hit.get("text_preview") or hit.get("section_summary") or "")[:300]
+            supports = _supporting_sentence_ids(
+                answer,
+                f"{hit.get('heading', '')} {excerpt}",
+            )
+            if supports:
+                citations.append(
+                    CitationItem(
+                        citation_id=f"M{len(citations) + 1}",
+                        evidence_type="manual_section",
+                        title=f"{hit.get('product', '')} / {hit.get('heading', '')}".strip(" /"),
+                        source_id=source_id,
+                        excerpt=excerpt,
+                        supports=supports,
+                    )
+                )
+    video_count = 0
+    for video in videos:
+        supports = [
+            f"sentence-{index}"
+            for index, sentence in enumerate(_answer_sentences(answer), start=1)
+            if f"[VID:{video.scene_id}]" in sentence
+        ]
+        if not supports:
+            continue
+        video_count += 1
+        citations.append(
+            CitationItem(
+                citation_id=f"V{video_count}",
+                evidence_type="video_scene",
+                title=f"{video.product_class} {video.start_seconds:.1f}-{video.end_seconds:.1f}s",
+                source_id=video.scene_id,
+                excerpt=video.evidence_text[:300],
+                supports=supports,
+            )
+        )
+    manual_images: list[ManualImageItem] = []
+    captions = _manual_image_captions()
+    for pic in dict.fromkeys(pics):
+        image_id = Path(pic).stem
+        filename = _manual_image_filename(image_id)
+        if filename is None:
+            continue
+        manual_id, section = image_context.get(Path(pic).name, (None, None))
+        caption = captions.get(f"{manual_id}|{image_id}", {}).get("short_caption")
+        manual_images.append(
+            ManualImageItem(
+                image_id=image_id,
+                url=f"/manual-media/{quote(filename)}",
+                caption=str(caption or f"手册插图 {image_id}"),
+                manual_id=manual_id,
+                section=section,
+            )
+        )
+    return citations, manual_images
+
+
+def _manual_image_filename(image_id: str) -> str | None:
+    root = Path(__file__).resolve().parent / "手册" / "插图"
+    for candidate in sorted(root.glob(f"{Path(image_id).name}.*")):
+        if candidate.is_file() and candidate.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
+            return candidate.name
+    return None
+
+
+@lru_cache(maxsize=1)
+def _manual_image_captions() -> dict[str, dict[str, Any]]:
+    path = Path(__file__).resolve().parent / "data" / "image_captions_v4_final.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        return payload if isinstance(payload, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _answer_sentences(answer: str) -> list[str]:
+    return [
+        sentence.strip()
+        for sentence in re.split(r"(?<=[。！？.!?])\s*|\n+", answer)
+        if sentence.strip()
+    ]
+
+
+def _supporting_sentence_ids(answer: str, evidence: str) -> list[str]:
+    evidence_tokens = _citation_tokens(evidence)
+    if not evidence_tokens:
+        return []
+    supported: list[str] = []
+    for index, sentence in enumerate(_answer_sentences(answer), start=1):
+        sentence_tokens = _citation_tokens(sentence)
+        if len(evidence_tokens & sentence_tokens) >= 2:
+            supported.append(f"sentence-{index}")
+    return supported[:8]
+
+
+def _citation_tokens(text: str) -> set[str]:
+    tokens = set(re.findall(r"[a-z0-9]{3,}", text.casefold()))
+    for sequence in re.findall(r"[\u4e00-\u9fff]+", text):
+        if len(sequence) == 1:
+            tokens.add(sequence)
+        else:
+            tokens.update(
+                sequence[index : index + 2] for index in range(len(sequence) - 1)
+            )
+    return tokens
+
+
+def _run_agent_sync(
+    question: str, session_id: str, images: list[str]
+) -> tuple[
+    str,
+    list[str],
+    str,
+    dict[str, Any],
+    list[VideoEvidenceItem],
+    RetrievalStatusItem,
+    list[CitationItem],
+    list[ManualImageItem],
+]:
     """在 worker 线程里跑 ReAct Agent，同时返回仅供服务端落盘的内部 trace。"""
     from agent import run_agent
     from retrieval_engine import RetrievalEngine
@@ -531,20 +813,41 @@ def _run_agent_sync(question: str, session_id: str, images: list[str]) -> tuple[
 
     history = _get_session_history(session_id)
     routed_question = _build_question_with_history(question, history)
-    agent_question_text = _build_multimodal_question(routed_question, images)
-    agent_question = _build_multimodal_content(agent_question_text, images) if images else agent_question_text
-
     # 用 DeepSeek V4 Flash 三路二分类，再用 fake_qid 把 run_agent 路由到正确 prompt：
     #   service -> fake_qid=0 (run_agent 内部 qid<64 走 SERVICE_SYSTEM_PROMPT)
     #   tech    -> fake_qid=64 (qid>=64 走 TECH_SYSTEM_PROMPT + 强制检索)
     route, classifier_trace = _classify_question(routed_question)
+    videos, retrieval_status = _retrieve_video_evidence(routed_question, route)
+    video_prompt = _video_evidence_prompt(videos)
+    grounded_question = (
+        f"{routed_question}\n\n{video_prompt}" if video_prompt else routed_question
+    )
+    agent_question_text = _build_multimodal_question(grounded_question, images)
+    agent_question = _build_multimodal_content(agent_question_text, images) if images else agent_question_text
     fake_qid = 0 if route == "service" else 64
     result = run_agent(agent_question, _engine, question_id=fake_qid, session_id=session_id, collect_trace=True)
     agent_trace = dict(result.trace or {})
     agent_trace["classifier"] = classifier_trace
     agent_trace["session_history_turns"] = len(history) // 2
     agent_trace["input_images_count"] = len(images)
-    return result.answer or "", list(result.pics or []), route, agent_trace
+    agent_trace["video_evidence_ids"] = [item.scene_id for item in videos]
+    agent_trace["video_retrieval"] = retrieval_status.model_dump()
+    citations, manual_images = _structured_evidence(
+        result.answer or "",
+        list(result.pics or []),
+        videos,
+        agent_trace,
+    )
+    return (
+        result.answer or "",
+        list(result.pics or []),
+        route,
+        agent_trace,
+        videos,
+        retrieval_status,
+        citations,
+        manual_images,
+    )
 
 
 def _format_answer(answer: str, pics: list[str], route: str) -> str:
@@ -556,6 +859,7 @@ def _format_answer(answer: str, pics: list[str], route: str) -> str:
 
 
 @app.post("/chat", response_model=ChatResponse, dependencies=[Depends(auth)])
+@app.post("/v2/chat", response_model=ChatResponse, dependencies=[Depends(auth)])
 async def chat(req: ChatRequest, request: Request) -> ChatResponse:
     """官方核心端点：同步返回一轮客服/技术答案。
 
@@ -574,7 +878,16 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
 
     t0 = time.time()
     try:
-        answer, pics, route, agent_trace = await asyncio.wait_for(
+        (
+            answer,
+            pics,
+            route,
+            agent_trace,
+            videos,
+            retrieval_status,
+            citations,
+            manual_images,
+        ) = await asyncio.wait_for(
             asyncio.to_thread(_run_agent_sync, req.question, session_id, req.images),
             timeout=MULTIMODAL_REQUEST_TIMEOUT_S if req.images else REQUEST_TIMEOUT_S,
         )
@@ -594,6 +907,13 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
             status_code=status.HTTP_504_GATEWAY_TIMEOUT,
             detail=f"agent timeout after {(MULTIMODAL_REQUEST_TIMEOUT_S if req.images else REQUEST_TIMEOUT_S):.0f}s",
         )
+    except RuntimeError as exc:
+        if VIDEO_REQUIRE_EXACT_MODE and "requested video retrieval mode" in str(exc):
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=str(exc),
+            ) from exc
+        raise
     except Exception as exc:  # noqa: BLE001
         elapsed = time.time() - t0
         log.exception("REQ id=%s ERROR", request_id)
@@ -608,7 +928,7 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"agent error: {exc}",
+            detail="answer generation failed; retry later",
         ) from exc
 
     formatted = _format_answer(answer, pics, route)
@@ -630,8 +950,8 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
         agent_trace=agent_trace,
     )
     log.info(
-        "RES id=%s sess=%s route=%s elapsed=%.1fs pics=%d ans_len=%d tool_calls=%d agent_turns=%d",
-        request_id, session_id, route, elapsed, len(pics), len(formatted), tool_calls, agent_turns,
+        "RES id=%s sess=%s route=%s elapsed=%.1fs pics=%d videos=%d ans_len=%d tool_calls=%d agent_turns=%d",
+        request_id, session_id, route, elapsed, len(pics), len(videos), len(formatted), tool_calls, agent_turns,
     )
 
     return ChatResponse(
@@ -641,14 +961,170 @@ async def chat(req: ChatRequest, request: Request) -> ChatResponse:
             answer=formatted,
             session_id=session_id,
             timestamp=int(time.time()),
+            videos=videos,
+            citations=citations,
+            manual_images=manual_images,
+            retrieval=retrieval_status,
+            route=route,
         ),
     )
 
 
+@app.get("/video-media/{media_path:path}", dependencies=[Depends(auth)])
+async def video_media(media_path: str) -> FileResponse:
+    """Serve only generated clips/keyframes from authenticated project storage."""
+    return FileResponse(_resolve_video_media(media_path))
+
+
+@app.get("/manual-media/{image_name}", dependencies=[Depends(auth)])
+async def manual_media(image_name: str) -> FileResponse:
+    """Serve only basename-addressed manual illustrations."""
+    if image_name != Path(image_name).name:
+        raise HTTPException(status_code=404, detail="image not found")
+    root = (Path(__file__).resolve().parent / "手册" / "插图").resolve()
+    candidate = (root / image_name).resolve()
+    if (
+        root not in candidate.parents
+        or not candidate.is_file()
+        or candidate.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}
+    ):
+        raise HTTPException(status_code=404, detail="image not found")
+    return FileResponse(candidate)
+
+
+def _get_video_jobs():
+    global _video_jobs
+    if _video_jobs is None:
+        from video_rag.diagnosis import VideoJobManager
+
+        _video_jobs = VideoJobManager()
+    return _video_jobs
+
+
+@app.post("/v2/video-jobs", dependencies=[Depends(auth)], status_code=202)
+async def create_video_job(
+    background_tasks: BackgroundTasks,
+    video: UploadFile = File(...),
+    question: str = Form(""),
+    product_class: str = Form(""),
+) -> dict[str, Any]:
+    """Accept a bounded upload and start an asynchronous, evidence-limited diagnosis."""
+    from video_rag.diagnosis import run_diagnosis_job
+
+    manager = _get_video_jobs()
+    try:
+        job_id, target = manager.create(
+            video.filename or "",
+            video.content_type or "application/octet-stream",
+            question,
+            product_class,
+        )
+    except ValueError as exc:
+        code = 429 if "queue is full" in str(exc) else 415
+        raise HTTPException(status_code=code, detail=str(exc)) from exc
+    total = 0
+    try:
+        with target.open("wb") as stream:
+            while chunk := await video.read(1024 * 1024):
+                total += len(chunk)
+                if total > MAX_USER_VIDEO_BYTES:
+                    raise HTTPException(status_code=413, detail="video exceeds upload limit")
+                stream.write(chunk)
+    except Exception:
+        try:
+            manager.discard_upload(job_id)
+        except Exception:
+            pass
+        raise
+    finally:
+        await video.close()
+    manager.update(job_id, status="queued", uploaded_bytes=total)
+    if os.getenv("USER_VIDEO_ASYNC_MODE", "inline") == "inline":
+        background_tasks.add_task(
+            run_diagnosis_job,
+            manager,
+            job_id,
+            _get_video_retriever(),
+            _engine,
+        )
+    return {
+        "job_id": job_id,
+        "status": "queued",
+        "status_url": f"/v2/video-jobs/{job_id}",
+        "result_url": f"/v2/video-jobs/{job_id}/result",
+    }
+
+
+@app.get("/v2/video-jobs/{job_id}", dependencies=[Depends(auth)])
+async def get_video_job(job_id: str) -> dict[str, Any]:
+    try:
+        state = _get_video_jobs().get(job_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="job not found") from exc
+    return {key: value for key, value in state.items() if key != "result"}
+
+
+@app.get("/v2/video-jobs/{job_id}/result", dependencies=[Depends(auth)])
+async def get_video_job_result(job_id: str) -> dict[str, Any]:
+    try:
+        state = _get_video_jobs().get(job_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="job not found") from exc
+    if state["status"] not in {"completed", "failed"}:
+        raise HTTPException(status_code=409, detail=f"job is {state['status']}")
+    return state
+
+
+@app.delete("/v2/video-jobs/{job_id}", dependencies=[Depends(auth)], status_code=204)
+async def delete_video_job(job_id: str) -> None:
+    try:
+        _get_video_jobs().delete(job_id)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="job not found") from exc
+
+
+@app.get("/demo", response_class=HTMLResponse)
+async def demo() -> FileResponse:
+    return FileResponse(Path(__file__).resolve().parent / "web_demo" / "index.html")
+
+
+def _resolve_video_media(media_path: str) -> Path:
+    """Resolve only generated MP4/JPG media and reject traversal or raw video."""
+    video_root = (Path(__file__).resolve().parent / "data_video").resolve()
+    candidate = (video_root / media_path).resolve()
+    allowed_roots = [
+        (video_root / "processed").resolve(),
+        (video_root / "keyframes").resolve(),
+    ]
+    if not any(candidate == root or root in candidate.parents for root in allowed_roots):
+        raise HTTPException(status_code=404, detail="media not found")
+    if not candidate.is_file() or candidate.suffix.lower() not in {".mp4", ".jpg", ".jpeg"}:
+        raise HTTPException(status_code=404, detail="media not found")
+    return candidate
+
+
 @app.get("/health")
 async def health() -> dict[str, Any]:
+    video_status: dict[str, Any]
+    try:
+        retriever = _get_video_retriever()
+        video_status = await asyncio.to_thread(
+            retriever.health_status,
+            True,
+        )
+    except Exception as exc:  # noqa: BLE001
+        video_status = {"ready": False, "error": str(exc)[:300]}
+    exact_ready = bool(
+        video_status.get("dense_index_ready")
+        and video_status.get("visual_index_ready")
+        and (video_status.get("dense_service") or {}).get("ready")
+        and (video_status.get("visual_service") or {}).get("ready")
+    )
+    overall = "ok" if not VIDEO_REQUIRE_EXACT_MODE or exact_ready else "degraded"
     return {
-        "status": "ok",
+        "status": overall,
         "engine_ready": _engine is not None,
         "timeout_s": REQUEST_TIMEOUT_S,
         "multimodal_timeout_s": MULTIMODAL_REQUEST_TIMEOUT_S,
@@ -656,4 +1132,23 @@ async def health() -> dict[str, Any]:
         "classifier_provider": "deepseek_binary_vote",
         "classifier_configured": bool(CLASSIFIER_BASE_URL and CLASSIFIER_API_KEY),
         "classifier_model": CLASSIFIER_MODEL,
+        "video_retrieval": {
+            **video_status,
+            "profile": VIDEO_RUNTIME_PROFILE,
+            "exact_required": VIDEO_REQUIRE_EXACT_MODE,
+            "exact_ready": exact_ready,
+        },
+        "user_video_jobs": {
+            "enabled": True,
+            "max_bytes": MAX_USER_VIDEO_BYTES,
+            "max_duration_s": float(os.getenv("USER_VIDEO_MAX_DURATION_S", "60")),
+            "vlm_configured": all(
+                os.getenv(name, "").strip()
+                for name in (
+                    "USER_VIDEO_VLM_BASE_URL",
+                    "USER_VIDEO_VLM_API_KEY",
+                    "USER_VIDEO_VLM_MODEL",
+                )
+            ),
+        },
     }

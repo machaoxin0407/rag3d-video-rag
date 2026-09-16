@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      VIDEO_RETRIEVAL_MODE: tri_hybrid
+      VIDEO_REQUIRE_EXACT_MODE: "1"
+      VIDEO_RUNTIME_PROFILE: production
+      USER_VIDEO_ASYNC_MODE: spool
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data_video:/app/data_video
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  video-worker:
+    build: .
+    command: ["python", "video_job_worker.py"]
+    env_file: .env
+    environment:
+      VIDEO_RETRIEVAL_MODE: tri_hybrid
+    volumes:
+      - ./data_video:/app/data_video
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

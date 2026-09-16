@@ -22,6 +22,14 @@
 - `generate_submission_api.py`
 - `validate_delivery.py`
 - `validate_performance.py`
+- `preprocess_video_sources.py`
+- `segment_video_sources.py`
+- `transcribe_video_sources.py`
+- `ocr_video_keyframes.py`
+- `build_video_evidence.py`
+- `validate_video_analysis.py`
+- `validate_video_retrieval.py`
+- `video_rag/`
 
 ### Prompt / skill
 
@@ -42,6 +50,7 @@
 - `data/index/retrieval_index.pkl`
 - `手册_v4/`
 - `手册/插图/`
+- `data_video/manifests/`（授权、下载、预处理、ASR/OCR/VLM、场景与统一证据清单）
 
 ### 启动材料
 
@@ -52,6 +61,11 @@
 - `.env.example`
 - `run_api.sh`
 - `smoke_test.sh`
+- `run_video_analysis_stage.sh`
+- `setup_video_vlm_environment.sh`
+- `requirements-asr.txt`
+- `requirements-ocr.txt`
+- `requirements-vlm.txt`
 - `delivery_docs/00_提交材料总览.md`
 - `delivery_docs/01_API接口说明.md`
 - `delivery_docs/02_源码运行说明.md`
@@ -82,6 +96,7 @@
 - API 运行 trace/raw 临时日志
 - `手册_inlined/`
 - Python 缓存和系统临时文件
+- 原始视频、生成音频、关键帧、MP4 场景片段与模型权重
 
 ## 运行方式
 
@@ -101,6 +116,8 @@ pip install -r requirements.txt
 ```bash
 python validate_performance.py
 python validate_performance.py --api-base-url http://127.0.0.1:8000
+python validate_video_analysis.py
+python validate_video_retrieval.py
 ```
 
 ## 配置说明

@@ -1,0 +1,27 @@
+{
+  "experiment_id": "RET-PERF-20260729-001",
+  "created_at": "2026-07-29T09:03:08.361640+00:00",
+  "retriever_initialization_ms": 649.8293949989602,
+  "latency_table": "retrieval_latency.csv",
+  "isolated_fault_injection": [
+    {
+      "fault": "dense_and_visual_unreachable_strict",
+      "passed": true,
+      "observed": "RuntimeError",
+      "expected": "RuntimeError; no silent production fallback"
+    },
+    {
+      "fault": "dense_and_visual_unreachable_nonstrict",
+      "passed": true,
+      "observed": "bm25",
+      "expected": "explicit bm25 fallback"
+    }
+  ],
+  "gpu_snapshot": [
+    "0, NVIDIA GeForce RTX 4090, 24564, 1853, 0",
+    "1, NVIDIA GeForce RTX 4090, 24564, 4703, 0"
+  ],
+  "memory_snapshot": "               total        used        free      shared  buff/cache   available\nMem:     270010937344 11144650752 20872110080   196083712 237994176512 256781967360\nSwap:     2147479552      786432  2146693120\n",
+  "cpu_snapshot": "17:03:08 up 8 days, 55 min,  2 users,  load average: 10.47, 3.78, 3.75\n128",
+  "target_p95_ms": 1000
+}

@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+
+mkdir -p logs
+if [[ -f .env ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  . ./.env
+  set +a
+fi
+
+# Compatibility mapping for an authorized OpenAI-compatible shared model account.
+# Explicit P1 variable names always take precedence.
+export SILICONFLOW_BASE_URL="${SILICONFLOW_BASE_URL:-${API_BASE_URL:-${OPENAI_BASE_URL:-}}}"
+export SILICONFLOW_API_KEY="${SILICONFLOW_API_KEY:-${API_KEY:-${OPENAI_API_KEY:-}}}"
+export SILICONFLOW_MODEL="${SILICONFLOW_MODEL:-${API_CHAT_MODEL:-${OPENAI_MODEL:-}}}"
+# Manual dense/rerank credentials are intentionally not inferred from a generic
+# chat key: the online embedding model must match the frozen manual index.
+export USER_VIDEO_VLM_BASE_URL="${USER_VIDEO_VLM_BASE_URL:-${API_BASE_URL:-${OPENAI_BASE_URL:-}}}"
+export USER_VIDEO_VLM_API_KEY="${USER_VIDEO_VLM_API_KEY:-${API_KEY:-${OPENAI_API_KEY:-}}}"
+export USER_VIDEO_VLM_MODEL="${USER_VIDEO_VLM_MODEL:-${API_VLM_MODEL:-${OPENAI_MODEL:-}}}"
+api_pid_file="logs/p1_api.pid"
+worker_pid_file="logs/p1_worker.pid"
+api_log="logs/p1_api.log"
+worker_log="logs/p1_worker.log"
+api_port="${P1_API_PORT:-8000}"
+
+running() { [[ -f "$1" ]] && kill -0 "$(cat "$1")" 2>/dev/null; }
+
+start_process() {
+  local pid_file="$1" log_file="$2"; shift 2
+  if running "$pid_file"; then return; fi
+  rm -f "$pid_file"
+  nohup "$@" >"$log_file" 2>&1 </dev/null &
+  echo "$!" >"$pid_file"
+}
+
+stop_process() {
+  local pid_file="$1" label="$2"
+  if ! running "$pid_file"; then rm -f "$pid_file"; echo "$label=stopped"; return; fi
+  local pid; pid="$(cat "$pid_file")"; kill "$pid"
+  for _ in $(seq 1 20); do
+    if ! kill -0 "$pid" 2>/dev/null; then rm -f "$pid_file"; echo "$label=stopped"; return; fi
+    sleep 1
+  done
+  echo "$label failed to stop pid=$pid" >&2; return 1
+}
+
+start() {
+  export VIDEO_RETRIEVAL_MODE=tri_hybrid VIDEO_REQUIRE_EXACT_MODE=1 VIDEO_RUNTIME_PROFILE=production USER_VIDEO_ASYNC_MODE=spool
+  export CHAT_TIMEOUT_S="${P1_CHAT_TIMEOUT_S:-120}"
+  export CHAT_MULTIMODAL_TIMEOUT_S="${P1_CHAT_MULTIMODAL_TIMEOUT_S:-150}"
+  export MANUAL_DENSE_ENABLED="${P1_MANUAL_DENSE_ENABLED:-0}"
+  export RERANK_ENABLED="${P1_RERANK_ENABLED:-0}"
+  export VIDEO_DENSE_ENDPOINT="${VIDEO_DENSE_ENDPOINT:-http://127.0.0.1:8091}"
+  export VIDEO_VISUAL_DENSE_ENDPOINT="${VIDEO_VISUAL_DENSE_ENDPOINT:-http://127.0.0.1:8092}"
+  ./video_embedding_service.sh start
+  ./video_visual_embedding_service.sh start
+  start_process "$worker_pid_file" "$worker_log" .venv/bin/python video_job_worker.py
+  start_process "$api_pid_file" "$api_log" .venv/bin/python -m uvicorn api_server:app --host 127.0.0.1 --port "$api_port" --workers 1
+  for _ in $(seq 1 60); do
+    if curl -fsS "http://127.0.0.1:${api_port}/health" | grep -q '"status":"ok"'; then
+      echo "p1_stack=ready url=http://127.0.0.1:${api_port}/demo"; return
+    fi
+    sleep 1
+  done
+  echo "P1 stack failed readiness; inspect $api_log and $worker_log" >&2
+  release
+  return 1
+}
+
+status_all() {
+  running "$api_pid_file" && echo "p1_api=running pid=$(cat "$api_pid_file")" || echo "p1_api=stopped"
+  running "$worker_pid_file" && echo "p1_worker=running pid=$(cat "$worker_pid_file")" || echo "p1_worker=stopped"
+  ./video_embedding_service.sh status || true
+  ./video_visual_embedding_service.sh status || true
+  curl -fsS "http://127.0.0.1:${api_port}/health" || true
+}
+
+release() {
+  stop_process "$api_pid_file" p1_api
+  stop_process "$worker_pid_file" p1_worker
+  ./video_visual_embedding_service.sh stop
+  ./video_embedding_service.sh stop
+  echo "p1_gpu_resources=released"
+}
+
+case "${1:-}" in
+  start) start ;;
+  stop|release) release ;;
+  restart) release; start ;;
+  status) status_all ;;
+  *) echo "usage: $0 {start|stop|restart|status|release}" >&2; exit 2 ;;
+esac

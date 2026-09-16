@@ -1,0 +1,20 @@
+{
+  "schema_version": "p2-server-resource-release-v1",
+  "observed_at": "2026-07-29T09:26:00Z",
+  "server_alias": "newpulse-server",
+  "project_directory": "~/rag3d-video",
+  "project_services": {
+    "p1_api": "stopped",
+    "p1_worker": "stopped",
+    "video_embedding_service": "stopped",
+    "video_visual_embedding_service": "stopped"
+  },
+  "nvidia_compute_processes_after_release": 0,
+  "scope": "current server user's visible NVIDIA compute processes",
+  "command_basis": [
+    "./p1_stack.sh release",
+    "./p1_stack.sh status",
+    "nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv,noheader"
+  ],
+  "credentials_recorded": false
+}

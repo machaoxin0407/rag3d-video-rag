@@ -1,0 +1,15 @@
+services:
+  api:
+    network_mode: host
+    ports: !reset []
+    extra_hosts: !reset []
+    command: ["python", "-m", "uvicorn", "api_server:app", "--host", "127.0.0.1", "--port", "8000", "--workers", "1"]
+    environment:
+      VIDEO_DENSE_ENDPOINT: http://127.0.0.1:8091
+      VIDEO_VISUAL_DENSE_ENDPOINT: http://127.0.0.1:8092
+  video-worker:
+    network_mode: host
+    extra_hosts: !reset []
+    environment:
+      VIDEO_DENSE_ENDPOINT: http://127.0.0.1:8091
+      VIDEO_VISUAL_DENSE_ENDPOINT: http://127.0.0.1:8092
